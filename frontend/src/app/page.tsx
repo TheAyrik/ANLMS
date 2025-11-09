@@ -1,0 +1,219 @@
+// neo-lms/frontend/src/app/page.tsx
+import { BentoCard } from '@/components/bento-card'
+import { Button } from '@/components/button'
+import { Container } from '@/components/container'
+import { Footer } from '@/components/footer'
+import { Gradient } from '@/components/gradient'
+import { Keyboard } from '@/components/keyboard'
+import { Link } from '@/components/link'
+import { LinkedAvatars } from '@/components/linked-avatars'
+import { LogoCloud } from '@/components/logo-cloud'
+import { LogoCluster } from '@/components/logo-cluster'
+import { LogoTimeline } from '@/components/logo-timeline'
+import { Map } from '@/components/map'
+import { Navbar } from '@/components/navbar'
+import { Screenshot } from '@/components/screenshot'
+import { Testimonials } from '@/components/testimonials'
+import { Heading, Subheading } from '@/components/text'
+import { ChevronRightIcon } from '@heroicons/react/16/solid'
+import type { Metadata } from 'next'
+
+// --- 1. ترجمه Metadata ---
+export const metadata: Metadata = {
+  description:
+    'پردیس هوش مصنوعی، اولین نئو ال ام اس ایرانی، به شما کمک می‌کند با استفاده از هوش مصنوعی، هوش مصنوعی را یاد بگیرید.',
+}
+
+// --- 2. ترجمه بخش Hero ---
+function Hero() {
+  return (
+    <div className="relative">
+      <Gradient className="absolute inset-2 bottom-0 rounded-4xl ring-1 ring-black/5 ring-inset" />
+      <Container className="relative">
+        <Navbar
+          banner={
+            <Link
+              href="/blog" // لینک را به وبلاگ هدایت می‌کنیم
+              className="flex items-center gap-1 rounded-full bg-fuchsia-950/35 px-3 py-0.5 text-sm/6 font-medium text-white data-hover:bg-fuchsia-950/30" // <-- **اصلاح شد: استایل اصلی قالب حفظ شد**
+            >
+              پردیس هوش مصنوعی: نسخه بتا عمومی منتشر شد!
+              <ChevronRightIcon className="size-4" />
+            </Link>
+          }
+        />
+        <div className="pt-16 pb-24 sm:pt-24 sm:pb-32 md:pt-32 md:pb-48">
+          <h1 className="font-display text-6xl/[0.9] font-medium tracking-tight text-balance text-gray-950 sm:text-8xl/[0.8] md:text-9xl/[0.8]">
+            یادگیری هوش مصنوعی،
+            <br />
+            با هوش مصنوعی.
+          </h1>
+          <p className="mt-8 max-w-lg text-xl/7 font-medium text-gray-950/75 sm:text-2xl/8">
+            پردیس، اولین نئو ال ام اس ایرانی، مسیر یادگیری شما را با دستیار
+            هوشمند و مسیردهی انطباقی متحول می‌کند.
+          </p>
+          <div className="mt-12 flex flex-col gap-x-6 gap-y-4 sm:flex-row">
+            <Button href="#">شروع یادگیری</Button>
+            <Button variant="secondary" href="/pricing">
+              مشاهده قیمت‌ها
+            </Button>
+          </div>
+        </div>
+      </Container>
+    </div>
+  )
+}
+
+// --- 3. ترجمه بخش Feature ---
+function FeatureSection() {
+  return (
+    <div className="overflow-hidden">
+      <Container className="pb-24">
+        <Heading as="h2" className="max-w-3xl">
+          تصویری کامل از مسیر پیشرفت شما در یادگیری.
+        </Heading>
+        <Screenshot
+          width={1216}
+          height={768}
+          src="/screenshots/app.png"
+          className="mt-16 h-[36rem] sm:h-auto sm:w-[76rem]"
+        />
+      </Container>
+    </div>
+  )
+}
+
+// --- 4. ترجمه بخش Bento (جعبه‌ای) ---
+function BentoSection() {
+  return (
+    <Container>
+      <Subheading>یادگیری</Subheading>
+      <Heading as="h3" className="mt-2 max-w-3xl">
+        ویژگی‌های انطباقی پلتفرم نئو ال ام اس.
+      </Heading>
+
+      <div className="mt-10 grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6 lg:grid-rows-2">
+        <BentoCard
+          eyebrow="بینش"
+          title="شفافیت کامل در یادگیری"
+          description="پردیس از هوش مصنوعی برای ساختن یک تصویر دقیق از دانش فعلی شما استفاده می‌کند و نقاط ضعف و قوت شما را مشخص می‌کند."
+          graphic={
+            <div className="h-80 bg-[url(/screenshots/profile.png)] bg-[size:1000px_560px] bg-[left_-109px_top_-112px] bg-no-repeat" />
+          }
+          fade={['bottom']}
+          className="max-lg:rounded-t-4xl lg:col-span-3 lg:rounded-tl-4xl"
+        />
+        <BentoCard
+          eyebrow="تحلیل"
+          title="مسیر یادگیری شخصی‌سازی شده"
+          description="بر اساس تحلیل عملکرد شما، پلتفرم به صورت پویا مسیر یادگیری شما را به‌روزرسانی می‌کند و منابع مورد نیازتان را پیشنهاد می‌دهد."
+          graphic={
+            <div className="absolute inset-0 bg-[url(/screenshots/competitors.png)] bg-[size:1100px_650px] bg-[left_-38px_top_-73px] bg-no-repeat" />
+          }
+          fade={['bottom']}
+          className="lg:col-span-3 lg:rounded-tr-4xl"
+        />
+        <BentoCard
+          eyebrow="سرعت"
+          title="ساخته شده برای کاربران حرفه‌ای"
+          description="با میان‌برهای کیبورد که برای سرعت بهینه شده‌اند، سریع‌تر از همیشه بین درس‌ها و پروژه‌ها جابجا شوید."
+          graphic={
+            <div className="flex size-full pt-10 pl-10">
+              <Keyboard highlighted={['LeftCommand', 'LeftShift', 'D']} />
+            </div>
+          }
+          className="lg:col-span-2 lg:rounded-bl-4xl"
+        />
+        <BentoCard
+          eyebrow="منابع"
+          title="دسترسی به منابع گسترده"
+          description="فراتر از دوره‌های ویدیویی، به مقالات، پروژه‌ها و چالش‌های واقعی برای ساختن یک رزومه قوی دسترسی داشته باشید."
+          graphic={<LogoCluster />}
+          className="lg:col-span-2"
+        />
+        <BentoCard
+          eyebrow="بدون مرز"
+          title="یادگیری در سطح جهانی"
+          description="پردیس به شما کمک می‌کند تا با جدیدترین متدها و استانداردهای جهانی آموزش ببینید و رقابت کنید."
+          graphic={<Map />}
+          className="max-lg:rounded-b-4xl lg:col-span-2 lg:rounded-br-4xl"
+        />
+      </div>
+    </Container>
+  )
+}
+
+// --- 5. ترجمه بخش Bento (تیره) ---
+function DarkBentoSection() {
+  return (
+    <div className="mx-2 mt-2 rounded-4xl bg-gray-900 py-32">
+      <Container>
+        <Subheading dark>تعامل</Subheading>
+        <Heading as="h3" dark className="mt-2 max-w-3xl">
+          تعامل با دستیار هوشمند شما هرگز آسان‌تر نبوده.
+        </Heading>
+
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6 lg:grid-rows-2">
+          <BentoCard
+            dark
+            eyebrow="دستیار هوشمند"
+            title="یادگیری با سرعت نور"
+            description="دستیار هوشمند پردیس (Neo-LMS) به صورت زنده به سوالات شما پاسخ می‌دهد و مفاهیم پیچیده را برای شما ساده می‌کند."
+            graphic={
+              <div className="h-80 bg-[url(/screenshots/networking.png)] bg-[size:851px_344px] bg-no-repeat" />
+            }
+            fade={['top']}
+            className="max-lg:rounded-t-4xl lg:col-span-4 lg:rounded-tl-4xl"
+          />
+          <BentoCard
+            dark
+            eyebrow="یکپارچگی"
+            title="همگام با ابزارهای شما"
+            description="چه در VS Code یا Google Colab، دستیار پردیس همراه شماست تا هیچ ابزاری از اکوسیستم یادگیری شما جا نماند."
+            graphic={<LogoTimeline />}
+            // `overflow-visible!` is needed to work around a Chrome bug that disables the mask on the graphic.
+            className="z-10 overflow-visible! lg:col-span-2 lg:rounded-tr-4xl"
+          />
+          <BentoCard
+            dark
+            eyebrow="جلسات"
+            title="زمان‌بندی هوشمند"
+            description="به صورت خودکار جلسات مشاوره و رفع اشکال (Mentorship) را با اساتید در تقویم خود تنظیم کنید."
+            graphic={<LinkedAvatars />}
+            className="lg:col-span-2 lg:rounded-bl-4xl"
+          />
+          <BentoCard
+            dark
+            eyebrow="تعامل"
+            title="تبدیل به یک متخصص شوید"
+            description="هوش مصنوعی پردیس به شما در نوشتن مقالات فنی، به اشتراک‌گذاری پروژه‌ها و ساخت یک برند شخصی قوی کمک می‌کند."
+            graphic={
+              <div className="h-80 bg-[url(/screenshots/engagement.png)] bg-[size:851px_344px] bg-no-repeat" />
+            }
+            fade={['top']}
+            className="max-lg:rounded-b-4xl lg:col-span-4 lg:rounded-br-4xl"
+          />
+        </div>
+      </Container>
+    </div>
+  )
+}
+
+export default function Home() {
+  return (
+    <div className="overflow-hidden">
+      <Hero />
+      <main>
+        <Container className="mt-10">
+          <LogoCloud />
+        </Container>
+        <div className="bg-linear-to-b from-white from-50% to-gray-100 py-32">
+          <FeatureSection />
+          <BentoSection />
+        </div>
+        <DarkBentoSection />
+      </main>
+      <Testimonials />
+      <Footer />
+    </div>
+  )
+}
