@@ -19,7 +19,7 @@ function CallToAction() {
           همین امروز استفاده رایگان را شروع کنید.
         </p>
       </hgroup>
-      <p className="mx-auto mt-6 max-w-xs text-sm/6 text-gray-500">
+      <p className="mx-auto mt-6 max-w-xs text-sm/6 text-pardis-gray">
         مسیر میان‌بر خود را کشف کنید و پتانسیل کامل خود را آزاد کنید.
       </p>
       <div className="mt-6">
@@ -32,7 +32,11 @@ function CallToAction() {
 }
 
 function SitemapHeading({ children }: { children: React.ReactNode }) {
-  return <h3 className="text-sm/6 font-medium text-gray-950/50">{children}</h3>
+  return (
+    <h3 className="text-sm/6 font-medium text-pardis-secondary/80">
+      {children}
+    </h3>
+  )
 }
 
 function SitemapLinks({ children }: { children: React.ReactNode }) {
@@ -44,7 +48,7 @@ function SitemapLink(props: React.ComponentPropsWithoutRef<typeof Link>) {
     <li>
       <Link
         {...props}
-        className="font-medium text-gray-950 data-hover:text-gray-950/75"
+        className="font-medium text-gray-950 data-hover:text-pardis-primary"
       />
     </li>
   )
@@ -124,7 +128,7 @@ function SocialLinks() {
         href="https://facebook.com"
         target="_blank"
         aria-label="ما را در فیسبوک دنبال کنید"
-        className="text-gray-950 data-hover:text-gray-950/75"
+        className="text-pardis-secondary data-hover:text-pardis-primary"
       >
         <SocialIconFacebook className="size-4" />
       </Link>
@@ -132,7 +136,7 @@ function SocialLinks() {
         href="https://x.com"
         target="_blank"
         aria-label="ما را در ایکس (توییتر سابق) دنبال کنید"
-        className="text-gray-950 data-hover:text-gray-950/75"
+        className="text-pardis-secondary data-hover:text-pardis-primary"
       >
         <SocialIconX className="size-4" />
       </Link>
@@ -140,7 +144,7 @@ function SocialLinks() {
         href="https://linkedin.com"
         target="_blank"
         aria-label="ما را در لینکدین دنبال کنید"
-        className="text-gray-950 data-hover:text-gray-950/75"
+        className="text-pardis-secondary data-hover:text-pardis-primary"
       >
         <SocialIconLinkedIn className="size-4" />
       </Link>
@@ -151,7 +155,7 @@ function SocialLinks() {
 // --- 4. ترجمه و برندینگ حق نشر ---
 function Copyright() {
   return (
-    <div className="text-sm/6 text-gray-950">
+    <div className="text-sm/6 text-pardis-secondary">
       &copy; {new Date().getFullYear()} پردیس هوش مصنوعی. تمام حقوق محفوظ است.
     </div>
   )

@@ -34,7 +34,7 @@ function Hero() {
           banner={
             <Link
               href="/blog" // لینک را به وبلاگ هدایت می‌کنیم
-              className="flex items-center gap-1 rounded-full bg-fuchsia-950/35 px-3 py-0.5 text-sm/6 font-medium text-white data-hover:bg-fuchsia-950/30" // <-- **اصلاح شد: استایل اصلی قالب حفظ شد**
+              className="flex items-center gap-1 rounded-full bg-pardis-secondary px-3 py-0.5 text-sm/6 font-medium text-white data-hover:bg-pardis-primary"
             >
               پردیس هوش مصنوعی: نسخه بتا عمومی منتشر شد!
               <ChevronRightIcon className="size-4" />
@@ -47,7 +47,7 @@ function Hero() {
             <br />
             با هوش مصنوعی.
           </h1>
-          <p className="mt-8 max-w-lg text-xl/7 font-medium text-gray-950/75 sm:text-2xl/8">
+          <p className="mt-8 max-w-lg text-xl/7 font-medium text-pardis-gray sm:text-2xl/8">
             پردیس، اولین نئو ال ام اس ایرانی، مسیر یادگیری شما را با دستیار
             هوشمند و مسیردهی انطباقی متحول می‌کند.
           </p>
@@ -145,7 +145,7 @@ function BentoSection() {
 // --- 5. ترجمه بخش Bento (تیره) ---
 function DarkBentoSection() {
   return (
-    <div className="mx-2 mt-2 rounded-4xl bg-gray-900 py-32">
+    <div className="mx-2 mt-2 rounded-4xl bg-linear-to-br from-pardis-secondary to-[#0b4554] py-32">
       <Container>
         <Subheading dark>تعامل</Subheading>
         <Heading as="h3" dark className="mt-2 max-w-3xl">
@@ -206,7 +206,7 @@ export default function Home() {
         <Container className="mt-10">
           <LogoCloud />
         </Container>
-        <div className="bg-linear-to-b from-white from-50% to-gray-100 py-32">
+        <div className="bg-linear-to-b from-white from-40% to-pardis-primary/10 py-32">
           <FeatureSection />
           <BentoSection />
         </div>

@@ -28,7 +28,7 @@ function DesktopNav() {
         <PlusGridItem key={href} className="relative flex">
           <Link
             href={href}
-            className="flex items-center px-4 py-3 text-base font-medium text-gray-950 bg-blend-multiply data-hover:bg-black/[2.5%]"
+            className="flex items-center px-4 py-3 text-base font-medium text-gray-950 bg-blend-multiply data-hover:bg-pardis-primary/5 data-hover:text-pardis-primary"
           >
             {label}
           </Link>
@@ -41,10 +41,10 @@ function DesktopNav() {
 function MobileNavButton() {
   return (
     <DisclosureButton
-      className="flex size-12 items-center justify-center self-center rounded-lg data-hover:bg-black/5 lg:hidden"
+      className="flex size-12 items-center justify-center self-center rounded-lg data-hover:bg-pardis-primary/10 lg:hidden"
       aria-label="باز کردن منوی اصلی" // --- ترجمه شد ---
     >
-      <Bars2Icon className="size-6" />
+      <Bars2Icon className="size-6 text-pardis-primary" />
     </DisclosureButton>
   )
 }
@@ -64,7 +64,10 @@ function MobileNav() {
             }}
             key={href}
           >
-            <Link href={href} className="text-base font-medium text-gray-950">
+            <Link
+              href={href}
+              className="text-base font-medium text-gray-950 data-hover:text-pardis-primary"
+            >
               {label}
             </Link>
           </motion.div>

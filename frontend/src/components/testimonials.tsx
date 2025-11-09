@@ -125,7 +125,7 @@ function TestimonialCard({
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 rounded-3xl bg-linear-to-t from-black from-[calc(7/16*100%)] ring-1 ring-gray-950/10 ring-inset sm:from-25%"
+        className="absolute inset-0 rounded-3xl bg-linear-to-t from-black from-[calc(7/16*100%)] ring-1 ring-pardis-primary/30 ring-inset sm:from-25%"
       />
       <figure className="relative p-10">
         <blockquote>
@@ -142,7 +142,7 @@ function TestimonialCard({
         <figcaption className="mt-6 border-t border-white/20 pt-6">
           <p className="text-sm/6 font-medium text-white">{name}</p>
           <p className="text-sm/6 font-medium">
-            <span className="bg-linear-to-r from-[#fff1be] from-28% via-[#ee87cb] via-70% to-[#b060ff] bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-pardis-primary via-pardis-secondary to-white bg-clip-text text-transparent">
               {title}
             </span>
           </p>
@@ -155,14 +155,14 @@ function TestimonialCard({
 function CallToAction() {
   return (
     <div>
-      <p className="max-w-sm text-sm/6 text-gray-600">
+      <p className="max-w-sm text-sm/6 text-pardis-gray">
         Join the best sellers in the business and start using Radiant to hit
         your targets today.
       </p>
       <div className="mt-2">
         <Link
           href="#"
-          className="inline-flex items-center gap-2 text-sm/6 font-medium text-pink-600"
+          className="inline-flex items-center gap-2 text-sm/6 font-medium text-pardis-primary data-hover:text-pardis-secondary"
         >
           Get started
           <ArrowLongRightIcon className="size-5" />
@@ -235,8 +235,8 @@ export function Testimonials() {
                 }
                 aria-label={`Scroll to testimonial from ${name}`}
                 className={clsx(
-                  'size-2.5 rounded-full border border-transparent bg-gray-300 transition',
-                  'data-active:bg-gray-400 data-hover:bg-gray-400',
+                  'size-2.5 rounded-full border border-transparent bg-pardis-primary/30 transition',
+                  'data-active:bg-pardis-primary data-hover:bg-pardis-secondary',
                   'forced-colors:data-active:bg-[Highlight] forced-colors:data-focus:outline-offset-4',
                 )}
               />
