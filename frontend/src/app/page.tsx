@@ -1,4 +1,5 @@
 // neo-lms/frontend/src/app/page.tsx
+import ParticlesCanvas from "@/components/ParticlesCanvas";
 import { BentoCard } from '@/components/bento-card'
 import { Button } from '@/components/button'
 import { Container } from '@/components/container'
@@ -28,7 +29,9 @@ export const metadata: Metadata = {
 function Hero() {
   return (
     <div className="relative">
+      <ParticlesCanvas />
       <Gradient className="absolute inset-2 bottom-0 rounded-4xl ring-1 ring-black/5 ring-inset" />
+      <div className="aurora rounded-4xl inset-2" aria-hidden="true"></div>
       <Container className="relative">
         <Navbar
           banner={
@@ -42,17 +45,37 @@ function Hero() {
           }
         />
         <div className="pt-10 pb-16 sm:pt-16 sm:pb-24 md:pt-20 md:pb-28 text-center">
-          <h1 className="font-display text-5xl/[1.1] font-medium tracking-tight text-gray-950 sm:text-7xl/[1] md:text-8xl/[0.9]">
-            تو قهرمان این داستانی.
-          </h1>
-          <p className="mt-6 max-w-2xl mx-auto text-xl/7 font-medium text-gray-700 sm:text-2xl/8">
-            آینده را کسی می‌سازد که باور کند می‌تواند.
-          </p>
-          <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button href="/courses">شروع یادگیری</Button>
-            <Button href="/signup" variant="secondary">پیوستن به پردیس</Button>
-          </div>
+        <h1 className="font-display text-4xl/[1.15] font-medium tracking-tight text-gray-950 sm:text-7xl/[1] md:text-8xl/[0.9]">
+          تو قهرمان این داستانی.
+        </h1>
+
+        <p className="mt-6 max-w-2xl mx-auto text-xl/7 font-medium text-gray-700 sm:text-2xl/8">
+          آینده را کسی می‌سازد که باور کند می‌تواند — و از همین‌جا شروع کند.
+        </p>
+
+        {/* ارزش‌های کلیدی به‌صورت چیپ‌های مینیمال */}
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700">
+            پروژه‌محور
+          </span>
+          <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700">
+            رودمپ شفاف
+          </span>
+          <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700">
+            جامعهٔ فعال
+          </span>
         </div>
+
+        {/* CTAها: تمام‌عرض روی موبایل، افقی در دسکتاپ */}
+        <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+          <Button href="/courses" className="w-full sm:w-auto">
+            شروع یادگیری
+          </Button>
+          <Button href="/login" variant="secondary" className="w-full sm:w-auto">
+            پیوستن به پردیس
+          </Button>
+        </div>
+      </div>
 
       </Container>
     </div>

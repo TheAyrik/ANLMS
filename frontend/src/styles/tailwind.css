@@ -60,3 +60,34 @@
     transform: translateX(var(--move-x-to));
   }
 }
+
+/* ----- Aurora background (animated radial gradients) ----- */
+@keyframes aurora {
+  0%, 100% {
+    background-position:
+      0% 40%,
+      100% 30%,
+      50% 90%;
+  }
+  50% {
+    background-position:
+      100% 60%,
+      0% 70%,
+      50% 10%;
+  }
+}
+
+.aurora {
+  position: absolute;
+  inset: 0;
+  z-index: 0;                 /* زیر متن، بالای بک‌گراند */
+  pointer-events: none;
+  filter: blur(60px);         /* نرمیِ هاله‌ها */
+  opacity: .55;
+  background:
+    radial-gradient(40% 35% at 20% 30%, var(--color-pardis-primary-500), transparent 55%),
+    radial-gradient(35% 30% at 80% 40%, var(--color-pardis-secondary-500), transparent 55%),
+    radial-gradient(25% 25% at 50% 85%, white, transparent 60%);
+  background-repeat: no-repeat;
+  animation: aurora 4s ease-in-out infinite;
+}
