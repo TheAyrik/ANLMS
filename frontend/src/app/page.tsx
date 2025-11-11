@@ -49,7 +49,7 @@ function Hero() {
             <p className="mt-6 max-w-[42ch] md:max-w-[40ch] md:ml-auto text-xl/7 font-medium text-gray-700 sm:text-2xl/8">
               آینده را کسی می‌سازد که باور کند می‌تواند — و از همین‌جا شروع کند.
             </p>
-            <div className="mt-4 flex flex-wrap items-center justify-center md:justify-end md:ml-auto gap-2">
+            <div className="mt-4 flex flex-wrap items-center justify-start gap-2">
               <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700">
                 پروژه‌محور
               </span>
@@ -60,7 +60,7 @@ function Hero() {
                 جامعهٔ فعال
               </span>
             </div>
-            <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center md:justify-end">
+            <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-start">
               <Button href="/courses" className="w-full sm:w-auto">
                 شروع یادگیری
               </Button>
@@ -70,7 +70,7 @@ function Hero() {
             </div>
           </div>
           <div className="order-1 md:order-2 md:col-span-6 relative h-[360px] md:h-[560px]">
-            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[85%] md:w-[60%] h-[380px] md:h-[520px]">
+             <div className="absolute top-1/2 -translate-y-[58%] left-[-12px] md:left-[-24px] w-[90%] md:w-[66%] h-[380px] md:h-[520px]">
               <ParticlesAI />
             </div>
           </div>
