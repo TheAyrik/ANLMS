@@ -41,23 +41,19 @@ function Hero() {
             </Link>
           }
         />
-        <div className="pt-10 pb-16 sm:pt-16 sm:pb-24 md:pt-20 md:pb-28">
-          <h1 className="font-display text-5xl/[1] font-medium tracking-tight text-balance text-gray-950 sm:text-7xl/[0.95] md:text-8xl/[0.9]">
-            تخصص در هوش مصنوعی
-            <br />و نوآوری دیجیتال.
+        <div className="pt-10 pb-16 sm:pt-16 sm:pb-24 md:pt-20 md:pb-28 text-center">
+          <h1 className="font-display text-5xl/[1.1] font-medium tracking-tight text-gray-950 sm:text-7xl/[1] md:text-8xl/[0.9]">
+            تو قهرمان این داستانی.
           </h1>
-          <p className="mt-8 max-w-lg text-xl/7 font-medium text-gray-700 sm:text-2xl/8">
-            دپارتمان آموزش «پردیس هوش مصنوعی و نوآوری دیجیتال ایران»، پلتفرم
-            آموزشی خود را برای متخصصان آینده ارائه می‌کند. ما بر «رودمپ‌های آموزشی
-            دقیق» و «محتوای پروژه‌محور» تمرکز داریم.
+          <p className="mt-6 max-w-2xl mx-auto text-xl/7 font-medium text-gray-700 sm:text-2xl/8">
+            آینده را کسی می‌سازد که باور کند می‌تواند.
           </p>
-          <div className="mt-12 flex flex-col gap-x-6 gap-y-4 sm:flex-row">
-            <Button href="/courses">شروع یادگیری (مشاهده رودمپ)</Button>
-            <Button href="/signup" className="px-6 py-3 rounded-xl shadow-sm">
-+              شروع کنید
-            </Button>
+          <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+            <Button href="/courses">شروع یادگیری</Button>
+            <Button href="/signup" variant="secondary">پیوستن به پردیس</Button>
           </div>
         </div>
+
       </Container>
     </div>
   )
