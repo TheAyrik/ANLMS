@@ -1,5 +1,5 @@
 // neo-lms/frontend/src/app/page.tsx
-import ParticlesCanvas from "@/components/ParticlesCanvas";
+import ParticlesAI from '@/components/particles-ai'
 import { BentoCard } from '@/components/bento-card'
 import { Button } from '@/components/button'
 import { Container } from '@/components/container'
@@ -29,8 +29,8 @@ export const metadata: Metadata = {
 function Hero() {
   return (
     <div className="relative">
-      <ParticlesCanvas />
       <Gradient className="absolute inset-2 bottom-0 rounded-4xl ring-1 ring-black/5 ring-inset" />
+      <ParticlesAI />
       <div className="aurora rounded-4xl inset-2" aria-hidden="true"></div>
       <Container className="relative">
         <Navbar
