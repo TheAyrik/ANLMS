@@ -1,10 +1,56 @@
 @import 'tailwindcss';
 
 @theme {
+  /* تایپوگرافی و radius */
   --font-sans: Vazirmatn, system-ui, sans-serif;
-
   --radius-4xl: 2rem;
+
+  /* === رنگ‌های برند پردیس (اصلی و شِیدها) === */
+  /* رنگ‌های پایه */
+  --color-pardis-primary: #13b5de;
+  --color-pardis-secondary: #208ea8;
+  --color-pardis-gray: #7d888e;
+
+  /* خانواده pardis-primary (برگرفته از #13b5de) */
+  --color-pardis-primary-50: #f0faff;
+  --color-pardis-primary-100: #e0f6fe;
+  --color-pardis-primary-200: #b9edfd;
+  --color-pardis-primary-300: #7cdffd;
+  --color-pardis-primary-400: #38d9fa;
+  --color-pardis-primary-500: #13b5de;
+  --color-pardis-primary-600: #0694bd;
+  --color-pardis-primary-700: #037699;
+  --color-pardis-primary-800: #04617d;
+  --color-pardis-primary-900: #07516a;
+  --color-pardis-primary-950: #063344;
+
+  /* خانواده pardis-secondary (برگرفته از #208ea8) */
+  --color-pardis-secondary-50: #f0f9fb;
+  --color-pardis-secondary-100: #dff3f7;
+  --color-pardis-secondary-200: #b6e7f0;
+  --color-pardis-secondary-300: #7cd2e4;
+  --color-pardis-secondary-400: #3eb4ce;
+  --color-pardis-secondary-500: #208ea8;
+  --color-pardis-secondary-600: #19738a;
+  --color-pardis-secondary-700: #155d71;
+  --color-pardis-secondary-800: #154e5d;
+  --color-pardis-secondary-900: #154250;
+  --color-pardis-secondary-950: #0c2a35;
+
+  /* خانواده pardis-gray (برگرفته از #7d888e) */
+  --color-pardis-gray-50: #f8f9fa;
+  --color-pardis-gray-100: #e9ecef;
+  --color-pardis-gray-200: #dee2e6;
+  --color-pardis-gray-300: #ced4da;
+  --color-pardis-gray-400: #adb5bd;
+  --color-pardis-gray-500: #7d888e;
+  --color-pardis-gray-600: #6c757d;
+  --color-pardis-gray-700: #495057;
+  --color-pardis-gray-800: #343a40;
+  --color-pardis-gray-900: #212529;
+  --color-pardis-gray-950: #131517;
 }
+
 
 @keyframes move-x {
   0% {
