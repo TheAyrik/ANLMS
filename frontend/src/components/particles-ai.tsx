@@ -1,59 +1,78 @@
 'use client'
-import Particles from '@tsparticles/react'
-import { loadAll } from '@tsparticles/all'
-import { useCallback } from 'react'
-import type { Engine } from '@tsparticles/engine'
+
+import { useEffect, useMemo, useState } from 'react'
+import Particles, { initParticlesEngine } from '@tsparticles/react'
+import { loadAll } from '@tsparticles/all'            // همه پلاگین‌ها (polygon mask، …)
+import type { ISourceOptions } from '@tsparticles/engine'
 
 export default function ParticlesAI() {
-  const init = useCallback(async (engine: Engine) => {
-    await loadAll(engine)
+  const [ready, setReady] = useState(false)
+
+  // فقط یکبار در عمر اپ اجرا شود (init engine)
+  useEffect(() => {
+    initParticlesEngine(async (engine) => {
+      await loadAll(engine)
+    }).then(() => setReady(true))
   }, [])
+
+const options = useMemo<ISourceOptions>(() => ({
+  background: { color: 'transparent' },
+  detectRetina: true,
+  fpsLimit: 60,
+  fullScreen: { enable: false },
+
+  // اگر SVG تو مسیرهای بسته دارد، از inside استفاده کن تا لوگو توپر شود
+  // اگر لوگو فقط Stroke است و داخل ندارد، 'inline' را نگه دار.
+  polygon: {
+    enable: true,
+    scale: 1,
+    type: 'inside',               // <— توپر؛ اگر خروجی نداد، 'inline' بگذار
+    move: { radius: 3 },          // لرزش خیلی کم
+    url: '/pardis-mask.svg',
+    inline: { arrangement: 'equidistant' },
+    draw: { enable: false },
+    clip: true                    // ذرات بیرون شکل، رندر نشوند
+  },
+
+  particles: {
+    number: { value: 1100 },      // کمی بیشتر برای پر شدن شکل
+    color: { value: ['#13b5de', '#208ea8'] },
+    opacity: {
+      value: 0.45,
+      animation: { enable: true, speed: 0.25, minimumValue: 0.25, sync: false }
+    },
+    size: { value: { min: 1, max: 2 } },
+    move: {
+      enable: true,
+      speed: 1,                // آهسته تا بعد از repulse برگردند
+      direction: 'none',
+      outModes: { default: 'bounce' }
+    },
+    links: { enable: false }
+  },
+
+  interactivity: {
+    // مهم: فقط داخل بوم، تا اختلاف مختصات ایجاد نشود
+    detectsOn: 'canvas',
+    events: {
+      onHover: { enable: true, mode: 'repulse' },  // bubble حذف شد برای مینیمال بودن
+      resize: true
+    },
+    modes: {
+      // شعاع/قدرت/مدت کم تا پاشش ظریف باشد و سریع برگردد
+      repulse: { distance: 20, duration: 0.1, factor: 15 }
+    }
+  }
+}), [])
+
+
+  if (!ready) return null
 
   return (
     <Particles
       id="pardisParticles"
-      init={init}
-      className="absolute inset-0 z-0"
-      options={{
-        background: { color: 'transparent' },
-        detectRetina: true,
-        fpsLimit: 60,
-        polygon: {
-          enable: true,
-          scale: 1,
-          type: 'inline',
-          move: { radius: 6 },
-          url: '/pardis-mask.svg',  // همون لوگوی رسمی که آپلود کردی
-          inline: { arrangement: 'equidistant' },
-          draw: { enable: false }
-        },
-        particles: {
-          number: { value: 800 },
-          color: { value: ['#13b5de', '#208ea8'] },
-          opacity: {
-            value: 0.35,
-            anim: { enable: true, speed: 0.4, minimumValue: 0.15, sync: false }
-          },
-          size: { value: { min: 1, max: 2 } },
-          move: { enable: true, speed: 0.9, direction: 'none', outModes: { default: 'bounce' } },
-          links: { enable: false }
-        },
-        interactivity: {
-          detectsOn: 'window',
-          events: {
-            onHover: [
-              { enable: true, mode: 'repulse' },
-              { enable: true, mode: 'bubble' }
-            ],
-            resize: true
-          },
-          modes: {
-            repulse: { distance: 120, duration: 0.3 },
-            bubble:  { distance: 130, size: 3.2, duration: 0.3, opacity: 0.5 }
-          },
-          parallax: { enable: true, force: 50, smooth: 10 }
-        }
-      }}
+      className="absolute inset-0 z-10"          // z-index را بالاتر از گرادیان بگذار
+      options={options}
     />
   )
 }

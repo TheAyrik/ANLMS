@@ -19,24 +19,21 @@ import { Heading, Subheading } from '@/components/text'
 import { ChevronRightIcon } from '@heroicons/react/16/solid'
 import type { Metadata } from 'next'
 
-// --- ۱. به‌روزرسانی Metadata ---
 export const metadata: Metadata = {
   description:
     'پلتفرم آموزشی دپارتمان پردیس هوش مصنوعی و نوآوری دیجیتال ایران برای یادگیری تخصصی AI، رباتیک و اینترنت اشیا.',
 }
 
-// --- ۲. به‌روزرسانی بخش Hero ---
 function Hero() {
   return (
-    <div className="relative">
-      <Gradient className="absolute inset-2 bottom-0 rounded-4xl ring-1 ring-black/5 ring-inset" />
-      <ParticlesAI />
-      <div className="aurora rounded-4xl inset-2" aria-hidden="true"></div>
-      <Container className="relative">
+    <div className="relative min-h-[560px] overflow-hidden rounded-4xl">
+      <Gradient className="absolute inset-2 bottom-0 rounded-4xl ring-1 ring-black/5 ring-inset z-0" />
+      <div className="aurora rounded-4xl inset-2 z-10" aria-hidden="true"></div>
+      <Container className="relative z-20">
         <Navbar
           banner={
             <Link
-              href="#" // این لینک بعداً به صفحه رودمپ‌ها یا وبلاگ اشاره خواهد کرد
+              href="#"
               className="flex items-center gap-1 rounded-full bg-pardis-primary-100 px-3 py-0.5 text-sm/6 font-medium text-pardis-primary-800 data-hover:bg-pardis-primary-200"
             >
               دپارتمان آموزش پردیس هوش مصنوعی و نوآوری دیجیتال ایران
@@ -44,45 +41,45 @@ function Hero() {
             </Link>
           }
         />
-        <div className="pt-10 pb-16 sm:pt-16 sm:pb-24 md:pt-20 md:pb-28 text-center">
-        <h1 className="font-display text-4xl/[1.15] font-medium tracking-tight text-gray-950 sm:text-7xl/[1] md:text-8xl/[0.9]">
-          تو قهرمان این داستانی.
-        </h1>
-
-        <p className="mt-6 max-w-2xl mx-auto text-xl/7 font-medium text-gray-700 sm:text-2xl/8">
-          آینده را کسی می‌سازد که باور کند می‌تواند — و از همین‌جا شروع کند.
-        </p>
-
-        {/* ارزش‌های کلیدی به‌صورت چیپ‌های مینیمال */}
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-          <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700">
-            پروژه‌محور
-          </span>
-          <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700">
-            رودمپ شفاف
-          </span>
-          <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700">
-            جامعهٔ فعال
-          </span>
+        <div className="grid grid-cols-1 items-center md:grid-cols-12">
+          <div className="order-2 md:order-1 md:col-span-6 p-6 md:pr-12 text-center md:text-right">
+            <h1 className="font-display text-4xl/[1.15] font-medium tracking-tight text-gray-950 sm:text-6xl/[1.05] md:text-7xl/[1]">
+              تو قهرمان این داستانی.
+            </h1>
+            <p className="mt-6 max-w-[42ch] md:max-w-[40ch] md:ml-auto text-xl/7 font-medium text-gray-700 sm:text-2xl/8">
+              آینده را کسی می‌سازد که باور کند می‌تواند — و از همین‌جا شروع کند.
+            </p>
+            <div className="mt-4 flex flex-wrap items-center justify-center md:justify-end md:ml-auto gap-2">
+              <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700">
+                پروژه‌محور
+              </span>
+              <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700">
+                رودمپ شفاف
+              </span>
+              <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700">
+                جامعهٔ فعال
+              </span>
+            </div>
+            <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center md:justify-end">
+              <Button href="/courses" className="w-full sm:w-auto">
+                شروع یادگیری
+              </Button>
+              <Button href="/login" variant="secondary" className="w-full sm:w-auto">
+                پیوستن به پردیس
+              </Button>
+            </div>
+          </div>
+          <div className="order-1 md:order-2 md:col-span-6 relative h-[360px] md:h-[560px]">
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[85%] md:w-[60%] h-[380px] md:h-[520px]">
+              <ParticlesAI />
+            </div>
+          </div>
         </div>
-
-        {/* CTAها: تمام‌عرض روی موبایل، افقی در دسکتاپ */}
-        <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-          <Button href="/courses" className="w-full sm:w-auto">
-            شروع یادگیری
-          </Button>
-          <Button href="/login" variant="secondary" className="w-full sm:w-auto">
-            پیوستن به پردیس
-          </Button>
-        </div>
-      </div>
-
       </Container>
     </div>
   )
 }
 
-// --- ۳. ترجمه بخش Feature (این بخش بدون تغییر محتوایی باقی ماند) ---
 function FeatureSection() {
   return (
     <div className="overflow-hidden">
@@ -101,7 +98,6 @@ function FeatureSection() {
   )
 }
 
-// --- ۴. به‌روزرسانی بخش Bento (جعبه‌ای) ---
 function BentoSection() {
   return (
     <Container>
@@ -161,7 +157,6 @@ function BentoSection() {
   )
 }
 
-// --- ۵. به‌روزرسانی بخش Bento (تیره) ---
 function DarkBentoSection() {
   return (
     <div className="mx-2 mt-2 rounded-4xl bg-linear-to-br from-pardis-secondary/90 to-pardis-primary/30 py-32">
@@ -189,7 +184,6 @@ function DarkBentoSection() {
             title="همگام با ابزارهای شما"
             description="چه در VS Code یا Google Colab، دستیار پردیس همراه شماست تا هیچ ابزاری از اکوسیستم یادگیری شما جا نماند."
             graphic={<LogoTimeline />}
-            // `overflow-visible!` is needed to work around a Chrome bug that disables the mask on the graphic.
             className="z-10 overflow-visible! lg:col-span-2 lg:rounded-tr-4xl"
           />
           <BentoCard
