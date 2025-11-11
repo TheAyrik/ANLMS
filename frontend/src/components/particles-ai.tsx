@@ -31,12 +31,12 @@ const options = useMemo<ISourceOptions>(() => ({
     url: '/pardis-mask.svg',
     inline: { arrangement: 'equidistant' },
     draw: { enable: false },
-    clip: true                    // ذرات بیرون شکل، رندر نشوند
+    clip: false                    // ذرات بیرون شکل، رندر نشوند
   },
 
   particles: {
     number: { value: 1100 },      // کمی بیشتر برای پر شدن شکل
-    color: { value: ['#13b5de', '#208ea8'] },
+    color: { value: ['#000000', '#3d3d3d'] },
     opacity: {
       value: 0.45,
       animation: { enable: true, speed: 0.25, minimumValue: 0.25, sync: false }
@@ -71,7 +71,7 @@ const options = useMemo<ISourceOptions>(() => ({
   return (
     <Particles
       id="pardisParticles"
-      className="absolute inset-0 z-10 pointer-events-none"          // z-index را بالاتر از گرادیان بگذار
+      className="absolute inset-0 z-10"          // z-index را بالاتر از گرادیان بگذار
       options={options}
     />
   )
