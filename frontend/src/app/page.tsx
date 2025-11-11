@@ -18,13 +18,13 @@ import { Heading, Subheading } from '@/components/text'
 import { ChevronRightIcon } from '@heroicons/react/16/solid'
 import type { Metadata } from 'next'
 
-// --- 1. ترجمه Metadata ---
+// --- ۱. به‌روزرسانی Metadata ---
 export const metadata: Metadata = {
   description:
-    'پردیس هوش مصنوعی، اولین نئو ال ام اس ایرانی، به شما کمک می‌کند با استفاده از هوش مصنوعی، هوش مصنوعی را یاد بگیرید.',
+    'پلتفرم آموزشی دپارتمان پردیس هوش مصنوعی و نوآوری دیجیتال ایران برای یادگیری تخصصی AI، رباتیک و اینترنت اشیا.',
 }
 
-// --- 2. ترجمه بخش Hero ---
+// --- ۲. به‌روزرسانی بخش Hero ---
 function Hero() {
   return (
     <div className="relative">
@@ -33,28 +33,28 @@ function Hero() {
         <Navbar
           banner={
             <Link
-              href="/blog" // لینک را به وبلاگ هدایت می‌کنیم
-              className="flex items-center gap-1 rounded-full bg-pardis-secondary px-3 py-0.5 text-sm/6 font-medium text-white data-hover:bg-pardis-primary"
+              href="#" // این لینک بعداً به صفحه رودمپ‌ها یا وبلاگ اشاره خواهد کرد
+              className="flex items-center gap-1 rounded-full bg-pardis-primary-100 px-3 py-0.5 text-sm/6 font-medium text-pardis-primary-800 data-hover:bg-pardis-primary-200"
             >
-              پردیس هوش مصنوعی: نسخه بتا عمومی منتشر شد!
+              دپارتمان آموزش پردیس هوش مصنوعی و نوآوری دیجیتال ایران
               <ChevronRightIcon className="size-4" />
             </Link>
           }
         />
-        <div className="pt-16 pb-24 sm:pt-24 sm:pb-32 md:pt-32 md:pb-48">
-          <h1 className="font-display text-6xl/[0.9] font-medium tracking-tight text-balance text-gray-950 sm:text-8xl/[0.8] md:text-9xl/[0.8]">
-            یادگیری هوش مصنوعی،
-            <br />
-            با هوش مصنوعی.
+        <div className="pt-10 pb-16 sm:pt-16 sm:pb-24 md:pt-20 md:pb-28">
+          <h1 className="font-display text-5xl/[1] font-medium tracking-tight text-balance text-gray-950 sm:text-7xl/[0.95] md:text-8xl/[0.9]">
+            تخصص در هوش مصنوعی
+            <br />و نوآوری دیجیتال.
           </h1>
-          <p className="mt-8 max-w-lg text-xl/7 font-medium text-pardis-gray sm:text-2xl/8">
-            پردیس، اولین نئو ال ام اس ایرانی، مسیر یادگیری شما را با دستیار
-            هوشمند و مسیردهی انطباقی متحول می‌کند.
+          <p className="mt-8 max-w-lg text-xl/7 font-medium text-gray-700 sm:text-2xl/8">
+            دپارتمان آموزش «پردیس هوش مصنوعی و نوآوری دیجیتال ایران»، پلتفرم
+            آموزشی خود را برای متخصصان آینده ارائه می‌کند. ما بر «رودمپ‌های آموزشی
+            دقیق» و «محتوای پروژه‌محور» تمرکز داریم.
           </p>
           <div className="mt-12 flex flex-col gap-x-6 gap-y-4 sm:flex-row">
-            <Button href="#">شروع یادگیری</Button>
-            <Button variant="secondary" href="/pricing">
-              مشاهده قیمت‌ها
+            <Button href="/courses">شروع یادگیری (مشاهده رودمپ)</Button>
+            <Button href="/signup" className="px-6 py-3 rounded-xl shadow-sm">
++              شروع کنید
             </Button>
           </div>
         </div>
@@ -63,7 +63,7 @@ function Hero() {
   )
 }
 
-// --- 3. ترجمه بخش Feature ---
+// --- ۳. ترجمه بخش Feature (این بخش بدون تغییر محتوایی باقی ماند) ---
 function FeatureSection() {
   return (
     <div className="overflow-hidden">
@@ -82,20 +82,20 @@ function FeatureSection() {
   )
 }
 
-// --- 4. ترجمه بخش Bento (جعبه‌ای) ---
+// --- ۴. به‌روزرسانی بخش Bento (جعبه‌ای) ---
 function BentoSection() {
   return (
     <Container>
-      <Subheading>یادگیری</Subheading>
+      <Subheading>مسیر یادگیری</Subheading>
       <Heading as="h3" className="mt-2 max-w-3xl">
-        ویژگی‌های انطباقی پلتفرم نئو ال ام اس.
+        یک پلتفرم متمرکز برای یادگیری عمیق.
       </Heading>
 
       <div className="mt-10 grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6 lg:grid-rows-2">
         <BentoCard
-          eyebrow="بینش"
-          title="شفافیت کامل در یادگیری"
-          description="پردیس از هوش مصنوعی برای ساختن یک تصویر دقیق از دانش فعلی شما استفاده می‌کند و نقاط ضعف و قوت شما را مشخص می‌کند."
+          eyebrow="رودمپ"
+          title="نقشه راه مطمئن و شفاف"
+          description="دیگر نگران نباشید که از کجا شروع کنید. ما یک مسیر یادگیری (Roadmap) ثابت و بهینه بر اساس نیاز صنعت ارائه می‌دهیم. گام‌های شما برای رسیدن به تخصص، از روز اول مشخص است."
           graphic={
             <div className="h-80 bg-[url(/screenshots/profile.png)] bg-[size:1000px_560px] bg-[left_-109px_top_-112px] bg-no-repeat" />
           }
@@ -103,9 +103,9 @@ function BentoSection() {
           className="max-lg:rounded-t-4xl lg:col-span-3 lg:rounded-tl-4xl"
         />
         <BentoCard
-          eyebrow="تحلیل"
-          title="مسیر یادگیری شخصی‌سازی شده"
-          description="بر اساس تحلیل عملکرد شما، پلتفرم به صورت پویا مسیر یادگیری شما را به‌روزرسانی می‌کند و منابع مورد نیازتان را پیشنهاد می‌دهد."
+          eyebrow="محتوا"
+          title="محتوای متمرکز و پروژه‌محور"
+          description="به جای ویدیوهای طولانی، با مینی‌دوره‌های متنی عمیق و چالش‌های عملی یاد بگیرید. ما بر درک مفاهیم و ساختن نمونه‌کار واقعی تمرکز داریم."
           graphic={
             <div className="absolute inset-0 bg-[url(/screenshots/competitors.png)] bg-[size:1100px_650px] bg-[left_-38px_top_-73px] bg-no-repeat" />
           }
@@ -131,7 +131,7 @@ function BentoSection() {
           className="lg:col-span-2"
         />
         <BentoCard
-          eyebrow="بدون مرز"
+          eyebrow="جهانی"
           title="یادگیری در سطح جهانی"
           description="پردیس به شما کمک می‌کند تا با جدیدترین متدها و استانداردهای جهانی آموزش ببینید و رقابت کنید."
           graphic={<Map />}
@@ -142,22 +142,22 @@ function BentoSection() {
   )
 }
 
-// --- 5. ترجمه بخش Bento (تیره) ---
+// --- ۵. به‌روزرسانی بخش Bento (تیره) ---
 function DarkBentoSection() {
   return (
-    <div className="mx-2 mt-2 rounded-4xl bg-linear-to-br from-pardis-secondary to-[#0b4554] py-32">
+    <div className="mx-2 mt-2 rounded-4xl bg-linear-to-br from-pardis-secondary/90 to-pardis-primary/30 py-32">
       <Container>
         <Subheading dark>تعامل</Subheading>
         <Heading as="h3" dark className="mt-2 max-w-3xl">
-          تعامل با دستیار هوشمند شما هرگز آسان‌تر نبوده.
+          ابزارهای شما برای تعامل و پشتیبانی.
         </Heading>
 
         <div className="mt-10 grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6 lg:grid-rows-2">
           <BentoCard
             dark
-            eyebrow="دستیار هوشمند"
-            title="یادگیری با سرعت نور"
-            description="دستیار هوشمند پردیس (Neo-LMS) به صورت زنده به سوالات شما پاسخ می‌دهد و مفاهیم پیچیده را برای شما ساده می‌کند."
+            eyebrow="پشتیبانی"
+            title="پشتیبانی تخصصی در طول مسیر"
+            description="در طول مسیر یادگیری، پشتیبان‌های متخصص همراه شما خواهند بود تا به سوالات شما پاسخ دهند و چالش‌های شما را در پروژه‌ها برطرف کنند."
             graphic={
               <div className="h-80 bg-[url(/screenshots/networking.png)] bg-[size:851px_344px] bg-no-repeat" />
             }
@@ -206,7 +206,7 @@ export default function Home() {
         <Container className="mt-10">
           <LogoCloud />
         </Container>
-        <div className="bg-linear-to-b from-white from-40% to-pardis-primary/10 py-32">
+        <div className="bg-linear-to-b from-white from-40% to-pardis-primary-50 py-32">
           <FeatureSection />
           <BentoSection />
         </div>
