@@ -1,12 +1,12 @@
 'use client'
-import Particles from 'react-tsparticles'
-import { loadFull } from 'tsparticles'
+import Particles from '@tsparticles/react'
+import { loadAll } from '@tsparticles/all'
 import { useCallback } from 'react'
-import type { Engine } from 'tsparticles-engine'
+import type { Engine } from '@tsparticles/engine'
 
 export default function ParticlesAI() {
   const init = useCallback(async (engine: Engine) => {
-    await loadFull(engine)
+    await loadAll(engine)
   }, [])
 
   return (
