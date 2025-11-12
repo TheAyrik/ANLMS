@@ -15,17 +15,16 @@ export default function HeroParticlesCanvas({ text = 'AI', className }: Props) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    // -------- config --------
     const cfg = {
-      density: 0.35,       // احتمال انتخاب پیکسل برای تبدیل به ذره
-      sampleStep: 2,       // گام نمونه‌برداری پیکسل‌ها
-      size: [1.5, 2.8],    // بازه شعاع ذرات
-      speed: 0.08,         // شدت بازگشت به هدف
-      floatAmp: 5,         // دامنه‌ی شناوری
+      density: 0.35,       // تعداد ذرات در هر پیکسل
+      sampleStep: 2,       // گام نمونه‌برداری
+      size: [1.5, 2.8],    // سایز ذرات
+      speed: 0.08,         // سرعت ذرات
+      floatAmp: 5,         // دامنه شناوری
       floatFreq: 0.0025,   // فرکانس شناوری
-      mouseRepel: 100,     // شعاع دافعه کرسر (px)
-      cursorAttract: 0.018,// میلِ ملایم به سمت کرسر وقتی دور است
-      cursorFarFactor: 1.4 // اعمال attraction وقتی فاصله > mouseRepel * این مقدار
+      mouseRepel: 100,     // شعاع دافعه کرسر
+      cursorAttract: 0.018,// جذب به سمت کرسر وقتی دور است
+      cursorFarFactor: 1.4 // میزان جذب برای فاصله‌های دور
     }
 
     const dpr = Math.min(2, window.devicePixelRatio || 1)
@@ -35,37 +34,33 @@ export default function HeroParticlesCanvas({ text = 'AI', className }: Props) {
 
     const mouse = { x: -9999, y: -9999 }
 
-    // ---------- sizing to container (not window) ----------
+    // ---------- اندازه گیری دقیق کانواس (نسبت به ظرف) ----------
     function fit() {
-      const rect = canvas.getBoundingClientRect()
-      W = Math.max(1, Math.floor(rect.width * dpr))
+      const rect = canvas.getBoundingClientRect() // ظرف کانواس
+      W = Math.max(1, Math.floor(rect.width * dpr))  // ابعاد واقعی نسبت به صفحه
       H = Math.max(1, Math.floor(rect.height * dpr))
       canvas.width = W
       canvas.height = H
     }
 
-    function getOffscreen(width: number, height: number): CanvasRenderingContext2D {
-      // OffscreenCanvas fallback
-      const off: HTMLCanvasElement | OffscreenCanvas =
-        'OffscreenCanvas' in window ? new (window as any).OffscreenCanvas(width, height) : document.createElement('canvas')
-      ;(off as HTMLCanvasElement).width = width
-      ;(off as HTMLCanvasElement).height = height
-      const octx = (off as any).getContext('2d', { willReadFrequently: true }) as CanvasRenderingContext2D
-      return octx
-    }
-
+    // ---------- کشیدن سیلوئت متن (AI) ----------
     function drawTextSilhouette(w: number, h: number) {
-      const octx = getOffscreen(w, h)
+      const off = new OffscreenCanvas(w, h)
+      const octx = off.getContext('2d')!
       octx.clearRect(0, 0, w, h)
       octx.fillStyle = '#fff'
       octx.textAlign = 'center'
       octx.textBaseline = 'middle'
-      octx.font = `900 ${Math.min(w, h) * 0.55}px system-ui,Roboto`;
+
+      // تنظیم فونت متناسب با اندازه کانواس
+      const fontSize = Math.min(w, h) * 0.4; // اصلاح اندازه فونت
+      octx.font = `900 ${fontSize}px system-ui,Roboto`
       octx.fillText(text, w / 2, h / 2)
-      const img = octx.getImageData(0, 0, w, h).data
-      return img
+
+      return octx.getImageData(0, 0, w, h).data
     }
 
+    // ---------- نمونه‌برداری پیکسل‌ها ----------
     function extractTargets(w: number, h: number) {
       const img = drawTextSilhouette(w, h)
       const step = cfg.sampleStep
@@ -91,25 +86,19 @@ export default function HeroParticlesCanvas({ text = 'AI', className }: Props) {
         this.ph = Math.random() * Math.PI * 2
       }
       step(dt: number) {
-        // جذب به هدف (حفظ شکل)
         const ax = (this.tx - this.x) * cfg.speed
         const ay = (this.ty - this.y) * cfg.speed
         this.vx += ax; this.vy += ay
-
-        // میرایی
         this.vx *= 0.9; this.vy *= 0.9
 
-        // تعامل با کرسر
         const dx = this.x - mouse.x, dy = this.y - mouse.y
         const d2 = dx * dx + dy * dy
         const repelR2 = cfg.mouseRepel * cfg.mouseRepel
         if (d2 < repelR2) {
-          // دافعه (نزدیک)
           const f = 1 - d2 / repelR2
           this.vx += dx * 0.12 * f
           this.vy += dy * 0.12 * f
         } else {
-          // میل ملایم به سمت کرسر (دور)
           const d = Math.sqrt(d2) || 1
           const far = cfg.mouseRepel * cfg.cursorFarFactor
           if (d > far) {
@@ -121,7 +110,6 @@ export default function HeroParticlesCanvas({ text = 'AI', className }: Props) {
           }
         }
 
-        // انتگرال‌گیری
         this.x += this.vx * dt
         this.y += this.vy * dt
       }
@@ -134,18 +122,19 @@ export default function HeroParticlesCanvas({ text = 'AI', className }: Props) {
       }
     }
 
+    // ---------- بارگذاری ذرات ----------
     function rebuild() {
       targets = extractTargets(W, H)
       particles = targets.map(p => new Particle(p.x, p.y))
     }
 
-    // ---------- events ----------
+    // ---------- مدیریت ایونت‌ها ----------
     function onMouseMove(e: MouseEvent) {
       const rect = canvas.getBoundingClientRect()
-      // نگاشت مختصات ماوس به مقیاس پیکسلیِ کانواس (نه CSS)
       mouse.x = (e.clientX - rect.left) * (canvas.width / rect.width)
       mouse.y = (e.clientY - rect.top) * (canvas.height / rect.height)
     }
+
     function onMouseLeave() {
       mouse.x = mouse.y = -9999
     }
@@ -155,7 +144,6 @@ export default function HeroParticlesCanvas({ text = 'AI', className }: Props) {
       rebuild()
     })
 
-    // ---------- boot ----------
     fit()
     rebuild()
 
@@ -170,7 +158,6 @@ export default function HeroParticlesCanvas({ text = 'AI', className }: Props) {
       last = now
       ctx!.clearRect(0, 0, W, H)
 
-      // (اختیاری) اگر پس‌زمینه می‌خواهی اینجا بکش؛ فعلاً ساده نگه می‌داریم
       ctx!.fillStyle = 'rgba(200,230,255,0.95)'
       for (const p of particles) {
         p.step(dt)
@@ -180,7 +167,6 @@ export default function HeroParticlesCanvas({ text = 'AI', className }: Props) {
     }
     requestAnimationFrame(frame)
 
-    // ---------- cleanup ----------
     return () => {
       running = false
       window.removeEventListener('mousemove', onMouseMove)
