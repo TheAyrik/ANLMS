@@ -36,12 +36,12 @@ const options = useMemo<ISourceOptions>(() => ({
 
   particles: {
     number: { value: 1100 },      // کمی بیشتر برای پر شدن شکل
-    color: { value: ['#000000', '#3d3d3d'] },
+    color: { value: ['#13b5de', '#208ea8'] },
     opacity: {
       value: 0.45,
       animation: { enable: true, speed: 0.25, minimumValue: 0.25, sync: false }
     },
-    size: { value: { min: 1, max: 2 } },
+    size: { value: { min: 1, max: 3 } },
     move: {
       enable: true,
       speed: 1,                // آهسته تا بعد از repulse برگردند
