@@ -65,12 +65,14 @@ function Hero() {
                 شروع یادگیری
               </Button>
               <Button href="/login" variant="secondary" className="w-full sm:w-auto">
-                اطلاعات بیشتر
+                پیوستن به پردیس
               </Button>
             </div>
           </div>
-          <div className="order-1 md:order-2 md:col-span-6 relative h-[560px] md:h-[700px] overflow-visible">
-            <HeroParticlesCanvas className="absolute inset-0 z-10" text="AI" />
+          <div className="order-1 md:order-2 md:col-span-6 relative h-[360px] md:h-[560px] overflow-visible">
+            <div className="absolute top-1/8 md:-right-100 -translate-y-1/2 w-[120%] md:w-[120%] h-[680px] md:h-[560px]">
+              <HeroParticlesCanvas text="AI" />
+            </div>
           </div>
         </div>
       </Container>
