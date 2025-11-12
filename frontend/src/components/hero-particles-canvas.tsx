@@ -1,11 +1,13 @@
+// hero-particles-canvas.tsx
 'use client'
 import { useEffect, useRef } from 'react'
 
 type HeroParticlesCanvasProps = {
   text?: string
+  className?: string
 }
 
-export default function HeroParticlesCanvas({ text = 'AI' }: HeroParticlesCanvasProps) {
+export default function HeroParticlesCanvas({ text = 'AI', className }: HeroParticlesCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
   useEffect(() => {
@@ -19,93 +21,164 @@ export default function HeroParticlesCanvas({ text = 'AI' }: HeroParticlesCanvas
     let height = 0
     let raf: number | null = null
     let running = true
-    let particles: Particle[] = []
+
+    const cfg = {
+      density: 0.25,
+      sampleStep: 2,
+      sizeMin: 1.5,
+      sizeMax: 2.8,
+      speed: 0.08,
+      floatAmp: 5,
+      floatFreq: 0.0025,
+      mouseRepel: 70,         // ← نصف شد
+      damping: 0.9,
+      spawnRadius: 55,
+      targetJitter: 24,        // پخش شدن بیشتر در حالت عادی
+      stars: 80,
+    }
+
     const mouse = { x: -9999, y: -9999 }
+    let maskImage: HTMLImageElement | null = null
+    let maskLoaded = false
 
     const createOffscreen = (w: number, h: number) => {
-      if (typeof OffscreenCanvas !== 'undefined') {
-        return new OffscreenCanvas(w, h)
-      }
+      if (typeof OffscreenCanvas !== 'undefined') return new OffscreenCanvas(w, h)
       const off = document.createElement('canvas')
       off.width = w
       off.height = h
       return off
     }
 
-    const buildTextSilhouette = () => {
+    const loadMask = () =>
+      new Promise<void>(resolve => {
+        const img = new Image()
+        img.decoding = 'async'
+        img.src = '/pardis-mask.svg'
+        img.onload = () => {
+          maskImage = img
+          maskLoaded = true
+          resolve()
+        }
+        img.onerror = () => resolve()
+      })
+
+    const buildMaskSilhouette = () => {
       if (!width || !height) return null
       const off = createOffscreen(width, height)
-      const octx = off.getContext('2d')
+      const octx = off.getContext('2d', { willReadFrequently: true } as any)
       if (!octx) return null
       octx.clearRect(0, 0, width, height)
-      octx.fillStyle = '#fff'
-      octx.textAlign = 'center'
-      octx.textBaseline = 'middle'
-      const fontSize = Math.min(width, height) * 0.6
-      octx.font = `900 ${fontSize}px system-ui,Roboto`
-      octx.fillText(text, width / 2, height / 2)
+      if (maskLoaded && maskImage) {
+        const { naturalWidth, naturalHeight } = maskImage
+        const scale = Math.min(width / naturalWidth, height / naturalHeight) * 0.7
+        const drawWidth = naturalWidth * scale
+        const drawHeight = naturalHeight * scale
+        const dx = (width - drawWidth) / 2
+        const dy = (height - drawHeight) / 2
+        octx.drawImage(maskImage, 0, 0, naturalWidth, naturalHeight, dx, dy, drawWidth, drawHeight)
+      } else {
+        octx.fillStyle = '#fff'
+        octx.textAlign = 'center'
+        octx.textBaseline = 'middle'
+        const fontSize = Math.min(width, height) * 1
+        octx.font = `900 ${fontSize}px system-ui,Roboto`
+        octx.fillText(text, width / 2, height / 2)
+      }
       return octx.getImageData(0, 0, width, height).data
     }
 
     class Particle {
-      constructor(
-        public x: number,
-        public y: number,
-        public tx = x,
-        public ty = y,
-        public vx = 0,
-        public vy = 0,
-      ) {}
-
+      x: number; y: number; tx: number; ty: number; color: string
+      vx = 0; vy = 0; sz: number; ph: number
+      constructor(x: number, y: number, color: string) {
+        const a = Math.random() * Math.PI * 2
+        const r = cfg.spawnRadius * Math.random()
+        this.x = x + Math.cos(a) * r
+        this.y = y + Math.sin(a) * r
+        this.tx = x; this.ty = y
+        this.sz = cfg.sizeMin + Math.random() * (cfg.sizeMax - cfg.sizeMin)
+        this.ph = Math.random() * Math.PI * 2
+        this.color = color
+      }
       step(dt: number) {
-        const ax = (this.tx - this.x) * 0.08
-        const ay = (this.ty - this.y) * 0.08
-        this.vx = (this.vx + ax) * 0.9
-        this.vy = (this.vy + ay) * 0.9
+        const ax = (this.tx - this.x) * cfg.speed
+        const ay = (this.ty - this.y) * cfg.speed
+        this.vx = (this.vx + ax) * cfg.damping
+        this.vy = (this.vy + ay) * cfg.damping
         const dx = this.x - mouse.x
         const dy = this.y - mouse.y
         const d2 = dx * dx + dy * dy
-        const r = (110 * dpr) ** 2
+        const r = (cfg.mouseRepel * dpr) ** 2
         if (d2 < r) {
           const f = 1 - d2 / r
           this.vx += dx * 0.12 * f
           this.vy += dy * 0.12 * f
         }
+        const t = performance.now()
+        const wind = Math.cos((t + this.ph * 1000) * 0.0005) * 0.02
+        this.vx += wind * dt
         this.x += this.vx * dt
         this.y += this.vy * dt
       }
-
-      draw(t: number) {
-        const bob = Math.sin(t * 0.003 + this.y * 0.01) * 4
+      draw(now: number) {
+        const bob = Math.sin(now * cfg.floatFreq + this.ph) * cfg.floatAmp
+        const py = this.y + bob
         ctx.beginPath()
-        ctx.arc(this.x, this.y + bob, 2.2, 0, Math.PI * 2)
+        ctx.arc(this.x, py, this.sz, 0, Math.PI * 2)
         ctx.fill()
       }
     }
 
+    class Star {
+      x!: number; y!: number; r!: number; s!: number
+      constructor() { this.reset() }
+      reset() {
+        this.x = Math.random() * width
+        this.y = Math.random() * height
+        this.r = Math.random() * 1.2 + 0.3
+        this.s = (Math.random() * 0.3 + 0.1) * dpr
+      }
+      step(dt: number) {
+        this.y += this.s * dt * 20
+        if (this.y > height) this.reset()
+      }
+      draw() {
+        ctx.beginPath()
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2)
+        ctx.fill()
+      }
+    }
+
+    let particles: Particle[] = []
+    let stars: Star[] = []
+
     const rebuildParticles = () => {
-      const img = buildTextSilhouette()
+      const img = buildMaskSilhouette()
       if (!img) return
-      const targets: { x: number; y: number }[] = []
-      const step = 3
-      const density = 0.45
-      for (let y = 0; y < height; y += step) {
-        for (let x = 0; x < width; x += step) {
+      const targets: { x: number; y: number; color: string }[] = []
+      for (let y = 0; y < height; y += cfg.sampleStep) {
+        for (let x = 0; x < width; x += cfg.sampleStep) {
           const i = (y * width + x) * 4 + 3
-          if (img[i] > 20 && Math.random() < density) {
-            targets.push({ x, y })
+          if (img[i] > 20 && Math.random() < cfg.density) {
+            const r = img[i - 3]
+            const g = img[i - 2]
+            const b = img[i - 1]
+            const a = img[i] / 255
+            const color = `rgba(${r},${g},${b},${a.toFixed(2)})`
+            const jitterX = Math.max(0, Math.min(width, x + (Math.random() - 0.5) * cfg.targetJitter))
+            const jitterY = Math.max(0, Math.min(height, y + (Math.random() - 0.5) * cfg.targetJitter))
+            targets.push({ x: jitterX, y: jitterY, color })
           }
         }
       }
-      particles = targets.map(p => new Particle(p.x, p.y))
+      particles = targets.map(p => new Particle(p.x, p.y, p.color))
+      stars = Array.from({ length: cfg.stars }, () => new Star())
     }
 
     const resize = () => {
       const parent = canvas.parentElement ?? canvas
       const rect = parent.getBoundingClientRect()
-      if (!rect.width || !rect.height) {
-        return
-      }
+      if (!rect.width || !rect.height) return
       dpr = Math.min(window.devicePixelRatio ?? 1, 2)
       width = Math.floor(rect.width * dpr)
       height = Math.floor(rect.height * dpr)
@@ -116,15 +189,13 @@ export default function HeroParticlesCanvas({ text = 'AI' }: HeroParticlesCanvas
       rebuildParticles()
     }
 
-    const handlePointerMove = (event: PointerEvent) => {
+    // ← به جای canvas، از window شنود می‌کنیم تا حتی زیر محتوا هم کار کند
+    const handlePointerMove = (e: PointerEvent) => {
       const rect = canvas.getBoundingClientRect()
-      mouse.x = (event.clientX - rect.left) * dpr
-      mouse.y = (event.clientY - rect.top) * dpr
+      mouse.x = (e.clientX - rect.left) * dpr
+      mouse.y = (e.clientY - rect.top) * dpr
     }
-
-    const resetMouse = () => {
-      mouse.x = mouse.y = -9999
-    }
+    const resetMouse = () => { mouse.x = mouse.y = -9999 }
 
     let ro: ResizeObserver | null = null
     if (typeof ResizeObserver !== 'undefined') {
@@ -135,20 +206,37 @@ export default function HeroParticlesCanvas({ text = 'AI' }: HeroParticlesCanvas
     }
     resize()
 
-    canvas.addEventListener('pointermove', handlePointerMove)
-    canvas.addEventListener('pointerleave', resetMouse)
+    loadMask().then(() => {
+      if (!running) return
+      if (!width || !height) {
+        resize()
+      } else {
+        rebuildParticles()
+      }
+    })
+
+    window.addEventListener('pointermove', handlePointerMove)
+    window.addEventListener('pointerleave', resetMouse)
 
     let last = performance.now()
     const frame = (now: number) => {
       if (!running) return
       const dt = Math.min(1, (now - last) / (1000 / 60))
       last = now
+
       ctx.clearRect(0, 0, width, height)
-      ctx.fillStyle = 'rgba(200,230,255,0.95)'
-      for (const particle of particles) {
-        particle.step(dt)
-        particle.draw(now)
+
+      // ستاره‌ها
+      ctx.fillStyle = 'rgba(255,255,255,0.5)'
+      for (const s of stars) { s.step(dt); s.draw() }
+
+      // ذرات متن
+      for (const p of particles) {
+        ctx.fillStyle = p.color
+        p.step(dt)
+        p.draw(now)
       }
+
       raf = requestAnimationFrame(frame)
     }
     raf = requestAnimationFrame(frame)
@@ -157,13 +245,11 @@ export default function HeroParticlesCanvas({ text = 'AI' }: HeroParticlesCanvas
       running = false
       if (raf) cancelAnimationFrame(raf)
       ro?.disconnect()
-      if (!ro) {
-        window.removeEventListener('resize', resize)
-      }
-      canvas.removeEventListener('pointermove', handlePointerMove)
-      canvas.removeEventListener('pointerleave', resetMouse)
+      if (!ro) window.removeEventListener('resize', resize)
+      window.removeEventListener('pointermove', handlePointerMove)
+      window.removeEventListener('pointerleave', resetMouse)
     }
   }, [text])
 
-  return <canvas ref={canvasRef} className="absolute inset-0" />
+  return <canvas ref={canvasRef} className={`absolute inset-0 ${className ?? ''}`} />
 }
