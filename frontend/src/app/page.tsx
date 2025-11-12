@@ -1,5 +1,5 @@
 // neo-lms/frontend/src/app/page.tsx
-import ParticlesAI from '@/components/particles-ai'
+import HeroParticlesCanvas from '@/components/hero-particles-canvas'
 import { BentoCard } from '@/components/bento-card'
 import { Button } from '@/components/button'
 import { Container } from '@/components/container'
@@ -70,9 +70,7 @@ function Hero() {
             </div>
           </div>
           <div className="order-1 md:order-2 md:col-span-6 relative h-[360px] md:h-[560px] overflow-visible">
-            <div className="absolute top-1/3 -left-12 md:-left-44 -translate-y-1/2 w-[120%] md:w-[120%] h-[380px] md:h-[520px]">
-              <ParticlesAI />
-            </div>
+              <HeroParticlesCanvas className="absolute inset-0 z-10" text="AI" />
           </div>
         </div>
       </Container>
