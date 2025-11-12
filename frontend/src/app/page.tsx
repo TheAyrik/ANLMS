@@ -43,7 +43,7 @@ function Hero() {
         />
         <div className="grid grid-cols-1 items-center md:grid-cols-12">
           <div className="order-2 md:order-1 md:col-span-6 p-6 md:pr-12 text-center md:text-right">
-            <h1 className="font-display text-4xl/[1.15] font-medium tracking-tight text-gray-950 sm:text-6xl/[1.05] md:text-7xl/[1]">
+            <h1 className="font-display text-4xl/[1.15] font-medium tracking-tight text-gray-950 sm:text-6xl/[1.05] md:text-6xl/[1]">
               تو قهرمان این داستانی.
             </h1>
             <p className="mt-6 max-w-[42ch] md:max-w-[40ch] md:ml-auto text-xl/7 font-medium text-gray-700 sm:text-2xl/8">

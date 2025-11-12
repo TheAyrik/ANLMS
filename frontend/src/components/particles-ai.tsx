@@ -41,7 +41,7 @@ const options = useMemo<ISourceOptions>(() => ({
       value: 0.45,
       animation: { enable: true, speed: 0.25, minimumValue: 0.25, sync: false }
     },
-    size: { value: { min: 1, max: 3 } },
+    size: { value: { min: 1, max: 2.5 } },
     move: {
       enable: true,
       speed: 1,                // آهسته تا بعد از repulse برگردند
