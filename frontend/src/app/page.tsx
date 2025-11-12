@@ -69,8 +69,8 @@ function Hero() {
               </Button>
             </div>
           </div>
-          <div className="order-1 md:order-2 md:col-span-6 relative h-[360px] md:h-[560px] overflow-visible">
-            <div className="absolute top-1/8 md:-right-100 -translate-y-1/2 w-[120%] md:w-[120%] h-[680px] md:h-[560px]">
+          <div className="order-1 md:order-2 md:col-span-6 mt-10 md:mt-0 flex justify-center md:justify-end">
+            <div className="relative w-full max-w-[360px] sm:max-w-[420px] md:max-w-none h-[320px] sm:h-[380px] md:h-[560px]">
               <HeroParticlesCanvas text="AI" />
             </div>
           </div>
