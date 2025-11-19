@@ -14,9 +14,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields = ('username', 'email', 'password', 'first_name', 'last_name')
 
     def validate_email(self, value):
-        if User.objects.filter(email=value).exists():
+        normalized_email = value.strip().lower()
+        if User.objects.filter(email__iexact=normalized_email).exists():
             raise serializers.ValidationError("این ایمیل قبلاً ثبت شده است.")
-        return value
+        return normalized_email
 
     # --- اضافه کردن اعتبارسنجی پسورد ---
     def validate_password(self, value):
