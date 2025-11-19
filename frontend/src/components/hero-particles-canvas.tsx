@@ -23,17 +23,17 @@ export default function HeroParticlesCanvas({ text = 'AI', className }: HeroPart
     let running = true
 
     const cfg = {
-      density: 0.25,
+      density: 0.15,
       sampleStep: 2,
-      sizeMin: 1.5,
-      sizeMax: 2.8,
-      speed: 0.08,
+      sizeMin: 2.5,
+      sizeMax: 3.8,
+      speed: 0.16,
       floatAmp: 5,
       floatFreq: 0.0025,
-      mouseRepel: 70,         // ← نصف شد
+      mouseRepel: 45,         // ← نصف شد
       damping: 0.9,
       spawnRadius: 55,
-      targetJitter: 24,        // پخش شدن بیشتر در حالت عادی
+      targetJitter: 36,        // پخش شدن بیشتر در حالت عادی
       stars: 80,
     }
 
