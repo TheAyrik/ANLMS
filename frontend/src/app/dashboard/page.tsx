@@ -1,206 +1,252 @@
-// app/dashboard/page.tsx (یا pages/dashboard.tsx)
+// neo-lms/frontend/src/app/dashboard/page.tsx
 
-import React from "react";
+import React from 'react'
+
+import { Container } from '@/components/container'
+import { Navbar } from '@/components/navbar'
+import { Button } from '@/components/button'
+import { Heading, Subheading } from '@/components/text'
 
 const demoCourses = [
   {
     id: 1,
-    title: "مبانی یادگیری ماشین",
+    title: 'مبانی یادگیری ماشین',
     progress: 45,
-    nextLesson: "درس ۳: رگرسیون خطی",
+    nextLesson: 'درس ۳: رگرسیون خطی',
   },
   {
     id: 2,
-    title: "شبکه‌های عصبی عمیق",
+    title: 'شبکه‌های عصبی عمیق',
     progress: 20,
-    nextLesson: "درس ۱: پرسپترون",
+    nextLesson: 'درس ۱: پرسپترون',
   },
   {
     id: 3,
-    title: "پردازش زبان طبیعی با Python",
+    title: 'پردازش زبان طبیعی با Python',
     progress: 70,
-    nextLesson: "درس ۵: Word Embeddingها",
+    nextLesson: 'درس ۵: Word Embeddingها',
   },
-];
+]
 
 const upcomingItems = [
   {
     id: 1,
-    title: "کوییز ۱ – مبانی یادگیری ماشین",
-    date: "سه‌شنبه ۲۹ آبان، ساعت ۱۸",
+    title: 'کوییز ۱ – مبانی یادگیری ماشین',
+    date: 'سه‌شنبه ۲۹ آبان، ساعت ۱۸',
   },
   {
     id: 2,
-    title: "تحویل تمرین شبکه‌های عصبی",
-    date: "پنج‌شنبه ۱ آذر، ساعت ۲۳:۵۹",
+    title: 'تحویل تمرین شبکه‌های عصبی',
+    date: 'پنج‌شنبه ۱ آذر، ساعت ۲۳:۵۹',
   },
-];
+]
 
 export default function DashboardPage() {
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Container اصلی */}
-      <div className="mx-auto max-w-6xl px-4 py-6 lg:py-10">
-        {/* هدر */}
-        <header className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-              سلام، آیریک 👋
-            </h1>
-            <p className="mt-1 text-sm text-slate-500">
-              خوش آمدی به داشبورد یادگیری‌ات. امروز چطوره ادامه بدیم؟
-            </p>
-          </div>
-          <button className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">
-            + شروع یک دوره جدید
-          </button>
-        </header>
+    <div className="min-h-screen bg-linear-to-b from-white from-40% to-pardis-primary-50">
+      {/* کل داشبورد داخل Container مثل صفحه اصلی */}
+      <Container className="pb-16">
+        {/* ناوبری اصلی مشترک با لندینگ */}
+        <Navbar />
 
-        {/* کارت‌های آماری */}
-        <section className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard label="دوره‌های فعال" value="۳" helper="۲ دوره جدید در این هفته" />
-          <StatCard label="میانگین پیشرفت" value="۴۵٪" helper="در مسیر خوبی هستی" />
-          <StatCard label="ساعت مطالعه این هفته" value="۵ ساعت" helper="هدف: ۸ ساعت" />
-          <StatCard label="تمرین‌های باز" value="۲" helper="بهتره امروز یکی رو ببندی" />
-        </section>
+        {/* محتوای داشبورد */}
+        <main className="mt-10 space-y-8">
+          {/* هدر داشبورد */}
+          <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <Subheading as="p">داشبورد یادگیری</Subheading>
+              <Heading
+                as="h1"
+                className="mt-2 text-3xl sm:text-4xl"
+              >
+                سلام، آیرک 👋
+              </Heading>
+              <p className="mt-3 text-sm/6 text-pardis-gray max-w-md">
+                این‌جا تصویر کلی از مسیر یادگیری‌ات است. می‌توانی از همین‌جا
+                دوره‌ها، پیشرفت و رویدادهای پیش‌رو را مدیریت کنی.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Button href="/courses">شروع یک دوره جدید</Button>
+              <Button variant="secondary" href="/profile">
+                مشاهده پروفایل یادگیری
+              </Button>
+            </div>
+          </header>
 
-        <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-          {/* ستون اصلی */}
-          <main className="space-y-6">
-            {/* ادامه یادگیری */}
-            <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="text-base font-semibold text-slate-900">
-                  ادامه یادگیری
-                </h2>
-                <button className="text-xs font-medium text-blue-600 hover:text-blue-700">
-                  مشاهده همه دوره‌ها
-                </button>
-              </div>
-              <div className="grid gap-4 md:grid-cols-2">
-                {demoCourses.map((course) => (
-                  <CourseCard key={course.id} course={course} />
-                ))}
-              </div>
-            </section>
+          {/* کارت‌های آماری بالا */}
+          <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <StatCard
+              label="دوره‌های فعال"
+              value="۳"
+              helper="۲ دوره جدید در این هفته"
+            />
+            <StatCard
+              label="میانگین پیشرفت"
+              value="۴۵٪"
+              helper="در مسیر خوبی هستی"
+            />
+            <StatCard
+              label="ساعت مطالعه این هفته"
+              value="۵ ساعت"
+              helper="هدف این هفته: ۸ ساعت"
+            />
+            <StatCard
+              label="تمرین‌های باز"
+              value="۲"
+              helper="بهتره امروز یکی رو ببندی"
+            />
+          </section>
 
-            {/* پیشنهاد دوره‌ها – بعداً می‌تونی وصلش کنی به بک‌اند */}
-            <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-              <div className="mb-3 flex items-center justify-between">
-                <h2 className="text-base font-semibold text-slate-900">
-                  پیشنهاد برای تو
-                </h2>
-                <span className="text-xs text-slate-400">
-                  بر اساس دوره‌های فعلی‌ات
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-2 text-xs">
-                <span className="rounded-full bg-slate-100 px-3 py-1 text-slate-700">
-                  یادگیری تقویتی
-                </span>
-                <span className="rounded-full bg-slate-100 px-3 py-1 text-slate-700">
-                  بینایی ماشین
-                </span>
-                <span className="rounded-full bg-slate-100 px-3 py-1 text-slate-700">
-                  MLOps
-                </span>
-              </div>
-            </section>
-          </main>
+          <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
+            {/* ستون اصلی */}
+            <section className="space-y-6">
+              {/* ادامه یادگیری */}
+              <section className="rounded-3xl bg-white/90 ring-1 ring-pardis-primary/10 shadow-xs backdrop-blur">
+                <div className="flex items-center justify-between gap-3 border-b border-black/5 px-5 py-4">
+                  <h2 className="text-sm font-medium text-gray-950">
+                    ادامه یادگیری
+                  </h2>
+                  <Button variant="outline" href="/courses">
+                    مشاهده همه دوره‌ها
+                  </Button>
+                </div>
+                <div className="grid gap-4 p-5 md:grid-cols-2">
+                  {demoCourses.map((course) => (
+                    <CourseCard key={course.id} course={course} />
+                  ))}
+                </div>
+              </section>
 
-          {/* ستون کناری */}
-          <aside className="space-y-6">
-            {/* رویدادهای پیش‌رو */}
-            <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-              <h2 className="mb-3 text-base font-semibold text-slate-900">
-                رویدادهای پیش‌رو
-              </h2>
-              <div className="space-y-3">
-                {upcomingItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="rounded-xl border border-slate-100 bg-slate-50 p-3 text-xs"
-                  >
-                    <div className="font-medium text-slate-800">
-                      {item.title}
-                    </div>
-                    <div className="mt-1 text-[11px] text-slate-500">
-                      {item.date}
-                    </div>
+              {/* پیشنهاد دوره‌ها */}
+              <section className="rounded-3xl bg-white/90 ring-1 ring-pardis-primary/10 shadow-xs backdrop-blur px-5 py-4">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <div>
+                    <h2 className="text-sm font-medium text-gray-950">
+                      پیشنهاد برای تو
+                    </h2>
+                    <p className="mt-1 text-xs text-pardis-gray">
+                      بر اساس دوره‌های فعلی‌ات و مسیر یادگیری تعریف‌شده.
+                    </p>
                   </div>
-                ))}
-              </div>
+                </div>
+                <div className="flex flex-wrap gap-2 text-xs">
+                  <Tag>یادگیری تقویتی</Tag>
+                  <Tag>بینایی ماشین</Tag>
+                  <Tag>MLOps</Tag>
+                  <Tag>تحلیل داده</Tag>
+                </div>
+              </section>
             </section>
 
-            {/* آخرین فعالیت‌ها – فعلاً استاتیک */}
-            <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-              <h2 className="mb-3 text-base font-semibold text-slate-900">
-                آخرین فعالیت‌ها
-              </h2>
-              <ul className="space-y-2 text-xs text-slate-600">
-                <li>✅ تکمیل درس ۲ از دوره مبانی یادگیری ماشین</li>
-                <li>📘 شروع دوره شبکه‌های عصبی عمیق</li>
-                <li>⏱ ۴۵ دقیقه مطالعه در روز گذشته</li>
-              </ul>
-            </section>
-          </aside>
-        </div>
-      </div>
+            {/* ستون کناری */}
+            <aside className="space-y-6">
+              {/* رویدادهای پیش‌رو */}
+              <section className="rounded-3xl bg-white/90 ring-1 ring-pardis-primary/10 shadow-xs backdrop-blur px-5 py-4">
+                <h2 className="mb-3 text-sm font-medium text-gray-950">
+                  رویدادهای پیش‌رو
+                </h2>
+                <div className="space-y-3">
+                  {upcomingItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className="rounded-2xl border border-black/5 bg-white/80 px-3 py-2 text-xs text-gray-800"
+                    >
+                      <div className="font-medium">{item.title}</div>
+                      <div className="mt-1 text-[11px] text-pardis-gray">
+                        {item.date}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* آخرین فعالیت‌ها */}
+              <section className="rounded-3xl bg-white/90 ring-1 ring-pardis-primary/10 shadow-xs backdrop-blur px-5 py-4">
+                <h2 className="mb-3 text-sm font-medium text-gray-950">
+                  آخرین فعالیت‌ها
+                </h2>
+                <ul className="space-y-2 text-xs text-pardis-gray">
+                  <li>✅ تکمیل درس ۲ از دوره مبانی یادگیری ماشین</li>
+                  <li>📘 شروع دوره شبکه‌های عصبی عمیق</li>
+                  <li>⏱ ۴۵ دقیقه مطالعه در روز گذشته</li>
+                </ul>
+              </section>
+            </aside>
+          </div>
+        </main>
+      </Container>
     </div>
-  );
+  )
 }
 
 type StatCardProps = {
-  label: string;
-  value: string;
-  helper?: string;
-};
+  label: string
+  value: string
+  helper?: string
+}
 
 function StatCard({ label, value, helper }: StatCardProps) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-      <div className="text-xs text-slate-500">{label}</div>
-      <div className="mt-2 text-xl font-semibold text-slate-900">{value}</div>
+    <div className="rounded-3xl bg-white/90 ring-1 ring-pardis-primary/10 shadow-xs backdrop-blur px-5 py-4">
+      <div className="text-xs font-medium text-pardis-secondary/80">{label}</div>
+      <div className="mt-2 text-xl font-semibold tracking-tight text-gray-950">
+        {value}
+      </div>
       {helper && (
-        <div className="mt-1 text-[11px] text-slate-400">{helper}</div>
+        <div className="mt-1 text-[11px] text-pardis-gray">{helper}</div>
       )}
     </div>
-  );
+  )
 }
 
 type Course = {
-  id: number;
-  title: string;
-  progress: number;
-  nextLesson: string;
-};
+  id: number
+  title: string
+  progress: number
+  nextLesson: string
+}
 
 function CourseCard({ course }: { course: Course }) {
   return (
-    <div className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-4">
+    <div className="flex flex-col justify-between rounded-2xl border border-black/5 bg-white/90 p-4 shadow-xs">
       <div>
-        <h3 className="text-sm font-semibold text-slate-900 line-clamp-2">
+        <h3 className="text-sm font-semibold text-gray-950 line-clamp-2">
           {course.title}
         </h3>
-        <p className="mt-1 text-[11px] text-slate-500">
+        <p className="mt-1 text-[11px] text-pardis-gray">
           درس بعدی: {course.nextLesson}
         </p>
       </div>
       <div className="mt-3">
-        <div className="mb-1 flex items-center justify-between text-[11px] text-slate-500">
+        <div className="mb-1 flex items-center justify-between text-[11px] text-pardis-gray">
           <span>پیشرفت</span>
           <span>{course.progress}%</span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-slate-200">
+        <div className="h-1.5 overflow-hidden rounded-full bg-pardis-primary/10">
           <div
-            className="h-full rounded-full bg-blue-500"
+            className="h-full rounded-full bg-pardis-primary"
             style={{ width: `${course.progress}%` }}
           />
         </div>
-        <button className="mt-3 w-full rounded-xl bg-blue-600 py-1.5 text-xs font-medium text-white hover:bg-blue-700">
-          ادامه دوره
-        </button>
+        <div className="mt-3 flex gap-2">
+          <Button
+            variant="outline"
+            className="w-full text-xs"
+            href={`/courses/${course.id}`}
+          >
+            ادامه دوره
+          </Button>
+        </div>
       </div>
     </div>
-  );
+  )
+}
+
+function Tag({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-[11px] font-medium text-gray-700">
+      {children}
+    </span>
+  )
 }
