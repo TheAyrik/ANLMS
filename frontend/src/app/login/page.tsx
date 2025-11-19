@@ -8,7 +8,7 @@ import { Logo } from '@/components/logo'
 import { Checkbox, Field, Input, Label } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/16/solid'
 import { clsx } from 'clsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:8000'
@@ -18,6 +18,38 @@ export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [checkingSession, setCheckingSession] = useState(true)
+
+  useEffect(() => {
+    let isMounted = true
+
+    const checkExistingSession = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/users/me/`, {
+          credentials: 'include',
+        })
+
+        if (!isMounted) return
+
+        if (res.ok) {
+          router.replace('/dashboard')
+          return
+        }
+      } catch (error) {
+        // no-op, we'll show the login form below
+      }
+
+      if (isMounted) {
+        setCheckingSession(false)
+      }
+    }
+
+    checkExistingSession()
+
+    return () => {
+      isMounted = false
+    }
+  }, [router])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -54,6 +86,19 @@ export default function Login() {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (checkingSession) {
+    return (
+      <main className="overflow-hidden bg-gray-50">
+        <GradientBackground />
+        <div className="isolate flex min-h-dvh items-center justify-center p-6 lg:p-8">
+          <div className="w-full max-w-md rounded-xl bg-white p-8 text-center ring-1 shadow-md ring-black/5">
+            <p className="text-base text-gray-700">در حال بررسی وضعیت ورود...</p>
+          </div>
+        </div>
+      </main>
+    )
   }
 
   return (
