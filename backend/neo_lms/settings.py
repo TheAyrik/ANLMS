@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -132,20 +133,43 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'accounts.authentication.CookieJWTAuthentication',
     ),
-    # --- اضافه شد ---
     'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle', # برای کاربران ناشناس
-        'rest_framework.throttling.UserRateThrottle'  # برای کاربران لاگین شده
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
     ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '10/minute',  # ناشناس: فقط ۱۰ بار در دقیقه
-        'user': '100/minute'  # لاگین شده: ۱۰۰ بار در دقیقه
+        'anon': '10/minute',
+        'user': '100/minute'
     }
 }
 
-# تنظیمات CORS (برای توسعه فعلا همه را مجاز می‌کنیم)
-CORS_ALLOW_ALL_ORIGINS = True 
-# در پروداکشن باید لیست دامنه‌ها را مشخص کنید:
-# CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': False,
+    'UPDATE_LAST_LOGIN': True,
+}
+
+AUTH_COOKIE_ACCESS = 'access_token'
+AUTH_COOKIE_REFRESH = 'refresh_token'
+AUTH_COOKIE_DOMAIN = None
+AUTH_COOKIE_SECURE = False  # در پروداکشن حتما True کنید (HTTPS)
+AUTH_COOKIE_HTTP_ONLY = True
+AUTH_COOKIE_PATH = '/'
+AUTH_COOKIE_SAMESITE = 'Lax'
+AUTH_COOKIE_ACCESS_MAX_AGE = int(SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'].total_seconds())
+AUTH_COOKIE_REFRESH_MAX_AGE = int(SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds())
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]

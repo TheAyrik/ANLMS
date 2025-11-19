@@ -11,10 +11,13 @@ import { clsx } from 'clsx'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:8000'
+
 export default function Login() {
   const router = useRouter()
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -23,33 +26,31 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setError(null)
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/token/', {
+      const res = await fetch(`${API_BASE_URL}/api/token/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({
           username: formData.email, // جنگو یوزرنیم می‌خواهد، ما ایمیل را می‌فرستیم
           password: formData.password,
         }),
       })
 
-      if (res.ok) {
-        const data = await res.json()
-        // ذخیره توکن‌ها در حافظه مرورگر
-        localStorage.setItem('accessToken', data.access)
-        localStorage.setItem('refreshToken', data.refresh)
-        
-        console.log('Login Successful:', data)
-        // هدایت به داشبورد
-        router.push('/dashboard')
-      } else {
-        alert('نام کاربری یا رمز عبور اشتباه است.')
+      const data = await res.json().catch(() => null)
+
+      if (!res.ok) {
+        setError(data?.detail ?? 'نام کاربری یا رمز عبور اشتباه است.')
+        return
       }
+
+      router.push('/dashboard')
     } catch (error) {
-      alert('خطا در برقراری ارتباط با سرور')
+      setError('خطا در برقراری ارتباط با سرور')
     } finally {
       setLoading(false)
     }
@@ -100,6 +101,9 @@ export default function Login() {
                 )}
               />
             </Field>
+            {error && (
+              <p className="mt-4 text-sm/6 text-red-600">{error}</p>
+            )}
             <div className="mt-8 flex items-center justify-between text-sm/5">
               <Field className="flex items-center gap-3">
                 <Checkbox

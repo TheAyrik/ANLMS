@@ -15,18 +15,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
+from django.urls import include, path
+
+from accounts.views import (
+    CookieTokenObtainPairView,
+    CookieTokenRefreshView,
+    LogoutView,
+    UserMeView,
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     
     # APIهای احراز هویت (Login & Refresh)
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/', CookieTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', CookieTokenRefreshView.as_view(), name='token_refresh'),
+    path('api/users/logout/', LogoutView.as_view(), name='logout'),
+    path('api/users/me/', UserMeView.as_view(), name='user_me'),
 
     # APIهای حساب کاربری (Register)
     path('api/accounts/', include('accounts.urls')),  # <--- این خط اضافه شد
