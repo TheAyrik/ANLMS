@@ -35,4 +35,5 @@ urlpatterns = [
 
     # APIهای حساب کاربری (Register)
     path('api/accounts/', include('accounts.urls')),  # <--- این خط اضافه شد
+    path('api/courses/', include('courses.urls')),
 ]
