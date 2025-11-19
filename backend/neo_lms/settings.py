@@ -37,9 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'corsheaders',
+    'accounts',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -124,3 +129,23 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    # --- اضافه شد ---
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle', # برای کاربران ناشناس
+        'rest_framework.throttling.UserRateThrottle'  # برای کاربران لاگین شده
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '10/minute',  # ناشناس: فقط ۱۰ بار در دقیقه
+        'user': '100/minute'  # لاگین شده: ۱۰۰ بار در دقیقه
+    }
+}
+
+# تنظیمات CORS (برای توسعه فعلا همه را مجاز می‌کنیم)
+CORS_ALLOW_ALL_ORIGINS = True 
+# در پروداکشن باید لیست دامنه‌ها را مشخص کنید:
+# CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
