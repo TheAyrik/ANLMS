@@ -153,6 +153,11 @@ SIMPLE_JWT = {
     'UPDATE_LAST_LOGIN': True,
 }
 
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.EmailOrUsernameModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 AUTH_COOKIE_ACCESS = 'access_token'
 AUTH_COOKIE_REFRESH = 'refresh_token'
 AUTH_COOKIE_DOMAIN = None
