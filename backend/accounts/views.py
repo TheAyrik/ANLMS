@@ -8,7 +8,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .serializers import UserRegistrationSerializer, UserSerializer
+from .serializers import (
+    PersianTokenObtainPairSerializer,
+    PersianTokenRefreshSerializer,
+    UserRegistrationSerializer,
+    UserSerializer,
+)
 
 
 def _set_cookie(response, key: str, value: str, max_age: int):
@@ -48,6 +53,7 @@ class RegisterView(generics.CreateAPIView):
 
 class CookieTokenObtainPairView(TokenObtainPairView):
     permission_classes = (AllowAny,)
+    serializer_class = PersianTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -62,6 +68,7 @@ class CookieTokenObtainPairView(TokenObtainPairView):
 
 class CookieTokenRefreshView(TokenRefreshView):
     permission_classes = (AllowAny,)
+    serializer_class = PersianTokenRefreshSerializer
 
     def post(self, request, *args, **kwargs):
         refresh = request.COOKIES.get(settings.AUTH_COOKIE_REFRESH)

@@ -1,8 +1,9 @@
 # backend/accounts/serializers.py
-from rest_framework import serializers
 from django.contrib.auth.models import User
-from django.contrib.auth.password_validation import validate_password # <--- این ایمپورت مهم است
+from django.contrib.auth.password_validation import validate_password  # <--- این ایمپورت مهم است
 from django.core import exceptions as django_exceptions
+from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
@@ -42,3 +43,15 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'first_name', 'last_name')
+
+
+class PersianTokenObtainPairSerializer(TokenObtainPairSerializer):
+    default_error_messages = {
+        'no_active_account': 'نام کاربری یا رمز عبور اشتباه است.'
+    }
+
+
+class PersianTokenRefreshSerializer(TokenRefreshSerializer):
+    default_error_messages = {
+        'token_not_valid': 'توکن شما منقضی شده یا معتبر نیست.'
+    }
