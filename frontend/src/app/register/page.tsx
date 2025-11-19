@@ -1,4 +1,3 @@
-// frontend/src/app/register/page.tsx
 'use client'
 
 import { Button } from '@/components/button'
@@ -20,40 +19,52 @@ export default function Register() {
   })
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<Record<string, string[]>>({})
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-    if (errors[e.target.name]) {
-      setErrors({ ...errors, [e.target.name]: [] })
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+    
+    // اگر کاربری شروع به اصلاح فیلدی کرد، ارور آن فیلد را پاک کن
+    if (errors[name]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev }
+        delete newErrors[name]
+        return newErrors
+      })
     }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setErrors({}) // پاک کردن ارورهای قبلی
-    
+    setErrors({}) // پاک کردن تمام ارورها قبل از درخواست جدید
+
     try {
       const res = await fetch('http://127.0.0.1:8000/api/accounts/register/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
-          username: formData.email,
+          username: formData.email, // استفاده از ایمیل به عنوان نام کاربری
           email: formData.email,
           password: formData.password,
           first_name: formData.first_name,
           last_name: formData.last_name,
         }),
       })
+
       const data = await res.json()
+
       if (res.ok) {
         alert('ثبت‌نام با موفقیت انجام شد! لطفاً وارد شوید.')
         router.push('/login')
       } else {
-        // نمایش خطای ساده (می‌توانید بعداً حرفه‌ای‌تر کنید)
-        alert('خطا در ثبت‌نام: ' + JSON.stringify(data))
+        // نمایش ارورهای بازگشتی از سمت جنگو (مثل تکراری بودن ایمیل یا ضعیف بودن پسورد)
+        setErrors(data)
       }
     } catch (error) {
-      alert('خطا در برقراری ارتباط با سرور')
+      alert('خطا در برقراری ارتباط با سرور. لطفاً اتصال اینترنت یا سرور را بررسی کنید.')
     } finally {
       setLoading(false)
     }
@@ -76,6 +87,7 @@ export default function Register() {
             </p>
 
             <div className="mt-8 grid grid-cols-2 gap-4">
+              {/* --- فیلد نام --- */}
               <Field className="space-y-3">
                 <Label className="text-sm/5 font-medium">نام</Label>
                 <Input
@@ -85,10 +97,18 @@ export default function Register() {
                   className={clsx(
                     'block w-full rounded-lg border border-transparent ring-1 shadow-sm ring-black/10',
                     'px-[calc(--spacing(2)-1px)] py-[calc(--spacing(1.5)-1px)] text-base/6 sm:text-sm/6',
-                    'data-focus:outline data-focus:outline-2 data-focus:-outline-offset-1 data-focus:outline-black'
+                    'data-focus:outline data-focus:outline-2 data-focus:-outline-offset-1 data-focus:outline-black',
+                    errors.first_name ? 'ring-red-500 focus:ring-red-500' : ''
                   )}
                 />
+                {errors.first_name && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.first_name.map((err, idx) => <span key={idx} className="block">• {err}</span>)}
+                  </p>
+                )}
               </Field>
+
+              {/* --- فیلد نام خانوادگی --- */}
               <Field className="space-y-3">
                 <Label className="text-sm/5 font-medium">نام خانوادگی</Label>
                 <Input
@@ -98,12 +118,19 @@ export default function Register() {
                   className={clsx(
                     'block w-full rounded-lg border border-transparent ring-1 shadow-sm ring-black/10',
                     'px-[calc(--spacing(2)-1px)] py-[calc(--spacing(1.5)-1px)] text-base/6 sm:text-sm/6',
-                    'data-focus:outline data-focus:outline-2 data-focus:-outline-offset-1 data-focus:outline-black'
+                    'data-focus:outline data-focus:outline-2 data-focus:-outline-offset-1 data-focus:outline-black',
+                    errors.last_name ? 'ring-red-500 focus:ring-red-500' : ''
                   )}
                 />
+                {errors.last_name && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.last_name.map((err, idx) => <span key={idx} className="block">• {err}</span>)}
+                  </p>
+                )}
               </Field>
             </div>
 
+            {/* --- فیلد ایمیل --- */}
             <Field className="mt-4 space-y-3">
               <Label className="text-sm/5 font-medium">ایمیل</Label>
               <Input
@@ -115,11 +142,18 @@ export default function Register() {
                   'block w-full rounded-lg border border-transparent ring-1 shadow-sm ring-black/10',
                   'px-[calc(--spacing(2)-1px)] py-[calc(--spacing(1.5)-1px)] text-base/6 sm:text-sm/6',
                   'data-focus:outline data-focus:outline-2 data-focus:-outline-offset-1 data-focus:outline-black',
+                  errors.email ? 'ring-red-500 focus:ring-red-500' : '',
                   'text-left dir-ltr'
                 )}
               />
+              {errors.email && (
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.email.map((err, idx) => <span key={idx} className="block">• {err}</span>)}
+                </p>
+              )}
             </Field>
 
+            {/* --- فیلد رمز عبور --- */}
             <Field className="mt-4 space-y-3">
               <Label className="text-sm/5 font-medium">رمز عبور</Label>
               <Input
@@ -131,11 +165,10 @@ export default function Register() {
                   'block w-full rounded-lg border border-transparent ring-1 shadow-sm ring-black/10',
                   'px-[calc(--spacing(2)-1px)] py-[calc(--spacing(1.5)-1px)] text-base/6 sm:text-sm/6',
                   'data-focus:outline data-focus:outline-2 data-focus:-outline-offset-1 data-focus:outline-black',
-                   errors.password ? 'ring-red-500 focus:ring-red-500' : '',
+                  errors.password ? 'ring-red-500 focus:ring-red-500' : '',
                   'text-left dir-ltr'
                 )}
               />
-              {/* نمایش متن ارور */}
               {errors.password && (
                 <p className="text-xs text-red-500 mt-1">
                   {errors.password.map((err, idx) => <span key={idx} className="block">• {err}</span>)}
