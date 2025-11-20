@@ -3,6 +3,9 @@ node_modules/
 __pycache__/
 *.pyc
 .env
+backend/.env
+backend/.env.docker
+frontend/.env.local
 db.sqlite3
 postgres_data/
 venv/

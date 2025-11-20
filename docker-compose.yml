@@ -10,11 +10,8 @@ services:
       - "8000:8000"  # بک‌اند روی پورت 8000 اجرا می‌شود
     depends_on:
       - db
-    environment:
-      - POSTGRES_DB=neo_lms_db
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin123
-      - POSTGRES_HOST=db
+    env_file:
+      - backend/.env.docker
 
   # --- سرویس فرانت‌اند (Next.js) ---
   frontend:
@@ -26,18 +23,16 @@ services:
       - ./frontend:/app
       - /app/node_modules
       - /app/.next
-    environment:
-      - NODE_ENV=development
+    env_file:
+      - frontend/.env.local
 
   # --- سرویس دیتابیس (PostgreSQL) ---
   db:
     image: postgres:15-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_DB=neo_lms_db
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin123
+    env_file:
+      - backend/.env.docker
     ports:
       - "5432:5432" # این خط اختیاری است اما برای اتصال مستقیم به دیتابیس خوب است
 

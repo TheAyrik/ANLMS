@@ -9,6 +9,8 @@ import { clsx } from 'clsx'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
+
 export default function Register() {
   const router = useRouter()
   const [formData, setFormData] = useState({
@@ -40,7 +42,7 @@ export default function Register() {
     setErrors({}) // پاک کردن تمام ارورها قبل از درخواست جدید
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/accounts/register/', {
+      const res = await fetch(`${API_BASE_URL}/api/accounts/register/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

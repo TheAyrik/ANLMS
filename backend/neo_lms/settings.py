@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from datetime import timedelta
 from pathlib import Path
 
@@ -20,13 +21,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*xezm11efmcn5dxh!j9!(7^yf^ri&@3jc+lj3235nr!18ni63n'
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "unsafe-temp-dev-key")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+else:
+    hosts = os.environ.get("DJANGO_ALLOWED_HOSTS", "")
+    ALLOWED_HOSTS = [h.strip() for h in hosts.split(",") if h.strip()]
 
 
 # Application definition
@@ -80,13 +83,13 @@ WSGI_APPLICATION = 'neo_lms.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'neo_lms_db', 
-        'USER': 'admin',         
-        'PASSWORD': 'admin123',  
-        'HOST': 'db',             
-        'PORT': '5432',           
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("DB_NAME"),
+        "USER": os.environ.get("DB_USER"),
+        "PASSWORD": os.environ.get("DB_PASSWORD"),
+        "HOST": os.environ.get("DB_HOST", "db"),
+        "PORT": os.environ.get("DB_PORT", "5432"),
     }
 }
 
@@ -162,12 +165,14 @@ AUTHENTICATION_BACKENDS = [
 AUTH_COOKIE_ACCESS = 'access_token'
 AUTH_COOKIE_REFRESH = 'refresh_token'
 AUTH_COOKIE_DOMAIN = None
-AUTH_COOKIE_SECURE = False  # در پروداکشن حتما True کنید (HTTPS)
+AUTH_COOKIE_SECURE = not DEBUG
 AUTH_COOKIE_HTTP_ONLY = True
 AUTH_COOKIE_PATH = '/'
 AUTH_COOKIE_SAMESITE = 'Lax'
 AUTH_COOKIE_ACCESS_MAX_AGE = int(SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'].total_seconds())
 AUTH_COOKIE_REFRESH_MAX_AGE = int(SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds())
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
