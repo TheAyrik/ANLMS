@@ -45,11 +45,16 @@ export default function DashboardPage() {
       {/* هدر داشبورد */}
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <Subheading as="p">داشبورد یادگیری</Subheading>
-          <Heading as="h1" className="mt-2 text-3xl sm:text-4xl">
+          <Subheading as="p" className="!text-sm/6">
+            داشبورد یادگیری
+          </Subheading>
+          <Heading
+            as="h1"
+            className="mt-2 !text-[2.4rem] sm:!text-[4.1rem]"
+          >
             سلام، آیریک 👋
           </Heading>
-          <p className="mt-3 max-w-md text-sm/6 text-pardis-gray">
+          <p className="mt-3 max-w-md text-base/6 text-pardis-gray">
             این‌جا تصویر کلی از مسیر یادگیری‌ات است. می‌توانی از همین‌جا دوره‌ها،
             پیشرفت و رویدادهای پیش‌رو را مدیریت کنی.
           </p>
@@ -92,7 +97,7 @@ export default function DashboardPage() {
           {/* ادامه یادگیری */}
           <section className="rounded-3xl bg-white/90 ring-1 ring-pardis-primary/10 shadow-xs backdrop-blur">
             <div className="flex items-center justify-between gap-3 border-b border-black/5 px-5 py-4">
-              <h2 className="text-sm font-medium text-gray-950">
+              <h2 className="text-base font-semibold text-gray-950">
                 ادامه یادگیری
               </h2>
               <Button variant="outline" href="/courses">
@@ -110,7 +115,7 @@ export default function DashboardPage() {
           <section className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div>
-                <h2 className="text-sm font-medium text-gray-950">
+                <h2 className="text-base font-semibold text-gray-950">
                   پیشنهاد برای تو
                 </h2>
                 <p className="mt-1 text-xs text-pardis-gray">
@@ -131,7 +136,7 @@ export default function DashboardPage() {
         <aside className="space-y-6">
           {/* رویدادهای پیش‌رو */}
           <section className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-            <h2 className="mb-3 text-sm font-medium text-gray-950">
+            <h2 className="mb-3 text-base font-semibold text-gray-950">
               رویدادهای پیش‌رو
             </h2>
             <div className="space-y-3">
@@ -151,7 +156,7 @@ export default function DashboardPage() {
 
           {/* آخرین فعالیت‌ها */}
           <section className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-            <h2 className="mb-3 text-sm font-medium text-gray-950">
+            <h2 className="mb-3 text-base font-semibold text-gray-950">
               آخرین فعالیت‌ها
             </h2>
             <ul className="space-y-2 text-xs text-pardis-gray">
@@ -175,14 +180,14 @@ type StatCardProps = {
 function StatCard({ label, value, helper }: StatCardProps) {
   return (
     <div className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-      <div className="text-xs font-medium text-pardis-secondary/80">
+      <div className="text-sm font-semibold text-pardis-secondary/80">
         {label}
       </div>
-      <div className="mt-2 text-xl font-semibold tracking-tight text-gray-950">
+      <div className="mt-2 text-[1.35rem] font-semibold leading-tight tracking-tight text-gray-950">
         {value}
       </div>
       {helper && (
-        <div className="mt-1 text-[11px] text-pardis-gray">{helper}</div>
+        <div className="mt-1 text-[12px] text-pardis-gray">{helper}</div>
       )}
     </div>
   );

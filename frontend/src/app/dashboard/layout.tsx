@@ -2,17 +2,18 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { Button } from "@/components/button";
 import { Container } from "@/components/container";
-// اگر لوگو داری و اسمش فرق می‌کند، این را بعداً اصلاح کن
-// import { Logo } from "@/components/logo";
+import { Logo } from "@/components/logo";
 
 type NavItem = {
   name: string;
   href: string;
 };
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const mainNav: NavItem[] = [
   { name: "داشبورد", href: "/dashboard" },
@@ -33,9 +34,32 @@ export default function DashboardLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   const isActive = (href: string) =>
     pathname === href || (href !== "/dashboard" && pathname.startsWith(href));
+
+  const handleLogout = async () => {
+    if (!API_BASE_URL) {
+      console.error("API base URL is not configured.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/users/logout/`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        router.push("/login");
+      } else {
+        console.error("Logout failed with status:", response.status);
+      }
+    } catch (error) {
+      console.error("Logout request failed:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-linear-to-b from-white from-40% to-pardis-primary-50">
@@ -44,11 +68,12 @@ export default function DashboardLayout({
         {/* هدر بالا + دکمه موبایل */}
         <header className="mb-4 flex items-center justify-between gap-3 lg:mb-6">
           <div className="flex items-center gap-3">
-            {/* اگر لوگو داری اینجا بگذار */}
-            {/* <Logo className="h-7 w-auto" /> */}
+            <Link href="/">
+              <Logo className="h-7 w-auto" />
+            </Link>
             <div>
               <p className="text-xs font-medium text-pardis-secondary/80">
-                فضای یادگیری شما
+                دپارتمان آموزش پردیس هوش مصنوعی
               </p>
               <h1 className="text-base font-semibold text-gray-950 sm:text-lg">
                 داشبورد ANLMS
@@ -121,17 +146,18 @@ export default function DashboardLayout({
               {/* پایین سایدبار: پروفایل/خروج */}
               <div className="mt-6 border-t border-black/5 pt-4">
                 <div className="flex items-center justify-between gap-3">
-                  <div className="text-xs">
+                  <div className="text-sm">
                     <div className="font-medium text-gray-900">آیریک هیراد</div>
-                    <div className="text-[11px] text-pardis-gray">
+                    <div className="text-[12px] text-pardis-gray">
                       دانشجوی فعال
                     </div>
                   </div>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="text-[11px] px-3 py-1"
-                    href="/logout"
+                    className="px-3 py-1 text-xs"
+                    type="button"
+                    onClick={handleLogout}
                   >
                     خروج
                   </Button>
@@ -178,7 +204,7 @@ function SidebarNav({
         ))}
       </div>
 
-      <div className="space-y-1 border-t border-black/5 pt-4 text-xs">
+      <div className="space-y-1 border-t border-black/5 pt-4 text-sm">
         {secondaryNav.map((item) => (
           <SidebarLink
             key={item.href}
@@ -206,7 +232,7 @@ function SidebarLink({
   onClick?: () => void;
 }) {
   const baseClasses =
-    "flex items-center justify-between rounded-2xl px-3 py-2 text-xs font-medium transition-colors";
+    "flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors";
   const activeClasses =
     "bg-pardis-primary text-white shadow-sm";
   const inactiveClasses =

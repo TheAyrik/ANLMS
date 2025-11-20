@@ -5,14 +5,14 @@ import { Link } from './link'
 const variants = {
   primary: clsx(
     'inline-flex items-center justify-center px-4 py-[calc(--spacing(2)-1px)]',
-    'rounded-full border border-transparent bg-pardis-primary shadow-md shadow-pardis-primary/40',
+    'rounded-lg border border-transparent bg-pardis-primary shadow-md shadow-pardis-primary/40',
     'text-base font-medium whitespace-nowrap text-white',
     'data-disabled:bg-pardis-primary data-disabled:opacity-40 data-hover:bg-pardis-secondary',
   ),
   secondary: clsx(
     'relative inline-flex items-center justify-center px-4 py-[calc(--spacing(2)-1px)]',
-    'rounded-full border border-transparent bg-white/80 ring-1 shadow-md ring-pardis-primary/25',
-    'after:absolute after:inset-0 after:rounded-full after:shadow-[inset_0_0_2px_1px_rgba(19,181,222,0.35)]',
+    'rounded-lg border border-transparent bg-white/80 ring-1 shadow-md ring-pardis-primary/25',
+    'after:absolute after:inset-0 after:rounded-lg after:shadow-[inset_0_0_2px_1px_rgba(19,181,222,0.35)]',
     'text-base font-medium whitespace-nowrap text-pardis-primary',
     'data-disabled:bg-white/60 data-disabled:opacity-40 data-hover:bg-white',
   ),
