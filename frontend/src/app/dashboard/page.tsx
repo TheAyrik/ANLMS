@@ -1,48 +1,110 @@
-// neo-lms/frontend/src/app/dashboard/page.tsx
+"use client";
 
-import React from "react";
+import dayjs from "dayjs";
+import "dayjs/locale/fa";
+import React, { useEffect, useMemo, useState } from "react";
 
+import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
+import { EmptyState } from "@/components/empty-state";
 import { Heading, Subheading } from "@/components/text";
+import { ApiError, apiRequest } from "@/lib/api";
 
-const demoCourses = [
-  {
-    id: 1,
-    title: "مبانی یادگیری ماشین",
-    progress: 45,
-    nextLesson: "درس ۳: رگرسیون خطی",
-  },
-  {
-    id: 2,
-    title: "شبکه‌های عصبی عمیق",
-    progress: 20,
-    nextLesson: "درس ۱: پرسپترون",
-  },
-  {
-    id: 3,
-    title: "پردازش زبان طبیعی با Python",
-    progress: 70,
-    nextLesson: "درس ۵: Word Embeddingها",
-  },
-];
+import { useDashboard } from "./dashboard-context";
 
-const upcomingItems = [
-  {
-    id: 1,
-    title: "کوییز ۱ – مبانی یادگیری ماشین",
-    date: "سه‌شنبه ۲۹ آبان، ساعت ۱۸",
-  },
-  {
-    id: 2,
-    title: "تحویل تمرین شبکه‌های عصبی",
-    date: "پنج‌شنبه ۱ آذر، ساعت ۲۳:۵۹",
-  },
-];
+type Course = {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  price: string;
+  is_free: boolean;
+  image?: string | null;
+  instructor: number;
+  instructor_name?: string;
+  is_published: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+const recommendedTags = ["یادگیری تقویتی", "بینایی ماشین", "MLOps", "تحلیل داده"];
 
 export default function DashboardPage() {
+  const { user } = useDashboard();
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    setError(null);
+
+    apiRequest<Course[]>("/api/courses/")
+      .then((data) => {
+        if (!active) return;
+        setCourses(Array.isArray(data) ? data : []);
+      })
+      .catch((err) => {
+        if (!active) return;
+        if (err instanceof ApiError) {
+          setError(err.message);
+        } else {
+          setError("دریافت داده‌های داشبورد با مشکل مواجه شد.");
+        }
+      })
+      .finally(() => active && setLoading(false));
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const publishedCourses = courses.filter((c) => c.is_published);
+  const myCourses = courses.filter((c) => c.instructor === user.id);
+
+  const heroCourses =
+    user.role === "student"
+      ? publishedCourses.slice(0, 4)
+      : (myCourses.length ? myCourses : publishedCourses).slice(0, 4);
+
+  const stats = useMemo(
+    () => [
+      {
+        label: "دوره‌های فعال",
+        value: publishedCourses.length,
+        helper:
+          user.role === "student"
+            ? "دوره‌های منتشرشده قابل ثبت‌نام"
+            : "وضعیت دوره‌های در حال فروش",
+      },
+      {
+        label: user.role === "student" ? "دوره‌های من" : "دوره‌های من به عنوان مدرس",
+        value: myCourses.length || "۰",
+        helper:
+          user.role === "student"
+            ? "دوره‌های ثبت‌نام شده"
+            : "دوره‌هایی که تو تدریس می‌کنی",
+      },
+      {
+        label: "پیش‌نویس/در انتظار انتشار",
+        value: courses.length - publishedCourses.length,
+        helper: "برای مدیران و مدرس‌ها",
+      },
+      {
+        label: "میانگین قیمت",
+        value:
+          courses.length > 0
+            ? `${averagePrice(courses).toLocaleString("fa-IR")} تومان`
+            : "—",
+        helper: "بر اساس لیست دوره‌ها",
+      },
+    ],
+    [courses, myCourses.length, publishedCourses.length, user.role],
+  );
+
   return (
-    <div className="space-y-8">
-      {/* هدر داشبورد */}
+    <div className="space-y-8 w-full">
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <Subheading as="p" className="!text-sm/6">
@@ -50,68 +112,79 @@ export default function DashboardPage() {
           </Subheading>
           <Heading
             as="h1"
-            className="mt-2 !text-[2.4rem] sm:!text-[4.1rem]"
+            className="mt-2 !text-[2.4rem] sm:!text-[3.2rem]"
           >
-            سلام، آیریک 👋
+            {user.first_name || user.last_name
+              ? `سلام ${user.first_name || user.last_name} 👋`
+              : "خوش آمدی 👋"}
           </Heading>
-          <p className="mt-3 max-w-md text-base/6 text-pardis-gray">
-            این‌جا تصویر کلی از مسیر یادگیری‌ات است. می‌توانی از همین‌جا دوره‌ها،
-            پیشرفت و رویدادهای پیش‌رو را مدیریت کنی.
+          <p className="mt-3 max-w-2xl text-base/6 text-pardis-gray">
+            این‌جا تصویر کلی از مسیر یادگیری و دوره‌هایی است که در اختیار داری. می‌توانی از همین‌جا
+            دوره‌هایت را مدیریت کنی، پیشرفت را ببینی و برای انتشار بعدی برنامه بچینی.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Button href="/courses">شروع یک دوره جدید</Button>
-          <Button variant="secondary" href="/profile">
-            مشاهده پروفایل یادگیری
+          <Button href="/dashboard/courses">
+            مرور دوره‌ها
+          </Button>
+          <Button variant="secondary" href="/dashboard/profile">
+            پروفایل و دسترسی‌ها
           </Button>
         </div>
       </header>
 
-      {/* کارت‌های آماری بالا */}
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          label="دوره‌های فعال"
-          value="۳"
-          helper="۲ دوره جدید در این هفته"
-        />
-        <StatCard
-          label="میانگین پیشرفت"
-          value="۴۵٪"
-          helper="در مسیر خوبی هستی"
-        />
-        <StatCard
-          label="ساعت مطالعه این هفته"
-          value="۵ ساعت"
-          helper="هدف این هفته: ۸ ساعت"
-        />
-        <StatCard
-          label="تمرین‌های باز"
-          value="۲"
-          helper="بهتره امروز یکی رو ببندی"
-        />
+        {stats.map((item) => (
+          <StatCard
+            key={item.label}
+            label={item.label}
+            value={item.value}
+            helper={item.helper}
+          />
+        ))}
       </section>
 
       <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-        {/* ستون اصلی */}
         <section className="space-y-6">
-          {/* ادامه یادگیری */}
           <section className="rounded-3xl bg-white/90 ring-1 ring-pardis-primary/10 shadow-xs backdrop-blur">
             <div className="flex items-center justify-between gap-3 border-b border-black/5 px-5 py-4">
-              <h2 className="text-base font-semibold text-gray-950">
-                ادامه یادگیری
-              </h2>
-              <Button variant="outline" href="/courses">
-                مشاهده همه دوره‌ها
+              <div>
+                <h2 className="text-base font-semibold text-gray-950">
+                  مسیر یادگیری/مدیریت دوره‌ها
+                </h2>
+                <p className="mt-1 text-xs text-pardis-gray">
+                  آخرین دوره‌هایی که برای تو در دسترس هستند.
+                </p>
+              </div>
+              <Button variant="outline" href="/dashboard/courses">
+                تمام دوره‌ها
               </Button>
             </div>
-            <div className="grid gap-4 p-5 md:grid-cols-2">
-              {demoCourses.map((course) => (
-                <CourseCard key={course.id} course={course} />
-              ))}
-            </div>
+            {loading ? (
+              <div className="p-5 text-sm text-pardis-gray">در حال بارگذاری دوره‌ها...</div>
+            ) : heroCourses.length === 0 ? (
+              <EmptyState
+                title="هنوز دوره‌ای نداری"
+                description={
+                  user.role === "student"
+                    ? "از بخش دوره‌ها یک دوره را انتخاب کن یا با پشتیبانی تماس بگیر."
+                    : "برای شروع، اولین دوره‌ات را بساز و منتشر کن."
+                }
+                action={
+                  <Button variant="outline" href="/dashboard/courses">
+                    رفتن به لیست دوره‌ها
+                  </Button>
+                }
+              />
+            ) : (
+              <div className="grid gap-4 p-5 md:grid-cols-2">
+                {heroCourses.map((course) => (
+                  <CourseCard key={course.id} course={course} />
+                ))}
+              </div>
+            )}
           </section>
 
-          {/* پیشنهاد دوره‌ها */}
           <section className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div>
@@ -119,28 +192,25 @@ export default function DashboardPage() {
                   پیشنهاد برای تو
                 </h2>
                 <p className="mt-1 text-xs text-pardis-gray">
-                  بر اساس دوره‌های فعلی‌ات و مسیر یادگیری تعریف‌شده.
+                  بر اساس تخصص و نقش فعلی‌ات.
                 </p>
               </div>
             </div>
             <div className="flex flex-wrap gap-2 text-xs">
-              <Tag>یادگیری تقویتی</Tag>
-              <Tag>بینایی ماشین</Tag>
-              <Tag>MLOps</Tag>
-              <Tag>تحلیل داده</Tag>
+              {recommendedTags.map((tag) => (
+                <Tag key={tag}>{tag}</Tag>
+              ))}
             </div>
           </section>
         </section>
 
-        {/* ستون کناری */}
         <aside className="space-y-6">
-          {/* رویدادهای پیش‌رو */}
           <section className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
             <h2 className="mb-3 text-base font-semibold text-gray-950">
               رویدادهای پیش‌رو
             </h2>
             <div className="space-y-3">
-              {upcomingItems.map((item) => (
+              {upcomingFromCourses(publishedCourses).map((item) => (
                 <div
                   key={item.id}
                   className="rounded-2xl border border-black/5 bg-white/80 px-3 py-2 text-xs text-gray-800"
@@ -151,18 +221,49 @@ export default function DashboardPage() {
                   </div>
                 </div>
               ))}
+              {publishedCourses.length === 0 && (
+                <EmptyState
+                  title="فعلاً رویداد فعالی نیست"
+                  description="با انتشار یا ثبت‌نام در یک دوره، رویدادها این‌جا نمایش داده می‌شوند."
+                />
+              )}
             </div>
           </section>
 
-          {/* آخرین فعالیت‌ها */}
           <section className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
             <h2 className="mb-3 text-base font-semibold text-gray-950">
-              آخرین فعالیت‌ها
+              آخرین بروزرسانی‌ها
             </h2>
-            <ul className="space-y-2 text-xs text-pardis-gray">
-              <li>✅ تکمیل درس ۲ از دوره مبانی یادگیری ماشین</li>
-              <li>📘 شروع دوره شبکه‌های عصبی عمیق</li>
-              <li>⏱ ۴۵ دقیقه مطالعه در روز گذشته</li>
+            <ul className="space-y-3 text-xs text-pardis-gray">
+              {recentActivity(courses).map((item) => (
+                <li
+                  key={item.id}
+                  className="rounded-2xl border border-black/5 bg-white/70 px-3 py-2"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-medium text-gray-900">
+                      {item.title}
+                    </span>
+                    <Badge color={item.is_published ? "green" : "amber"}>
+                      {item.is_published ? "منتشر شده" : "پیش‌نویس"}
+                    </Badge>
+                  </div>
+                  <div className="mt-1 text-[11px] text-pardis-gray">
+                    آخرین بروزرسانی: {formatDate(item.updated_at)}
+                  </div>
+                </li>
+              ))}
+              {courses.length === 0 && (
+                <EmptyState
+                  title="فعلاً فعالیتی نیست"
+                  description="هنوز دوره‌ای بارگذاری یا به‌روزرسانی نشده است."
+                />
+              )}
+              {error && (
+                <li className="text-[11px] text-red-600">
+                  {error}
+                </li>
+              )}
             </ul>
           </section>
         </aside>
@@ -173,7 +274,7 @@ export default function DashboardPage() {
 
 type StatCardProps = {
   label: string;
-  value: string;
+  value: number | string;
   helper?: string;
 };
 
@@ -193,42 +294,41 @@ function StatCard({ label, value, helper }: StatCardProps) {
   );
 }
 
-type Course = {
-  id: number;
-  title: string;
-  progress: number;
-  nextLesson: string;
-};
-
 function CourseCard({ course }: { course: Course }) {
   return (
     <div className="flex flex-col justify-between rounded-2xl border border-black/5 bg-white/90 p-4 shadow-xs">
       <div>
-        <h3 className="line-clamp-2 text-sm font-semibold text-gray-950">
-          {course.title}
-        </h3>
-        <p className="mt-1 text-[11px] text-pardis-gray">
-          درس بعدی: {course.nextLesson}
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="line-clamp-2 text-sm font-semibold text-gray-950">
+            {course.title}
+          </h3>
+          <Badge color={course.is_published ? "green" : "amber"}>
+            {course.is_published ? "منتشر شده" : "پیش‌نویس"}
+          </Badge>
+        </div>
+        <p className="mt-1 line-clamp-2 text-[11px] text-pardis-gray">
+          {course.description || "بدون توضیح"}
+        </p>
+        <p className="mt-1 text-[11px] text-pardis-secondary">
+          {course.instructor_name || "بدون نام مدرس"}
         </p>
       </div>
       <div className="mt-3">
-        <div className="mb-1 flex items-center justify-between text-[11px] text-pardis-gray">
-          <span>پیشرفت</span>
-          <span>{course.progress}%</span>
-        </div>
-        <div className="h-1.5 overflow-hidden rounded-full bg-pardis-primary/10">
-          <div
-            className="h-full rounded-full bg-pardis-primary"
-            style={{ width: `${course.progress}%` }}
-          />
+        <div className="flex items-center justify-between text-[11px] text-pardis-gray">
+          <span>هزینه</span>
+          <span>
+            {course.is_free
+              ? "رایگان"
+              : `${Number(course.price || 0).toLocaleString("fa-IR")} تومان`}
+          </span>
         </div>
         <div className="mt-3 flex gap-2">
           <Button
             variant="outline"
             className="w-full text-xs"
-            href={`/courses/${course.id}`}
+            href={`/courses/${course.slug}`}
           >
-            ادامه دوره
+            مشاهده جزئیات
           </Button>
         </div>
       </div>
@@ -242,4 +342,32 @@ function Tag({ children }: { children: React.ReactNode }) {
       {children}
     </span>
   );
+}
+
+function formatDate(value: string) {
+  return dayjs(value).locale("fa").format("D MMM، HH:mm");
+}
+
+function averagePrice(list: Course[]) {
+  if (!list.length) return 0;
+  const sum = list.reduce((acc, course) => acc + Number(course.price || 0), 0);
+  return Math.round(sum / list.length);
+}
+
+function upcomingFromCourses(list: Course[]) {
+  return list.slice(0, 3).map((course) => ({
+    id: course.id,
+    title: `مرور ${course.title}`,
+    date: `آخرین ویرایش: ${formatDate(course.updated_at)}`,
+  }));
+}
+
+function recentActivity(list: Course[]) {
+  return [...list]
+    .sort(
+      (a, b) =>
+        new Date(b.updated_at).getTime() -
+        new Date(a.updated_at).getTime(),
+    )
+    .slice(0, 4);
 }

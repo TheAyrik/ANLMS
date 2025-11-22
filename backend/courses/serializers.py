@@ -37,7 +37,7 @@ class CourseSerializer(serializers.ModelSerializer):
         queryset=get_user_model().objects.all()
     )
     instructor_name = serializers.SerializerMethodField()
-    is_free = serializers.BooleanField(source='is_free', read_only=True)
+    is_free = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Course

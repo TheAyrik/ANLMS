@@ -1,9 +1,12 @@
 # backend/accounts/serializers.py
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password  # <--- این ایمپورت مهم است
 from django.core import exceptions as django_exceptions
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+
+User = get_user_model()
+
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
@@ -11,7 +14,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password', 'first_name', 'last_name')
+        fields = ('username', 'email', 'password', 'first_name', 'last_name', 'role')
+        extra_kwargs = {
+            'role': {'required': False},
+        }
 
     def validate_email(self, value):
         normalized_email = value.strip().lower()
@@ -30,6 +36,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
+        role = validated_data.pop('role', User.Roles.STUDENT)
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
@@ -37,13 +44,17 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', '')
         )
+        user.role = role
+        if user.role == User.Roles.ADMIN:
+            user.is_staff = True
+        user.save()
         return user
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'role')
 
 
 class PersianTokenObtainPairSerializer(TokenObtainPairSerializer):

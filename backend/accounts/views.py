@@ -1,7 +1,7 @@
 from typing import Optional
 
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -14,6 +14,8 @@ from .serializers import (
     UserRegistrationSerializer,
     UserSerializer,
 )
+
+User = get_user_model()
 
 
 def _set_cookie(response, key: str, value: str, max_age: int):

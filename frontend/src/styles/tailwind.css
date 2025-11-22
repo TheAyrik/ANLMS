@@ -51,6 +51,39 @@
   --color-pardis-gray-950: #131517;
 }
 
+/* اسکرول‌بار سفارشی با رنگ برند */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-pardis-primary) var(--color-pardis-primary-50);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--color-pardis-primary-50);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    var(--color-pardis-primary) 0%,
+    var(--color-pardis-primary-600) 100%
+  );
+  border-radius: 999px;
+  border: 2px solid var(--color-pardis-primary-50);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    180deg,
+    var(--color-pardis-primary-400) 0%,
+    var(--color-pardis-primary-700) 100%
+  );
+}
+
 
 @keyframes move-x {
   0% {
