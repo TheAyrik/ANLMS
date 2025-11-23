@@ -1,14 +1,13 @@
 "use client";
 
-import dayjs from "dayjs";
-import "dayjs/locale/fa";
 import React, { useEffect, useMemo, useState } from "react";
 
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
 import { EmptyState } from "@/components/empty-state";
-import { Heading, Subheading } from "@/components/text";
+import { Heading } from "@/components/text";
 import { ApiError, apiRequest } from "@/lib/api";
+import { formatPersianDate } from "@/lib/date";
 
 import { useDashboard } from "./dashboard-context";
 
@@ -68,6 +67,8 @@ export default function DashboardPage() {
       ? publishedCourses.slice(0, 4)
       : (myCourses.length ? myCourses : publishedCourses).slice(0, 4);
 
+  const displayName = user.first_name || user.last_name;
+
   const stats = useMemo(
     () => [
       {
@@ -105,31 +106,25 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 w-full">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <Subheading as="p" className="!text-sm/6">
-            داشبورد یادگیری
-          </Subheading>
+      <header className="relative overflow-hidden rounded-4xl bg-gradient-to-br from-pardis-primary-700 via-pardis-secondary-600 to-pardis-primary-950 text-white shadow-lg ring-1 ring-white/10">
+        <div className="absolute -left-16 -top-10 h-48 w-48 rounded-full bg-white/10 blur-3xl" aria-hidden="true" />
+        <div className="absolute -right-24 bottom-0 h-56 w-56 rounded-full bg-cyan-200/15 blur-3xl" aria-hidden="true" />
+        <div className="absolute inset-x-0 top-0 h-px bg-white/20 opacity-50" aria-hidden="true" />
+
+        <div className="relative space-y-4 p-6 sm:p-8">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/20">
+            <span className="size-2 rounded-full bg-white/80" aria-hidden="true" />
+            فضای کاربری اختصاصی
+          </span>
           <Heading
             as="h1"
-            className="mt-2 !text-[2.4rem] sm:!text-[3.2rem]"
+            className="!text-[2.4rem] sm:!text-[3.2rem] text-white drop-shadow-sm"
           >
-            {user.first_name || user.last_name
-              ? `سلام ${user.first_name || user.last_name} 👋`
-              : "خوش آمدی 👋"}
+            {displayName ? `سلام ${displayName} 👋` : "سلام 👋"}
           </Heading>
-          <p className="mt-3 max-w-2xl text-base/6 text-pardis-gray">
-            این‌جا تصویر کلی از مسیر یادگیری و دوره‌هایی است که در اختیار داری. می‌توانی از همین‌جا
-            دوره‌هایت را مدیریت کنی، پیشرفت را ببینی و برای انتشار بعدی برنامه بچینی.
+          <p className="max-w-2xl text-base/7 text-white/80">
+            داشبورد یک نگاه فوری به وضعیت دوره‌ها، انتشارها و مسیر یادگیری به تو می‌دهد. همه‌چیز این‌جاست تا بدون حواس‌پرتی، تصمیم بعدی را بگیری.
           </p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Button href="/dashboard/courses">
-            مرور دوره‌ها
-          </Button>
-          <Button variant="secondary" href="/dashboard/profile">
-            پروفایل و دسترسی‌ها
-          </Button>
         </div>
       </header>
 
@@ -345,7 +340,7 @@ function Tag({ children }: { children: React.ReactNode }) {
 }
 
 function formatDate(value: string) {
-  return dayjs(value).locale("fa").format("D MMM، HH:mm");
+  return formatPersianDate(value, { includeTime: true });
 }
 
 function averagePrice(list: Course[]) {

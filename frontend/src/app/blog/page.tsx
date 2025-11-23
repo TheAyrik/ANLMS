@@ -21,9 +21,9 @@ import {
   RssIcon,
 } from '@heroicons/react/16/solid'
 import { clsx } from 'clsx'
-import dayjs from 'dayjs'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { formatPersianDate } from '@/lib/date'
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -59,7 +59,11 @@ async function FeaturedPosts() {
               )}
               <div className="flex flex-1 flex-col p-8">
                 <div className="text-sm/5 text-gray-700">
-                  {dayjs(post.publishedAt).format('dddd, MMMM D, YYYY')}
+                  {formatPersianDate(post.publishedAt, {
+                    includeYear: true,
+                    includeWeekday: true,
+                    month: 'long',
+                  })}
                 </div>
                 <div className="mt-2 text-base/7 font-medium">
                   <Link href={`/blog/${post.slug}`}>
@@ -168,7 +172,11 @@ async function Posts({ page, category }: { page: number; category?: string }) {
         >
           <div>
             <div className="text-sm/5 max-sm:text-gray-700 sm:font-medium">
-              {dayjs(post.publishedAt).format('dddd, MMMM D, YYYY')}
+              {formatPersianDate(post.publishedAt, {
+                includeYear: true,
+                includeWeekday: true,
+                month: 'long',
+              })}
             </div>
             {post.author && (
               <div className="mt-2.5 flex items-center gap-3">

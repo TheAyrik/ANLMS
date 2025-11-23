@@ -14,10 +14,11 @@ import { PlusGrid, PlusGridItem, PlusGridRow } from './plus-grid';
 
 // --- شروع ترجمه ---
 const links = [
-  { href: '/pricing', label: 'قیمت‌گذاری' },
-  { href: '/company', label: 'درباره ما' },
-  { href: '#', label: 'وبلاگ' },
-  { href: '/login', label: 'ورود / ثبت‌نام' },
+  { href: '/', label: 'خانه' },
+  { href: '/courses', label: 'دوره‌های آموزشی' },
+  { href: '/blog', label: 'اخبار' },
+  { href: '/contact', label: 'تماس با ما' },
+  { href: '/login', label: 'پنل کاربری' },
 ];
 // --- پایان ترجمه ---
 

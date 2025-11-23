@@ -1,0 +1,22 @@
+@import url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css");
+
+:root {
+  --neo-admin-font: "Vazirmatn", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body,
+input,
+select,
+textarea,
+button,
+.dashboard #content-main,
+.module caption,
+.module h2,
+.module h3,
+.module table {
+  font-family: var(--neo-admin-font);
+}
+
+.breadcrumbs {
+  font-family: var(--neo-admin-font);
+}

@@ -7,8 +7,8 @@ import { Navbar } from '@/components/navbar'
 import { Heading, Subheading } from '@/components/text'
 import { image } from '@/sanity/image'
 import { getPost } from '@/sanity/queries'
+import { formatPersianDate } from '@/lib/date'
 import { ChevronLeftIcon } from '@heroicons/react/16/solid'
-import dayjs from 'dayjs'
 import type { Metadata } from 'next'
 import { PortableText } from 'next-sanity'
 import { notFound } from 'next/navigation'
@@ -36,7 +36,11 @@ export default async function BlogPost({
       <Container>
         <Navbar />
         <Subheading className="mt-16">
-          {dayjs(post.publishedAt).format('dddd, MMMM D, YYYY')}
+          {formatPersianDate(post.publishedAt, {
+            includeYear: true,
+            includeWeekday: true,
+            month: 'long',
+          })}
         </Subheading>
         <Heading as="h1" className="mt-2">
           {post.title}

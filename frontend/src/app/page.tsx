@@ -3,6 +3,7 @@ import HeroParticlesCanvas from '@/components/hero-particles-canvas'
 import { BentoCard } from '@/components/bento-card'
 import { Button } from '@/components/button'
 import { Container } from '@/components/container'
+import { CourseCard } from '@/components/course-card'
 import { Footer } from '@/components/footer'
 import { Gradient } from '@/components/gradient'
 import { Keyboard } from '@/components/keyboard'
@@ -95,6 +96,65 @@ function FeatureSection() {
         />
       </Container>
     </div>
+  )
+}
+
+function CourseGridSection() {
+  const featuredCourses = [
+    {
+      title: 'آموزش CSS پیشرفته',
+      description:
+        'آموزش کامل CSS با تمرکز بر انیمیشن، لایه‌بندی‌های مدرن و ساخت کامپوننت‌های مینی‌مال برای رابط‌های کاربری جذاب.',
+      status: 'تکمیل ضبط',
+      href: '/courses/css-mastery',
+      students: 3048,
+      accent: 'teal' as const,
+    },
+    {
+      title: 'Next.js 15 و ساخت محصول SaaS',
+      description:
+        'تمام جزئیات App Router، Server Actions و متریک‌های تولید آماده برای ساخت سرویس‌های ابریِ سریع و پایدار.',
+      status: 'به‌روزرسانی مداوم',
+      href: '/courses/nextjs-saas',
+      students: 1890,
+      accent: 'blue' as const,
+    },
+    {
+      title: 'مهندسی پرامپت و ایجنت‌های هوش مصنوعی',
+      description:
+        'از طراحی پرامپت تا ساخت ایجنت‌های کاربردی؛ سناریوهای واقعی برای ادغام AI در محصول و تیم‌های عملیاتی.',
+      status: 'شروع ضبط',
+      href: '/courses/ai-agents',
+      students: 1240,
+      accent: 'emerald' as const,
+    },
+    {
+      title: 'داده برای رباتیک و اینترنت اشیا',
+      description:
+        'آموزش جمع‌آوری، پاکسازی و ساخت پایپ‌لاین‌های ML روی دادهٔ سنسورها برای رباتیک و IoT.',
+      status: 'پخش جدید',
+      href: '/courses/robotics-data',
+      students: 980,
+      accent: 'amber' as const,
+    },
+  ]
+
+  return (
+    <Container>
+      <Subheading>دوره‌های منتخب</Subheading>
+      <Heading as="h3" className="mt-2 max-w-3xl">
+        چهار کارت نمایشی با استایل پردیس.
+      </Heading>
+      <p className="mt-3 max-w-3xl text-base/7 text-gray-700">
+        یک نمای سریع از دوره‌ها با طراحی کارتی تیره، آمار، وضعیت انتشار و فراخوان به اقدام.
+      </p>
+
+      <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {featuredCourses.map((course) => (
+          <CourseCard key={course.title} {...course} />
+        ))}
+      </div>
+    </Container>
   )
 }
 
@@ -220,6 +280,7 @@ export default function Home() {
           <LogoCloud />
         </Container>
         <div className="bg-linear-to-b from-white from-40% to-pardis-primary-50 py-32">
+          <CourseGridSection />
           <FeatureSection />
           <BentoSection />
         </div>

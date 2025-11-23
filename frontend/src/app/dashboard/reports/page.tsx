@@ -1,7 +1,5 @@
 "use client";
 
-import dayjs from "dayjs";
-import "dayjs/locale/fa";
 import React, { useEffect, useMemo, useState } from "react";
 
 import { Badge } from "@/components/badge";
@@ -9,6 +7,7 @@ import { Button } from "@/components/button";
 import { EmptyState } from "@/components/empty-state";
 import { Heading } from "@/components/text";
 import { ApiError, apiRequest } from "@/lib/api";
+import { formatPersianDate } from "@/lib/date";
 
 import { useDashboard } from "../dashboard-context";
 
@@ -269,7 +268,7 @@ function percentage(value: number, total: number) {
 }
 
 function formatDate(value: string) {
-  return dayjs(value).locale("fa").format("D MMM");
+  return formatPersianDate(value);
 }
 
 function roleLabel(role: string) {

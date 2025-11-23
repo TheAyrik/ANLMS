@@ -1,0 +1,422 @@
+diff --git a/backend/courses/admin.py b/backend/courses/admin.py
+index 689cf05..5fc4348 100644
+--- a/backend/courses/admin.py
++++ b/backend/courses/admin.py
+@@ -1,5 +1,7 @@
+ from django.contrib import admin
+ 
++from neo_lms.utils.jalali import format_jalali
++
+ from .models import Course, Enrollment, Lesson, Module
+ 
+ 
+@@ -15,12 +17,16 @@ class ModuleInline(admin.StackedInline):
+ 
+ @admin.register(Course)
+ class CourseAdmin(admin.ModelAdmin):
+-    list_display = ('title', 'instructor', 'price', 'is_published', 'created_at')
++    list_display = ('title', 'instructor', 'price', 'is_published', 'created_at_jalali')
+     list_filter = ('is_published', 'created_at')
+     search_fields = ('title', 'slug', 'instructor__username')
+     prepopulated_fields = {'slug': ('title',)}
+     inlines = (ModuleInline,)
+ 
++    @admin.display(description="Created (Jalali)", ordering="created_at")
++    def created_at_jalali(self, obj):
++        return format_jalali(obj.created_at)
++
+ 
+ @admin.register(Module)
+ class ModuleAdmin(admin.ModelAdmin):
+@@ -39,6 +45,10 @@ class LessonAdmin(admin.ModelAdmin):
+ 
+ @admin.register(Enrollment)
+ class EnrollmentAdmin(admin.ModelAdmin):
+-    list_display = ('user', 'course', 'enrolled_at')
++    list_display = ('user', 'course', 'enrolled_at_jalali')
+     list_filter = ('course', 'enrolled_at')
+     search_fields = ('user__username', 'course__title')
++
++    @admin.display(description="Enrolled (Jalali)", ordering="enrolled_at")
++    def enrolled_at_jalali(self, obj):
++        return format_jalali(obj.enrolled_at)
+diff --git a/backend/neo_lms/settings.py b/backend/neo_lms/settings.py
+index 6f135bd..c8f905c 100644
+--- a/backend/neo_lms/settings.py
++++ b/backend/neo_lms/settings.py
+@@ -64,7 +64,7 @@ ROOT_URLCONF = 'neo_lms.urls'
+ TEMPLATES = [
+     {
+         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+-        'DIRS': [],
++        'DIRS': [BASE_DIR / "neo_lms" / "templates"],
+         'APP_DIRS': True,
+         'OPTIONS': {
+             'context_processors': [
+@@ -130,7 +130,8 @@ USE_TZ = True
+ # Static files (CSS, JavaScript, Images)
+ # https://docs.djangoproject.com/en/5.2/howto/static-files/
+ 
+-STATIC_URL = 'static/'
++STATIC_URL = '/static/'
++STATICFILES_DIRS = [BASE_DIR / "neo_lms" / "static"]
+ 
+ # Default primary key field type
+ # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+diff --git a/backend/requirements.txt b/backend/requirements.txt
+index 0d17b3b..27af49c 100644
+--- a/backend/requirements.txt
++++ b/backend/requirements.txt
+@@ -3,4 +3,5 @@ psycopg2-binary
+ djangorestframework
+ djangorestframework-simplejwt
+ django-cors-headers
+-Pillow
+\ No newline at end of file
++Pillow
++jdatetime
+diff --git a/frontend/src/app/blog/[slug]/page.tsx b/frontend/src/app/blog/[slug]/page.tsx
+index 6b118a0..bef71bd 100644
+--- a/frontend/src/app/blog/[slug]/page.tsx
++++ b/frontend/src/app/blog/[slug]/page.tsx
+@@ -7,8 +7,8 @@ import { Navbar } from '@/components/navbar'
+ import { Heading, Subheading } from '@/components/text'
+ import { image } from '@/sanity/image'
+ import { getPost } from '@/sanity/queries'
++import { formatPersianDate } from '@/lib/date'
+ import { ChevronLeftIcon } from '@heroicons/react/16/solid'
+-import dayjs from 'dayjs'
+ import type { Metadata } from 'next'
+ import { PortableText } from 'next-sanity'
+ import { notFound } from 'next/navigation'
+@@ -36,7 +36,11 @@ export default async function BlogPost({
+       <Container>
+         <Navbar />
+         <Subheading className="mt-16">
+-          {dayjs(post.publishedAt).format('dddd, MMMM D, YYYY')}
++          {formatPersianDate(post.publishedAt, {
++            includeYear: true,
++            includeWeekday: true,
++            month: 'long',
++          })}
+         </Subheading>
+         <Heading as="h1" className="mt-2">
+           {post.title}
+diff --git a/frontend/src/app/blog/page.tsx b/frontend/src/app/blog/page.tsx
+index fba2773..a274650 100644
+--- a/frontend/src/app/blog/page.tsx
++++ b/frontend/src/app/blog/page.tsx
+@@ -21,9 +21,9 @@ import {
+   RssIcon,
+ } from '@heroicons/react/16/solid'
+ import { clsx } from 'clsx'
+-import dayjs from 'dayjs'
+ import type { Metadata } from 'next'
+ import { notFound } from 'next/navigation'
++import { formatPersianDate } from '@/lib/date'
+ 
+ export const metadata: Metadata = {
+   title: 'Blog',
+@@ -59,7 +59,11 @@ async function FeaturedPosts() {
+               )}
+               <div className="flex flex-1 flex-col p-8">
+                 <div className="text-sm/5 text-gray-700">
+-                  {dayjs(post.publishedAt).format('dddd, MMMM D, YYYY')}
++                  {formatPersianDate(post.publishedAt, {
++                    includeYear: true,
++                    includeWeekday: true,
++                    month: 'long',
++                  })}
+                 </div>
+                 <div className="mt-2 text-base/7 font-medium">
+                   <Link href={`/blog/${post.slug}`}>
+@@ -168,7 +172,11 @@ async function Posts({ page, category }: { page: number; category?: string }) {
+         >
+           <div>
+             <div className="text-sm/5 max-sm:text-gray-700 sm:font-medium">
+-              {dayjs(post.publishedAt).format('dddd, MMMM D, YYYY')}
++              {formatPersianDate(post.publishedAt, {
++                includeYear: true,
++                includeWeekday: true,
++                month: 'long',
++              })}
+             </div>
+             {post.author && (
+               <div className="mt-2.5 flex items-center gap-3">
+diff --git a/frontend/src/app/dashboard/activity/page.tsx b/frontend/src/app/dashboard/activity/page.tsx
+index 8df79a5..46bb1e3 100644
+--- a/frontend/src/app/dashboard/activity/page.tsx
++++ b/frontend/src/app/dashboard/activity/page.tsx
+@@ -1,7 +1,5 @@
+ "use client";
+ 
+-import dayjs from "dayjs";
+-import "dayjs/locale/fa";
+ import React, { useEffect, useMemo, useState } from "react";
+ 
+ import { Badge } from "@/components/badge";
+@@ -9,6 +7,7 @@ import { Button } from "@/components/button";
+ import { EmptyState } from "@/components/empty-state";
+ import { Heading } from "@/components/text";
+ import { ApiError, apiRequest } from "@/lib/api";
++import { formatPersianDate } from "@/lib/date";
+ 
+ import { useDashboard } from "../dashboard-context";
+ 
+@@ -216,7 +215,7 @@ function buildActivity(courses: Course[], user: { id: number; role: string }) {
+ }
+ 
+ function formatDate(value: string) {
+-  return dayjs(value).locale("fa").format("D MMM HH:mm");
++  return formatPersianDate(value, { includeTime: true });
+ }
+ 
+ function badgeColor(status: ActivityItem["status"]) {
+diff --git a/frontend/src/app/dashboard/courses/page.tsx b/frontend/src/app/dashboard/courses/page.tsx
+index 73be10f..c5d127f 100644
+--- a/frontend/src/app/dashboard/courses/page.tsx
++++ b/frontend/src/app/dashboard/courses/page.tsx
+@@ -1,7 +1,5 @@
+ "use client";
+ 
+-import dayjs from "dayjs";
+-import "dayjs/locale/fa";
+ import React, { useEffect, useMemo, useState } from "react";
+ 
+ import { Badge } from "@/components/badge";
+@@ -9,6 +7,7 @@ import { Button } from "@/components/button";
+ import { EmptyState } from "@/components/empty-state";
+ import { Heading } from "@/components/text";
+ import { ApiError, apiRequest } from "@/lib/api";
++import { formatPersianDate } from "@/lib/date";
+ 
+ import { useDashboard } from "../dashboard-context";
+ 
+@@ -432,5 +431,5 @@ function slugify(value: string) {
+ }
+ 
+ function formatDate(value: string) {
+-  return dayjs(value).locale("fa").format("D MMM HH:mm");
++  return formatPersianDate(value, { includeTime: true });
+ }
+diff --git a/frontend/src/app/dashboard/page.tsx b/frontend/src/app/dashboard/page.tsx
+index 2cbd1b8..e91bbfe 100644
+--- a/frontend/src/app/dashboard/page.tsx
++++ b/frontend/src/app/dashboard/page.tsx
+@@ -1,14 +1,13 @@
+ "use client";
+ 
+-import dayjs from "dayjs";
+-import "dayjs/locale/fa";
+ import React, { useEffect, useMemo, useState } from "react";
+ 
+ import { Badge } from "@/components/badge";
+ import { Button } from "@/components/button";
+ import { EmptyState } from "@/components/empty-state";
+-import { Heading, Subheading } from "@/components/text";
++import { Heading } from "@/components/text";
+ import { ApiError, apiRequest } from "@/lib/api";
++import { formatPersianDate } from "@/lib/date";
+ 
+ import { useDashboard } from "./dashboard-context";
+ 
+@@ -68,6 +67,8 @@ export default function DashboardPage() {
+       ? publishedCourses.slice(0, 4)
+       : (myCourses.length ? myCourses : publishedCourses).slice(0, 4);
+ 
++  const displayName = user.first_name || user.last_name;
++
+   const stats = useMemo(
+     () => [
+       {
+@@ -105,32 +106,26 @@ export default function DashboardPage() {
+ 
+   return (
+     <div className="space-y-8 w-full">
+-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+-        <div>
+-          <Subheading as="p" className="!text-sm/6">
+-            داشبورد یادگیری
+-          </Subheading>
++      <header className="relative overflow-hidden rounded-4xl bg-gradient-to-br from-pardis-primary-700 via-pardis-secondary-600 to-pardis-primary-950 text-white shadow-lg ring-1 ring-white/10">
++        <div className="absolute -left-16 -top-10 h-48 w-48 rounded-full bg-white/10 blur-3xl" aria-hidden="true" />
++        <div className="absolute -right-24 bottom-0 h-56 w-56 rounded-full bg-cyan-200/15 blur-3xl" aria-hidden="true" />
++        <div className="absolute inset-x-0 top-0 h-px bg-white/20 opacity-50" aria-hidden="true" />
++
++        <div className="relative space-y-4 p-6 sm:p-8">
++          <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/20">
++            <span className="size-2 rounded-full bg-white/80" aria-hidden="true" />
++            فضای کاربری اختصاصی
++          </span>
+           <Heading
+             as="h1"
+-            className="mt-2 !text-[2.4rem] sm:!text-[3.2rem]"
++            className="!text-[2.4rem] sm:!text-[3.2rem] text-white drop-shadow-sm"
+           >
+-            {user.first_name || user.last_name
+-              ? `سلام ${user.first_name || user.last_name} 👋`
+-              : "خوش آمدی 👋"}
++            {displayName ? `سلام ${displayName} 👋` : "سلام 👋"}
+           </Heading>
+-          <p className="mt-3 max-w-2xl text-base/6 text-pardis-gray">
+-            این‌جا تصویر کلی از مسیر یادگیری و دوره‌هایی است که در اختیار داری. می‌توانی از همین‌جا
+-            دوره‌هایت را مدیریت کنی، پیشرفت را ببینی و برای انتشار بعدی برنامه بچینی.
++          <p className="max-w-2xl text-base/7 text-white/80">
++            داشبورد یک نگاه فوری به وضعیت دوره‌ها، انتشارها و مسیر یادگیری به تو می‌دهد. همه‌چیز این‌جاست تا بدون حواس‌پرتی، تصمیم بعدی را بگیری.
+           </p>
+         </div>
+-        <div className="flex flex-wrap gap-3">
+-          <Button href="/dashboard/courses">
+-            مرور دوره‌ها
+-          </Button>
+-          <Button variant="secondary" href="/dashboard/profile">
+-            پروفایل و دسترسی‌ها
+-          </Button>
+-        </div>
+       </header>
+ 
+       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+@@ -345,7 +340,7 @@ function Tag({ children }: { children: React.ReactNode }) {
+ }
+ 
+ function formatDate(value: string) {
+-  return dayjs(value).locale("fa").format("D MMM، HH:mm");
++  return formatPersianDate(value, { includeTime: true });
+ }
+ 
+ function averagePrice(list: Course[]) {
+diff --git a/frontend/src/app/dashboard/reports/page.tsx b/frontend/src/app/dashboard/reports/page.tsx
+index 4ac8212..967d563 100644
+--- a/frontend/src/app/dashboard/reports/page.tsx
++++ b/frontend/src/app/dashboard/reports/page.tsx
+@@ -1,7 +1,5 @@
+ "use client";
+ 
+-import dayjs from "dayjs";
+-import "dayjs/locale/fa";
+ import React, { useEffect, useMemo, useState } from "react";
+ 
+ import { Badge } from "@/components/badge";
+@@ -9,6 +7,7 @@ import { Button } from "@/components/button";
+ import { EmptyState } from "@/components/empty-state";
+ import { Heading } from "@/components/text";
+ import { ApiError, apiRequest } from "@/lib/api";
++import { formatPersianDate } from "@/lib/date";
+ 
+ import { useDashboard } from "../dashboard-context";
+ 
+@@ -269,7 +268,7 @@ function percentage(value: number, total: number) {
+ }
+ 
+ function formatDate(value: string) {
+-  return dayjs(value).locale("fa").format("D MMM");
++  return formatPersianDate(value);
+ }
+ 
+ function roleLabel(role: string) {
+diff --git a/frontend/src/app/page.tsx b/frontend/src/app/page.tsx
+index 99b8957..cb51148 100644
+--- a/frontend/src/app/page.tsx
++++ b/frontend/src/app/page.tsx
+@@ -3,6 +3,7 @@ import HeroParticlesCanvas from '@/components/hero-particles-canvas'
+ import { BentoCard } from '@/components/bento-card'
+ import { Button } from '@/components/button'
+ import { Container } from '@/components/container'
++import { CourseCard } from '@/components/course-card'
+ import { Footer } from '@/components/footer'
+ import { Gradient } from '@/components/gradient'
+ import { Keyboard } from '@/components/keyboard'
+@@ -98,6 +99,65 @@ function FeatureSection() {
+   )
+ }
+ 
++function CourseGridSection() {
++  const featuredCourses = [
++    {
++      title: 'آموزش CSS پیشرفته',
++      description:
++        'آموزش کامل CSS با تمرکز بر انیمیشن، لایه‌بندی‌های مدرن و ساخت کامپوننت‌های مینی‌مال برای رابط‌های کاربری جذاب.',
++      status: 'تکمیل ضبط',
++      href: '/courses/css-mastery',
++      students: 3048,
++      accent: 'teal' as const,
++    },
++    {
++      title: 'Next.js 15 و ساخت محصول SaaS',
++      description:
++        'تمام جزئیات App Router، Server Actions و متریک‌های تولید آماده برای ساخت سرویس‌های ابریِ سریع و پایدار.',
++      status: 'به‌روزرسانی مداوم',
++      href: '/courses/nextjs-saas',
++      students: 1890,
++      accent: 'blue' as const,
++    },
++    {
++      title: 'مهندسی پرامپت و ایجنت‌های هوش مصنوعی',
++      description:
++        'از طراحی پرامپت تا ساخت ایجنت‌های کاربردی؛ سناریوهای واقعی برای ادغام AI در محصول و تیم‌های عملیاتی.',
++      status: 'شروع ضبط',
++      href: '/courses/ai-agents',
++      students: 1240,
++      accent: 'emerald' as const,
++    },
++    {
++      title: 'داده برای رباتیک و اینترنت اشیا',
++      description:
++        'آموزش جمع‌آوری، پاکسازی و ساخت پایپ‌لاین‌های ML روی دادهٔ سنسورها برای رباتیک و IoT.',
++      status: 'پخش جدید',
++      href: '/courses/robotics-data',
++      students: 980,
++      accent: 'amber' as const,
++    },
++  ]
++
++  return (
++    <Container>
++      <Subheading>دوره‌های منتخب</Subheading>
++      <Heading as="h3" className="mt-2 max-w-3xl">
++        چهار کارت نمایشی با استایل پردیس.
++      </Heading>
++      <p className="mt-3 max-w-3xl text-base/7 text-gray-700">
++        یک نمای سریع از دوره‌ها با طراحی کارتی تیره، آمار، وضعیت انتشار و فراخوان به اقدام.
++      </p>
++
++      <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
++        {featuredCourses.map((course) => (
++          <CourseCard key={course.title} {...course} />
++        ))}
++      </div>
++    </Container>
++  )
++}
++
+ function BentoSection() {
+   return (
+     <Container>
+@@ -220,6 +280,7 @@ export default function Home() {
+           <LogoCloud />
+         </Container>
+         <div className="bg-linear-to-b from-white from-40% to-pardis-primary-50 py-32">
++          <CourseGridSection />
+           <FeatureSection />
+           <BentoSection />
+         </div>
+diff --git a/frontend/src/components/navbar.tsx b/frontend/src/components/navbar.tsx
+index 2228ebe..43ec079 100644
+--- a/frontend/src/components/navbar.tsx
++++ b/frontend/src/components/navbar.tsx
+@@ -14,10 +14,11 @@ import { PlusGrid, PlusGridItem, PlusGridRow } from './plus-grid';
+ 
+ // --- شروع ترجمه ---
+ const links = [
+-  { href: '/pricing', label: 'قیمت‌گذاری' },
+-  { href: '/company', label: 'درباره ما' },
+-  { href: '#', label: 'وبلاگ' },
+-  { href: '/login', label: 'ورود / ثبت‌نام' },
++  { href: '/', label: 'خانه' },
++  { href: '/courses', label: 'دوره‌های آموزشی' },
++  { href: '/blog', label: 'اخبار' },
++  { href: '/contact', label: 'تماس با ما' },
++  { href: '/login', label: 'پنل کاربری' },
+ ];
+ // --- پایان ترجمه ---
+ 
