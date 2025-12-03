@@ -13,13 +13,13 @@ function CallToAction() {
     <div className="relative pt-20 pb-16 text-center sm:py-24">
       <hgroup>
         <Subheading>شروع کنید</Subheading>
-        <p className="mt-6 text-3xl font-medium tracking-tight text-gray-950 sm:text-5xl">
+        <p className="mt-6 text-3xl font-medium tracking-tight text-gray-950 sm:text-5xl group-data-[site-theme=dark]/site:text-white">
           آماده‌اید شروع کنید؟
           <br />
           همین امروز استفاده رایگان را شروع کنید.
         </p>
       </hgroup>
-      <p className="mx-auto mt-6 max-w-xs text-sm/6 text-pardis-gray">
+      <p className="mx-auto mt-6 max-w-xs text-sm/6 text-pardis-gray group-data-[site-theme=dark]/site:text-slate-300">
         مسیر میان‌بر خود را کشف کنید و پتانسیل کامل خود را آزاد کنید.
       </p>
       <div className="mt-6">
@@ -33,7 +33,7 @@ function CallToAction() {
 
 function SitemapHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="text-sm/6 font-medium text-pardis-secondary/80">
+    <h3 className="text-sm/6 font-medium text-pardis-secondary/80 group-data-[site-theme=dark]/site:text-pardis-primary-100">
       {children}
     </h3>
   )
@@ -48,7 +48,7 @@ function SitemapLink(props: React.ComponentPropsWithoutRef<typeof Link>) {
     <li>
       <Link
         {...props}
-        className="font-medium text-gray-950 data-hover:text-pardis-primary"
+        className="font-medium text-gray-950 data-hover:text-pardis-primary group-data-[site-theme=dark]/site:text-slate-200 group-data-[site-theme=dark]/site:data-hover:text-white"
       />
     </li>
   )
@@ -128,7 +128,7 @@ function SocialLinks() {
         href="https://facebook.com"
         target="_blank"
         aria-label="ما را در فیسبوک دنبال کنید"
-        className="text-pardis-secondary data-hover:text-pardis-primary"
+        className="text-pardis-secondary data-hover:text-pardis-primary group-data-[site-theme=dark]/site:text-pardis-primary-100 group-data-[site-theme=dark]/site:data-hover:text-white"
       >
         <SocialIconFacebook className="size-4" />
       </Link>
@@ -136,7 +136,7 @@ function SocialLinks() {
         href="https://x.com"
         target="_blank"
         aria-label="ما را در ایکس (توییتر سابق) دنبال کنید"
-        className="text-pardis-secondary data-hover:text-pardis-primary"
+        className="text-pardis-secondary data-hover:text-pardis-primary group-data-[site-theme=dark]/site:text-pardis-primary-100 group-data-[site-theme=dark]/site:data-hover:text-white"
       >
         <SocialIconX className="size-4" />
       </Link>
@@ -144,7 +144,7 @@ function SocialLinks() {
         href="https://linkedin.com"
         target="_blank"
         aria-label="ما را در لینکدین دنبال کنید"
-        className="text-pardis-secondary data-hover:text-pardis-primary"
+        className="text-pardis-secondary data-hover:text-pardis-primary group-data-[site-theme=dark]/site:text-pardis-primary-100 group-data-[site-theme=dark]/site:data-hover:text-white"
       >
         <SocialIconLinkedIn className="size-4" />
       </Link>
@@ -155,7 +155,7 @@ function SocialLinks() {
 // --- 4. ترجمه و برندینگ حق نشر ---
 function Copyright() {
   return (
-    <div className="text-sm/6 text-pardis-secondary">
+    <div className="text-sm/6 text-pardis-secondary group-data-[site-theme=dark]/site:text-slate-300">
       &copy; {new Date().getFullYear()} پردیس هوش مصنوعی. تمام حقوق محفوظ است.
     </div>
   )
@@ -165,7 +165,7 @@ export function Footer() {
   return (
     <footer>
       <Gradient className="relative">
-        <div className="absolute inset-2 rounded-4xl bg-white/80" />
+        <div className="absolute inset-2 rounded-4xl bg-white/80 group-data-[site-theme=dark]/site:bg-slate-900/70 group-data-[site-theme=dark]/site:border group-data-[site-theme=dark]/site:border-white/10" />
         <Container>
           <CallToAction />
           <PlusGrid className="pb-16">

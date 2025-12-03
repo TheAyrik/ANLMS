@@ -1,6 +1,11 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+} from "react";
 
 export type DashboardUser = {
   id: number;
@@ -11,11 +16,16 @@ export type DashboardUser = {
   role: "student" | "instructor" | "admin";
 };
 
+export type DashboardTheme = "light" | "dark";
+
 type DashboardContextValue = {
   user: DashboardUser | null;
   loading: boolean;
   refresh: () => Promise<void>;
   logout: () => Promise<void>;
+  theme: DashboardTheme;
+  setTheme: Dispatch<SetStateAction<DashboardTheme>>;
+  toggleTheme: () => void;
 };
 
 export const DashboardContext =

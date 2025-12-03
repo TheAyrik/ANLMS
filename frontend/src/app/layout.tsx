@@ -2,6 +2,7 @@
 import '@/styles/tailwind.css';
 import type { Metadata } from 'next';
 import { TopLoader } from '@/components/top-loader';
+import { SiteThemeProvider } from '@/components/site-theme-provider';
 
 export const metadata: Metadata = {
   title: {
@@ -32,9 +33,11 @@ export default function RootLayout({
           href="/blog/feed.xml"
         />
       </head>
-      <body className="text-gray-950 antialiased">
-        <TopLoader />
-        {children}
+      <body className="antialiased">
+        <SiteThemeProvider>
+          <TopLoader />
+          {children}
+        </SiteThemeProvider>
       </body>
     </html>
   );

@@ -16,13 +16,16 @@ export default function ProfilePage() {
     <div className="space-y-6 w-full">
       <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs font-medium text-pardis-secondary/80">
+          <p className="text-xs font-medium text-pardis-secondary/80 group-data-[dashboard-theme=dark]/dashboard:text-pardis-primary-100">
             پروفایل کاربری
           </p>
-          <Heading as="h1" className="!text-3xl sm:!text-[2.6rem]">
+          <Heading
+            as="h1"
+            className="!text-3xl sm:!text-[2.6rem] group-data-[dashboard-theme=dark]/dashboard:!text-white"
+          >
             اطلاعات حساب و نقش دسترسی
           </Heading>
-          <p className="mt-2 text-sm text-pardis-gray">
+          <p className="mt-2 text-sm text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
             مشخصات ورود، نقش دسترسی و وضعیت فعلی حساب را یکجا ببین.
           </p>
         </div>
@@ -37,14 +40,14 @@ export default function ProfilePage() {
       </header>
 
       <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-        <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-          <div className="flex items-center justify-between border-b border-black/5 pb-3">
-            <h2 className="text-base font-semibold text-gray-900">
+        <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+          <div className="flex items-center justify-between border-b border-black/5 pb-3 group-data-[dashboard-theme=dark]/dashboard:border-white/10">
+            <h2 className="text-base font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
               مشخصات اصلی
             </h2>
             <Badge color="blue">{roleLabel(user.role)}</Badge>
           </div>
-          <dl className="grid gap-4 py-4 text-sm text-gray-800 sm:grid-cols-2">
+          <dl className="grid gap-4 py-4 text-sm text-gray-800 group-data-[dashboard-theme=dark]/dashboard:text-slate-200 sm:grid-cols-2">
             <InfoRow label="نام">
               {user.first_name || "—"}
             </InfoRow>
@@ -67,11 +70,11 @@ export default function ProfilePage() {
         </section>
 
         <aside className="space-y-4">
-          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-            <div className="text-sm font-semibold text-gray-900">
+          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+            <div className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
               امنیت حساب
             </div>
-            <ul className="mt-2 space-y-2 text-xs text-pardis-gray">
+            <ul className="mt-2 space-y-2 text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
               <li>• از اشتراک‌گذاری کوکی/مرورگر با دیگران خودداری کن.</li>
               <li>• حتماً پس از اتمام کار در دستگاه عمومی از حساب خارج شو.</li>
               <li>• نقش‌ها فقط از طریق ادمین سیستم تغییر می‌کنند.</li>
@@ -87,8 +90,8 @@ export default function ProfilePage() {
             </div>
           </section>
 
-          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-            <div className="text-sm font-semibold text-gray-900">
+          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+            <div className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
               دسترسی‌های سفارشی
             </div>
             <EmptyState
@@ -110,9 +113,9 @@ function InfoRow({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-black/5 bg-white/80 px-3 py-2">
-      <div className="text-xs font-medium text-pardis-gray">{label}</div>
-      <div className="mt-1 text-sm font-semibold text-gray-900">
+    <div className="rounded-2xl border border-black/5 bg-white/80 px-3 py-2 group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/60">
+      <div className="text-xs font-medium text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">{label}</div>
+      <div className="mt-1 text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
         {children}
       </div>
     </div>

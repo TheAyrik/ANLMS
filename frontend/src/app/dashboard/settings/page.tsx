@@ -12,7 +12,7 @@ import { useDashboard } from "../dashboard-context";
 type PreferenceKey = "persistLogin" | "notifications" | "compactUI";
 
 export default function SettingsPage() {
-  const { logout } = useDashboard();
+  const { logout, theme, toggleTheme } = useDashboard();
   const [prefs, setPrefs] = useState<Record<PreferenceKey, boolean>>({
     persistLogin: true,
     notifications: true,
@@ -42,13 +42,16 @@ export default function SettingsPage() {
     <div className="space-y-6 w-full">
       <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs font-medium text-pardis-secondary/80">
+          <p className="text-xs font-medium text-pardis-secondary/80 group-data-[dashboard-theme=dark]/dashboard:text-pardis-primary-100">
             تنظیمات و امنیت
           </p>
-          <Heading as="h1" className="!text-3xl sm:!text-[2.6rem]">
+          <Heading
+            as="h1"
+            className="!text-3xl sm:!text-[2.6rem] group-data-[dashboard-theme=dark]/dashboard:!text-white"
+          >
             کنترل تجربه کاربری و نشست‌ها
           </Heading>
-          <p className="mt-2 text-sm text-pardis-gray">
+          <p className="mt-2 text-sm text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
             سلیقه‌های بصری، نحوه ورود و خروج و نکات امنیتی را از این بخش مدیریت کن.
           </p>
         </div>
@@ -58,11 +61,17 @@ export default function SettingsPage() {
       </header>
 
       <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-        <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-          <div className="text-base font-semibold text-gray-900">
+        <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+          <div className="text-base font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
             ترجیحات رابط کاربری
           </div>
           <div className="mt-3 space-y-3">
+            <PreferenceToggle
+              label="حالت تیره داشبورد"
+              description="برای محیط‌های کم‌نور یا تمرکز بیشتر، رنگ‌بندی تیره را فعال کن."
+              active={theme === "dark"}
+              onToggle={toggleTheme}
+            />
             <PreferenceToggle
               label="حالت فشرده‌سازی کارت‌ها"
               description="کاهش فاصله‌ها و حاشیه‌ها برای نمایش اطلاعات بیشتر در یک صفحه."
@@ -85,14 +94,14 @@ export default function SettingsPage() {
         </section>
 
         <aside className="space-y-4">
-          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
+          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
             <div className="flex items-center justify-between">
-              <div className="text-sm font-semibold text-gray-900">
+              <div className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
                 نشست‌ها و خروج
               </div>
               <Badge color="amber">امنیت</Badge>
             </div>
-            <p className="mt-2 text-xs text-pardis-gray">
+            <p className="mt-2 text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
               در صورت استفاده از دستگاه مشترک، پس از اتمام کار خروج کن.
             </p>
             <div className="mt-3 flex gap-2">
@@ -106,8 +115,8 @@ export default function SettingsPage() {
             </div>
           </section>
 
-          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-            <div className="text-sm font-semibold text-gray-900">
+          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+            <div className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
               سایر تنظیمات
             </div>
             <EmptyState
@@ -133,12 +142,12 @@ function PreferenceToggle({
   onToggle: () => void;
 }) {
   return (
-    <div className="flex items-start justify-between rounded-2xl border border-black/5 bg-white/80 px-3 py-3">
+    <div className="flex items-start justify-between rounded-2xl border border-black/5 bg-white/80 px-3 py-3 group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/60">
       <div>
-        <div className="text-sm font-semibold text-gray-900">
+        <div className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
           {label}
         </div>
-        <p className="mt-1 text-[11px] text-pardis-gray">
+        <p className="mt-1 text-[11px] text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
           {description}
         </p>
       </div>
@@ -147,7 +156,9 @@ function PreferenceToggle({
         onClick={onToggle}
         className={[
           "relative h-6 w-11 rounded-full transition-all",
-          active ? "bg-pardis-primary" : "bg-pardis-gray-200",
+          active
+            ? "bg-pardis-primary group-data-[dashboard-theme=dark]/dashboard:bg-pardis-primary/90"
+            : "bg-pardis-gray-200 group-data-[dashboard-theme=dark]/dashboard:bg-slate-700",
         ].join(" ")}
         aria-pressed={active}
       >

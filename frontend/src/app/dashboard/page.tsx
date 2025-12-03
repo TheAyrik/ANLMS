@@ -106,7 +106,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8 w-full">
-      <header className="relative overflow-hidden rounded-4xl bg-gradient-to-br from-pardis-primary-700 via-pardis-secondary-600 to-pardis-primary-950 text-white shadow-lg ring-1 ring-white/10">
+      <header className="relative overflow-hidden rounded-4xl bg-gradient-to-br from-pardis-primary-700 via-pardis-secondary-600 to-pardis-primary-950 text-white shadow-lg ring-1 ring-white/10 group-data-[dashboard-theme=dark]/dashboard:from-[#0b1f2d] group-data-[dashboard-theme=dark]/dashboard:via-[#0f3043] group-data-[dashboard-theme=dark]/dashboard:to-[#060e18] group-data-[dashboard-theme=dark]/dashboard:ring-white/15">
         <div className="absolute -left-16 -top-10 h-48 w-48 rounded-full bg-white/10 blur-3xl" aria-hidden="true" />
         <div className="absolute -right-24 bottom-0 h-56 w-56 rounded-full bg-cyan-200/15 blur-3xl" aria-hidden="true" />
         <div className="absolute inset-x-0 top-0 h-px bg-white/20 opacity-50" aria-hidden="true" />
@@ -141,13 +141,13 @@ export default function DashboardPage() {
 
       <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
         <section className="space-y-6">
-          <section className="rounded-3xl bg-white/90 ring-1 ring-pardis-primary/10 shadow-xs backdrop-blur">
-            <div className="flex items-center justify-between gap-3 border-b border-black/5 px-5 py-4">
+          <section className="rounded-3xl bg-white/90 ring-1 ring-pardis-primary/10 shadow-xs backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+            <div className="flex items-center justify-between gap-3 border-b border-black/5 px-5 py-4 group-data-[dashboard-theme=dark]/dashboard:border-white/10">
               <div>
-                <h2 className="text-base font-semibold text-gray-950">
+                <h2 className="text-base font-semibold text-gray-950 group-data-[dashboard-theme=dark]/dashboard:text-white">
                   مسیر یادگیری/مدیریت دوره‌ها
                 </h2>
-                <p className="mt-1 text-xs text-pardis-gray">
+                <p className="mt-1 text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
                   آخرین دوره‌هایی که برای تو در دسترس هستند.
                 </p>
               </div>
@@ -156,7 +156,9 @@ export default function DashboardPage() {
               </Button>
             </div>
             {loading ? (
-              <div className="p-5 text-sm text-pardis-gray">در حال بارگذاری دوره‌ها...</div>
+              <div className="p-5 text-sm text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
+                در حال بارگذاری دوره‌ها...
+              </div>
             ) : heroCourses.length === 0 ? (
               <EmptyState
                 title="هنوز دوره‌ای نداری"
@@ -180,13 +182,13 @@ export default function DashboardPage() {
             )}
           </section>
 
-          <section className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
+          <section className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div>
-                <h2 className="text-base font-semibold text-gray-950">
+                <h2 className="text-base font-semibold text-gray-950 group-data-[dashboard-theme=dark]/dashboard:text-white">
                   پیشنهاد برای تو
                 </h2>
-                <p className="mt-1 text-xs text-pardis-gray">
+                <p className="mt-1 text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
                   بر اساس تخصص و نقش فعلی‌ات.
                 </p>
               </div>
@@ -200,18 +202,18 @@ export default function DashboardPage() {
         </section>
 
         <aside className="space-y-6">
-          <section className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-            <h2 className="mb-3 text-base font-semibold text-gray-950">
+          <section className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+            <h2 className="mb-3 text-base font-semibold text-gray-950 group-data-[dashboard-theme=dark]/dashboard:text-white">
               رویدادهای پیش‌رو
             </h2>
             <div className="space-y-3">
               {upcomingFromCourses(publishedCourses).map((item) => (
                 <div
                   key={item.id}
-                  className="rounded-2xl border border-black/5 bg-white/80 px-3 py-2 text-xs text-gray-800"
+                  className="rounded-2xl border border-black/5 bg-white/80 px-3 py-2 text-xs text-gray-800 group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/60 group-data-[dashboard-theme=dark]/dashboard:text-slate-100"
                 >
                   <div className="font-medium">{item.title}</div>
-                  <div className="mt-1 text-[11px] text-pardis-gray">
+                  <div className="mt-1 text-[11px] text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
                     {item.date}
                   </div>
                 </div>
@@ -225,25 +227,25 @@ export default function DashboardPage() {
             </div>
           </section>
 
-          <section className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-            <h2 className="mb-3 text-base font-semibold text-gray-950">
+          <section className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+            <h2 className="mb-3 text-base font-semibold text-gray-950 group-data-[dashboard-theme=dark]/dashboard:text-white">
               آخرین بروزرسانی‌ها
             </h2>
-            <ul className="space-y-3 text-xs text-pardis-gray">
+            <ul className="space-y-3 text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
               {recentActivity(courses).map((item) => (
                 <li
                   key={item.id}
-                  className="rounded-2xl border border-black/5 bg-white/70 px-3 py-2"
+                  className="rounded-2xl border border-black/5 bg-white/70 px-3 py-2 group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/60"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <span className="font-medium text-gray-900">
+                    <span className="font-medium text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
                       {item.title}
                     </span>
                     <Badge color={item.is_published ? "green" : "amber"}>
                       {item.is_published ? "منتشر شده" : "پیش‌نویس"}
                     </Badge>
                   </div>
-                  <div className="mt-1 text-[11px] text-pardis-gray">
+                  <div className="mt-1 text-[11px] text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
                     آخرین بروزرسانی: {formatDate(item.updated_at)}
                   </div>
                 </li>
@@ -255,7 +257,7 @@ export default function DashboardPage() {
                 />
               )}
               {error && (
-                <li className="text-[11px] text-red-600">
+                <li className="text-[11px] text-red-600 group-data-[dashboard-theme=dark]/dashboard:text-red-300">
                   {error}
                 </li>
               )}
@@ -275,15 +277,17 @@ type StatCardProps = {
 
 function StatCard({ label, value, helper }: StatCardProps) {
   return (
-    <div className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-      <div className="text-sm font-semibold text-pardis-secondary/80">
+    <div className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+      <div className="text-sm font-semibold text-pardis-secondary/80 group-data-[dashboard-theme=dark]/dashboard:text-pardis-primary-100">
         {label}
       </div>
-      <div className="mt-2 text-[1.35rem] font-semibold leading-tight tracking-tight text-gray-950">
+      <div className="mt-2 text-[1.35rem] font-semibold leading-tight tracking-tight text-gray-950 group-data-[dashboard-theme=dark]/dashboard:text-white">
         {value}
       </div>
       {helper && (
-        <div className="mt-1 text-[12px] text-pardis-gray">{helper}</div>
+        <div className="mt-1 text-[12px] text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
+          {helper}
+        </div>
       )}
     </div>
   );
@@ -291,25 +295,25 @@ function StatCard({ label, value, helper }: StatCardProps) {
 
 function CourseCard({ course }: { course: Course }) {
   return (
-    <div className="flex flex-col justify-between rounded-2xl border border-black/5 bg-white/90 p-4 shadow-xs">
+    <div className="flex flex-col justify-between rounded-2xl border border-black/5 bg-white/90 p-4 shadow-xs group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/70 group-data-[dashboard-theme=dark]/dashboard:shadow-[0_15px_50px_-30px_rgba(0,0,0,0.85)]">
       <div>
         <div className="flex items-start justify-between gap-2">
-          <h3 className="line-clamp-2 text-sm font-semibold text-gray-950">
+          <h3 className="line-clamp-2 text-sm font-semibold text-gray-950 group-data-[dashboard-theme=dark]/dashboard:text-white">
             {course.title}
           </h3>
           <Badge color={course.is_published ? "green" : "amber"}>
             {course.is_published ? "منتشر شده" : "پیش‌نویس"}
           </Badge>
         </div>
-        <p className="mt-1 line-clamp-2 text-[11px] text-pardis-gray">
+        <p className="mt-1 line-clamp-2 text-[11px] text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
           {course.description || "بدون توضیح"}
         </p>
-        <p className="mt-1 text-[11px] text-pardis-secondary">
+        <p className="mt-1 text-[11px] text-pardis-secondary group-data-[dashboard-theme=dark]/dashboard:text-pardis-primary-100">
           {course.instructor_name || "بدون نام مدرس"}
         </p>
       </div>
       <div className="mt-3">
-        <div className="flex items-center justify-between text-[11px] text-pardis-gray">
+        <div className="flex items-center justify-between text-[11px] text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
           <span>هزینه</span>
           <span>
             {course.is_free
@@ -333,7 +337,7 @@ function CourseCard({ course }: { course: Course }) {
 
 function Tag({ children }: { children: React.ReactNode }) {
   return (
-    <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-[11px] font-medium text-gray-700">
+    <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-[11px] font-medium text-gray-700 group-data-[dashboard-theme=dark]/dashboard:border-white/15 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/60 group-data-[dashboard-theme=dark]/dashboard:text-slate-200">
       {children}
     </span>
   );

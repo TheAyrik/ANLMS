@@ -32,25 +32,26 @@ export function BentoCard({
         'group relative flex flex-col overflow-hidden rounded-lg',
         'bg-white ring-1 shadow-xs ring-pardis-primary/10',
         'data-dark:bg-[#0c3a47] data-dark:ring-white/10',
+        'group-data-[site-theme=dark]/site:border group-data-[site-theme=dark]/site:border-white/10 group-data-[site-theme=dark]/site:bg-slate-900/70 group-data-[site-theme=dark]/site:ring-white/10',
       )}
     >
       <div className="relative h-80 shrink-0">
         {graphic}
         {fade.includes('top') && (
-          <div className="absolute inset-0 bg-linear-to-b from-white to-50% group-data-dark:from-[#0c3a47] group-data-dark:from-[-25%]" />
+          <div className="absolute inset-0 bg-linear-to-b from-white to-50% group-data-dark:from-[#0c3a47] group-data-dark:from-[-25%] group-data-[site-theme=dark]/site:from-slate-900/70 group-data-[site-theme=dark]/site:via-slate-950/80" />
         )}
         {fade.includes('bottom') && (
-          <div className="absolute inset-0 bg-linear-to-t from-white to-50% group-data-dark:from-[#0c3a47] group-data-dark:from-[-25%]" />
+          <div className="absolute inset-0 bg-linear-to-t from-white to-50% group-data-dark:from-[#0c3a47] group-data-dark:from-[-25%] group-data-[site-theme=dark]/site:from-slate-900/70 group-data-[site-theme=dark]/site:via-slate-950/80" />
         )}
       </div>
       <div className="relative p-10">
         <Subheading as="h3" dark={dark}>
           {eyebrow}
         </Subheading>
-        <p className="mt-1 text-2xl/8 font-medium tracking-tight text-gray-950 group-data-dark:text-white">
+        <p className="mt-1 text-2xl/8 font-medium tracking-tight text-gray-950 group-data-dark:text-white group-data-[site-theme=dark]/site:text-white">
           {title}
         </p>
-        <p className="mt-2 max-w-[600px] text-sm/6 text-gray-600 group-data-dark:text-gray-400">
+        <p className="mt-2 max-w-[600px] text-sm/6 text-gray-600 group-data-dark:text-gray-400 group-data-[site-theme=dark]/site:text-slate-300">
           {description}
         </p>
       </div>

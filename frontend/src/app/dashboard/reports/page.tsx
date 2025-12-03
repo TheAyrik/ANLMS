@@ -74,13 +74,16 @@ export default function ReportsPage() {
     <div className="space-y-6 w-full">
       <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs font-medium text-pardis-secondary/80">
+          <p className="text-xs font-medium text-pardis-secondary/80 group-data-[dashboard-theme=dark]/dashboard:text-pardis-primary-100">
             گزارش‌ها و سلامت محتوا
           </p>
-          <Heading as="h1" className="!text-3xl sm:!text-[2.6rem]">
+          <Heading
+            as="h1"
+            className="!text-3xl sm:!text-[2.6rem] group-data-[dashboard-theme=dark]/dashboard:!text-white"
+          >
             وضعیت دوره‌ها و ظرفیت انتشار
           </Heading>
-          <p className="mt-2 text-sm text-pardis-gray">
+          <p className="mt-2 text-sm text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
             شاخص‌های کلیدی برای پیگیری انتشار، درآمد بالقوه و محتوای رایگان.
           </p>
         </div>
@@ -117,18 +120,18 @@ export default function ReportsPage() {
       </section>
 
       <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-        <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-          <div className="flex items-center justify-between border-b border-black/5 pb-3">
-            <h2 className="text-base font-semibold text-gray-900">
+        <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+          <div className="flex items-center justify-between border-b border-black/5 pb-3 group-data-[dashboard-theme=dark]/dashboard:border-white/10">
+            <h2 className="text-base font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
               جزئیات دوره‌ها
             </h2>
-            <span className="text-xs text-pardis-gray">
+            <span className="text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
               {courses.length} دوره ثبت شده
             </span>
           </div>
 
           {loading ? (
-            <p className="py-4 text-sm text-pardis-gray">
+            <p className="py-4 text-sm text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
               در حال دریافت داده...
             </p>
           ) : courses.length === 0 ? (
@@ -143,22 +146,26 @@ export default function ReportsPage() {
               ))}
             </div>
           )}
-          {error && <p className="text-xs text-red-600">{error}</p>}
+          {error && (
+            <p className="text-xs text-red-600 group-data-[dashboard-theme=dark]/dashboard:text-red-300">
+              {error}
+            </p>
+          )}
         </section>
 
         <aside className="space-y-4">
-          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-            <div className="text-sm font-semibold text-gray-900">
+          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+            <div className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
               ترکیب محتوا
             </div>
             <div className="mt-3 space-y-2">
               {chartData.map((item) => (
                 <div key={item.label}>
-                  <div className="flex items-center justify-between text-xs text-pardis-gray">
+                  <div className="flex items-center justify-between text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
                     <span>{item.label}</span>
                     <span>{item.value}</span>
                   </div>
-                  <div className="mt-1 h-2 overflow-hidden rounded-full bg-pardis-primary/10">
+                  <div className="mt-1 h-2 overflow-hidden rounded-full bg-pardis-primary/10 group-data-[dashboard-theme=dark]/dashboard:bg-white/10">
                     <div
                       className={`h-full ${item.color}`}
                       style={{
@@ -171,11 +178,11 @@ export default function ReportsPage() {
             </div>
           </section>
 
-          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-            <div className="text-sm font-semibold text-gray-900">
+          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+            <div className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
               وضعیت دسترسی شما
             </div>
-            <ul className="mt-2 space-y-2 text-xs text-pardis-gray">
+            <ul className="mt-2 space-y-2 text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
               <li>• نقش فعلی: {roleLabel(user.role)}</li>
               <li>• تعداد دوره‌های تحت مدیریت: {myCourses.length}</li>
               <li>
@@ -210,15 +217,15 @@ function ReportCard({
   helper?: string;
 }) {
   return (
-    <div className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-      <div className="text-sm font-semibold text-pardis-secondary/80">
+    <div className="rounded-3xl bg-white/90 px-5 py-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+      <div className="text-sm font-semibold text-pardis-secondary/80 group-data-[dashboard-theme=dark]/dashboard:text-pardis-primary-100">
         {label}
       </div>
-      <div className="mt-2 text-[1.35rem] font-semibold leading-tight tracking-tight text-gray-950">
+      <div className="mt-2 text-[1.35rem] font-semibold leading-tight tracking-tight text-gray-950 group-data-[dashboard-theme=dark]/dashboard:text-white">
         {value}
       </div>
       {helper && (
-        <div className="mt-1 text-[12px] text-pardis-gray">
+        <div className="mt-1 text-[12px] text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
           {helper}
         </div>
       )}
@@ -228,13 +235,13 @@ function ReportCard({
 
 function ReportRow({ course }: { course: Course }) {
   return (
-    <div className="rounded-2xl border border-black/5 bg-white/90 px-4 py-3 shadow-xs">
+    <div className="rounded-2xl border border-black/5 bg-white/90 px-4 py-3 shadow-xs group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/70">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <div className="text-sm font-semibold text-gray-900">
+          <div className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
             {course.title}
           </div>
-          <div className="mt-1 text-[11px] text-pardis-gray">
+          <div className="mt-1 text-[11px] text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
             مدرس: {course.instructor_name || "—"}
           </div>
         </div>
@@ -242,19 +249,19 @@ function ReportRow({ course }: { course: Course }) {
           {course.is_published ? "منتشر شده" : "پیش‌نویس"}
         </Badge>
       </div>
-      <div className="mt-2 grid gap-2 text-[11px] text-pardis-gray sm:grid-cols-3">
+      <div className="mt-2 grid gap-2 text-[11px] text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400 sm:grid-cols-3">
         <div>
-          <span className="font-medium text-gray-800">قیمت: </span>
+          <span className="font-medium text-gray-800 group-data-[dashboard-theme=dark]/dashboard:text-slate-200">قیمت: </span>
           {course.is_free
             ? "رایگان"
             : `${Number(course.price || 0).toLocaleString("fa-IR")} تومان`}
         </div>
         <div>
-          <span className="font-medium text-gray-800">تاریخ ایجاد: </span>
+          <span className="font-medium text-gray-800 group-data-[dashboard-theme=dark]/dashboard:text-slate-200">تاریخ ایجاد: </span>
           {formatDate(course.created_at)}
         </div>
         <div>
-          <span className="font-medium text-gray-800">آخرین بروزرسانی: </span>
+          <span className="font-medium text-gray-800 group-data-[dashboard-theme=dark]/dashboard:text-slate-200">آخرین بروزرسانی: </span>
           {formatDate(course.updated_at)}
         </div>
       </div>

@@ -28,14 +28,14 @@ export const metadata: Metadata = {
 function Hero() {
   return (
     <div className="relative min-h-[560px] overflow-hidden rounded-4xl">
-      <Gradient className="absolute inset-2 bottom-0 rounded-4xl ring-1 ring-black/5 ring-inset z-0" />
+      <Gradient className="absolute inset-2 bottom-0 rounded-4xl ring-1 ring-black/5 ring-inset z-0 group-data-[site-theme=dark]/site:ring-white/10" />
       <div className="aurora rounded-4xl inset-2 z-10" aria-hidden="true"></div>
       <Container className="relative z-20">
         <Navbar
           banner={
             <Link
               href="#"
-              className="flex items-center gap-1 rounded-full bg-pardis-primary-100 px-3 py-0.5 text-sm/6 font-medium text-pardis-primary-800 data-hover:bg-pardis-primary-200"
+              className="flex items-center gap-1 rounded-full bg-pardis-primary-100 px-3 py-0.5 text-sm/6 font-medium text-pardis-primary-800 data-hover:bg-pardis-primary-200 group-data-[site-theme=dark]/site:bg-white/10 group-data-[site-theme=dark]/site:text-white group-data-[site-theme=dark]/site:data-hover:bg-white/15"
             >
               دپارتمان آموزش پردیس هوش مصنوعی و نوآوری دیجیتال ایران
               <ChevronRightIcon className="size-4" />
@@ -44,20 +44,20 @@ function Hero() {
         />
         <div className="grid grid-cols-1 items-center md:grid-cols-12">
           <div className="order-2 md:order-1 md:col-span-6 p-6 md:pr-12 text-center md:text-right">
-            <h1 className="font-display text-4xl/[1.15] font-medium tracking-tight text-gray-950 sm:text-6xl/[1.05] md:text-6xl/[1]">
+            <h1 className="font-display text-4xl/[1.15] font-medium tracking-tight text-gray-950 sm:text-6xl/[1.05] md:text-6xl/[1] group-data-[site-theme=dark]/site:text-white">
               تو قهرمان این داستانی
             </h1>
-            <p className="mt-6 max-w-[42ch] md:max-w-[40ch] md:ml-auto text-xl/7 font-medium text-gray-700 sm:text-2xl/8">
+            <p className="mt-6 max-w-[42ch] md:max-w-[40ch] md:ml-auto text-xl/7 font-medium text-gray-700 sm:text-2xl/8 group-data-[site-theme=dark]/site:text-slate-300">
               آینده را کسی می‌سازد که باور کند می‌تواند — و از همین‌جا شروع کند.
             </p>
             <div className="mt-4 flex flex-wrap items-center justify-start gap-2">
-              <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700">
+              <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700 group-data-[site-theme=dark]/site:border-white/15 group-data-[site-theme=dark]/site:bg-slate-900/60 group-data-[site-theme=dark]/site:text-slate-100">
                 پروژه‌محور
               </span>
-              <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700">
+              <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700 group-data-[site-theme=dark]/site:border-white/15 group-data-[site-theme=dark]/site:bg-slate-900/60 group-data-[site-theme=dark]/site:text-slate-100">
                 رودمپ شفاف
               </span>
-              <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700">
+              <span className="rounded-full border border-pardis-primary/20 bg-white/70 px-3 py-1 text-sm/6 text-gray-700 group-data-[site-theme=dark]/site:border-white/15 group-data-[site-theme=dark]/site:bg-slate-900/60 group-data-[site-theme=dark]/site:text-slate-100">
                 جامعهٔ فعال
               </span>
             </div>
@@ -145,7 +145,7 @@ function CourseGridSection() {
       <Heading as="h3" className="mt-2 max-w-3xl">
         چهار کارت نمایشی با استایل پردیس.
       </Heading>
-      <p className="mt-3 max-w-3xl text-base/7 text-gray-700">
+      <p className="mt-3 max-w-3xl text-base/7 text-gray-700 group-data-[site-theme=dark]/site:text-slate-300">
         یک نمای سریع از دوره‌ها با طراحی کارتی تیره، آمار، وضعیت انتشار و فراخوان به اقدام.
       </p>
 
@@ -219,7 +219,7 @@ function BentoSection() {
 
 function DarkBentoSection() {
   return (
-    <div className="mx-2 mt-2 rounded-4xl bg-linear-to-br from-pardis-secondary/90 to-pardis-primary/30 py-32">
+    <div className="mx-2 mt-2 rounded-4xl bg-linear-to-br from-pardis-secondary/90 to-pardis-primary/30 py-32 group-data-[site-theme=dark]/site:from-[#0f2637] group-data-[site-theme=dark]/site:via-[#0d3a52] group-data-[site-theme=dark]/site:to-[#0a84ad]/60 group-data-[site-theme=dark]/site:ring-1 group-data-[site-theme=dark]/site:ring-white/10">
       <Container>
         <Subheading dark>تعامل</Subheading>
         <Heading as="h3" dark className="mt-2 max-w-3xl">
@@ -279,7 +279,7 @@ export default function Home() {
         <Container className="mt-10">
           <LogoCloud />
         </Container>
-        <div className="bg-linear-to-b from-white from-40% to-pardis-primary-50 py-32">
+        <div className="bg-linear-to-b from-white from-40% to-pardis-primary-50 py-32 group-data-[site-theme=dark]/site:from-slate-950 group-data-[site-theme=dark]/site:via-slate-900 group-data-[site-theme=dark]/site:to-slate-900">
           <CourseGridSection />
           <FeatureSection />
           <BentoSection />

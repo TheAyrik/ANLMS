@@ -91,13 +91,16 @@ export default function CoursesPage() {
     <div className="space-y-6 w-full">
       <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs font-medium text-pardis-secondary/80">
+          <p className="text-xs font-medium text-pardis-secondary/80 group-data-[dashboard-theme=dark]/dashboard:text-pardis-primary-100">
             مدیریت دوره‌ها
           </p>
-          <Heading as="h1" className="!text-3xl sm:!text-[2.6rem]">
+          <Heading
+            as="h1"
+            className="!text-3xl sm:!text-[2.6rem] group-data-[dashboard-theme=dark]/dashboard:!text-white"
+          >
             دوره‌ها - {user.role === "student" ? "یادگیرنده" : "مدرس/ادمین"}
           </Heading>
-          <p className="mt-2 text-sm text-pardis-gray">
+          <p className="mt-2 text-sm text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
             لیست کامل دوره‌ها. برای ایجاد، ویرایش یا انتشار دوره‌ها از همین‌جا اقدام کن.
           </p>
         </div>
@@ -109,14 +112,14 @@ export default function CoursesPage() {
       </header>
 
       <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-        <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur sm:p-5">
-          <div className="flex flex-col gap-4 border-b border-black/5 pb-4 sm:flex-row sm:items-center sm:justify-between">
+        <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10 sm:p-5">
+          <div className="flex flex-col gap-4 border-b border-black/5 pb-4 sm:flex-row sm:items-center sm:justify-between group-data-[dashboard-theme=dark]/dashboard:border-white/10">
             <div className="flex flex-wrap items-center gap-2">
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="جستجو بر اساس عنوان یا اسلاگ"
-                className="w-full rounded-xl border border-black/5 bg-white/70 px-3 py-2 text-sm text-gray-900 shadow-inner ring-1 ring-black/5 focus:outline-none focus:ring-2 focus:ring-pardis-primary sm:w-64"
+                className="w-full rounded-xl border border-black/5 bg-white/70 px-3 py-2 text-sm text-gray-900 shadow-inner ring-1 ring-black/5 placeholder:text-pardis-gray focus:outline-none focus:ring-2 focus:ring-pardis-primary sm:w-64 group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/70 group-data-[dashboard-theme=dark]/dashboard:text-slate-100 group-data-[dashboard-theme=dark]/dashboard:ring-white/15 group-data-[dashboard-theme=dark]/dashboard:placeholder:text-slate-500"
               />
               <ToggleButton
                 active={onlyMine}
@@ -131,13 +134,13 @@ export default function CoursesPage() {
                 فقط پیش‌نویس‌ها ({draftCount})
               </ToggleButton>
             </div>
-            <div className="text-xs text-pardis-gray">
+            <div className="text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
               {courses.length} دوره ثبت شده
             </div>
           </div>
 
           {loading ? (
-            <div className="py-6 text-sm text-pardis-gray">
+            <div className="py-6 text-sm text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
               در حال بارگذاری دوره‌ها...
             </div>
           ) : filteredCourses.length === 0 ? (
@@ -153,7 +156,9 @@ export default function CoursesPage() {
             </div>
           )}
           {error && (
-            <div className="text-xs text-red-600">{error}</div>
+            <div className="text-xs text-red-600 group-data-[dashboard-theme=dark]/dashboard:text-red-300">
+              {error}
+            </div>
           )}
         </section>
 
@@ -166,11 +171,11 @@ export default function CoursesPage() {
               instructorId={user.id}
             />
 
-            <div className="rounded-2xl bg-white/90 p-4 ring-1 ring-pardis-primary/10 backdrop-blur">
-              <div className="text-sm font-semibold text-gray-900">
+            <div className="rounded-2xl bg-white/90 p-4 ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+              <div className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
                 راهنمای نقش‌ها
               </div>
-              <ul className="mt-2 space-y-2 text-xs text-pardis-gray">
+              <ul className="mt-2 space-y-2 text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
                 <li>• ادمین می‌تواند همه دوره‌ها را مشاهده و ویرایش کند.</li>
                 <li>• مدرس فقط می‌تواند دوره‌های خود را ایجاد/ویرایش کند.</li>
                 <li>• دانشجو دسترسی ساخت ندارد و فقط دوره‌های منتشر شده را می‌بیند.</li>
@@ -185,17 +190,17 @@ export default function CoursesPage() {
 
 function CourseCard({ course }: { course: Course }) {
   return (
-    <article className="flex h-full flex-col justify-between rounded-2xl border border-black/5 bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10">
+    <article className="flex h-full flex-col justify-between rounded-2xl border border-black/5 bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/70 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h3 className="text-sm font-semibold text-gray-900">
+          <h3 className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
             {course.title}
           </h3>
-          <p className="mt-1 line-clamp-2 text-[11px] text-pardis-gray">
+          <p className="mt-1 line-clamp-2 text-[11px] text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
             {course.description || "بدون توضیح"}
           </p>
           <div className="mt-2 flex items-center gap-2 text-[11px] text-pardis-secondary">
-            <span className="rounded-full bg-pardis-primary-50 px-2 py-1">
+            <span className="rounded-full bg-pardis-primary-50 px-2 py-1 group-data-[dashboard-theme=dark]/dashboard:bg-pardis-primary-500/15 group-data-[dashboard-theme=dark]/dashboard:text-pardis-primary-100">
               {course.instructor_name || "مدرس تعیین نشده"}
             </span>
           </div>
@@ -204,10 +209,10 @@ function CourseCard({ course }: { course: Course }) {
           {course.is_published ? "منتشر شده" : "پیش‌نویس"}
         </Badge>
       </div>
-      <div className="mt-3 space-y-2 text-[11px] text-gray-700">
+      <div className="mt-3 space-y-2 text-[11px] text-gray-700 group-data-[dashboard-theme=dark]/dashboard:text-slate-300">
         <div className="flex items-center justify-between">
           <span>اسلاگ</span>
-          <span className="dir-ltr font-mono text-xs text-pardis-gray">
+          <span className="dir-ltr font-mono text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
             {course.slug}
           </span>
         </div>
@@ -219,7 +224,7 @@ function CourseCard({ course }: { course: Course }) {
               : `${Number(course.price || 0).toLocaleString("fa-IR")} تومان`}
           </span>
         </div>
-        <div className="flex items-center justify-between text-pardis-gray">
+        <div className="flex items-center justify-between text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
           <span>آخرین بروزرسانی</span>
           <span>{formatDate(course.updated_at)}</span>
         </div>
@@ -298,14 +303,14 @@ function NewCourseForm({ onCreated, instructorId }: NewCourseFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur"
+      className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10"
     >
       <div className="mb-3 flex items-center justify-between gap-2">
         <div>
-          <div className="text-sm font-semibold text-gray-900">
+          <div className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
             ایجاد دوره جدید
           </div>
-          <p className="text-[11px] text-pardis-gray">
+          <p className="text-[11px] text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
             عنوان، توضیح و هزینه را وارد کن. ویرایش پیشرفته را می‌توانی بعداً انجام دهی.
           </p>
         </div>
@@ -316,17 +321,17 @@ function NewCourseForm({ onCreated, instructorId }: NewCourseFormProps) {
 
       <div className="space-y-3 text-sm">
         <label className="block space-y-1">
-          <span className="text-gray-800">عنوان</span>
+          <span className="text-gray-800 group-data-[dashboard-theme=dark]/dashboard:text-slate-200">عنوان</span>
           <input
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full rounded-xl border border-black/5 bg-white/80 px-3 py-2 text-sm shadow-inner ring-1 ring-black/5 focus:outline-none focus:ring-2 focus:ring-pardis-primary"
+            className="w-full rounded-xl border border-black/5 bg-white/80 px-3 py-2 text-sm shadow-inner ring-1 ring-black/5 placeholder:text-pardis-gray focus:outline-none focus:ring-2 focus:ring-pardis-primary group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/70 group-data-[dashboard-theme=dark]/dashboard:text-slate-100 group-data-[dashboard-theme=dark]/dashboard:ring-white/15 group-data-[dashboard-theme=dark]/dashboard:placeholder:text-slate-500"
             placeholder="مثلاً مبانی یادگیری ماشین"
           />
         </label>
         <label className="block space-y-1">
-          <span className="text-gray-800">اسلاگ</span>
+          <span className="text-gray-800 group-data-[dashboard-theme=dark]/dashboard:text-slate-200">اسلاگ</span>
           <input
             required
             value={slug}
@@ -334,35 +339,35 @@ function NewCourseForm({ onCreated, instructorId }: NewCourseFormProps) {
               setSlug(e.target.value);
               setSlugEdited(true);
             }}
-            className="w-full rounded-xl border border-black/5 bg-white/80 px-3 py-2 text-sm shadow-inner ring-1 ring-black/5 focus:outline-none focus:ring-2 focus:ring-pardis-primary dir-ltr"
+            className="w-full rounded-xl border border-black/5 bg-white/80 px-3 py-2 text-sm shadow-inner ring-1 ring-black/5 placeholder:text-pardis-gray focus:outline-none focus:ring-2 focus:ring-pardis-primary dir-ltr group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/70 group-data-[dashboard-theme=dark]/dashboard:text-slate-100 group-data-[dashboard-theme=dark]/dashboard:ring-white/15 group-data-[dashboard-theme=dark]/dashboard:placeholder:text-slate-500"
             placeholder="machine-learning-basics"
           />
         </label>
         <label className="block space-y-1">
-          <span className="text-gray-800">توضیحات</span>
+          <span className="text-gray-800 group-data-[dashboard-theme=dark]/dashboard:text-slate-200">توضیحات</span>
           <textarea
             required
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={3}
-            className="w-full rounded-xl border border-black/5 bg-white/80 px-3 py-2 text-sm shadow-inner ring-1 ring-black/5 focus:outline-none focus:ring-2 focus:ring-pardis-primary"
+            className="w-full rounded-xl border border-black/5 bg-white/80 px-3 py-2 text-sm shadow-inner ring-1 ring-black/5 placeholder:text-pardis-gray focus:outline-none focus:ring-2 focus:ring-pardis-primary group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/70 group-data-[dashboard-theme=dark]/dashboard:text-slate-100 group-data-[dashboard-theme=dark]/dashboard:ring-white/15 group-data-[dashboard-theme=dark]/dashboard:placeholder:text-slate-500"
             placeholder="مروری کوتاه بر محتوای دوره..."
           />
         </label>
         <div className="grid gap-3 sm:grid-cols-2">
           <label className="block space-y-1">
-            <span className="text-gray-800">قیمت (تومان)</span>
+            <span className="text-gray-800 group-data-[dashboard-theme=dark]/dashboard:text-slate-200">قیمت (تومان)</span>
             <input
               type="number"
               min={0}
               step="1000"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="w-full rounded-xl border border-black/5 bg-white/80 px-3 py-2 text-sm shadow-inner ring-1 ring-black/5 focus:outline-none focus:ring-2 focus:ring-pardis-primary dir-ltr"
+              className="w-full rounded-xl border border-black/5 bg-white/80 px-3 py-2 text-sm shadow-inner ring-1 ring-black/5 placeholder:text-pardis-gray focus:outline-none focus:ring-2 focus:ring-pardis-primary dir-ltr group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/70 group-data-[dashboard-theme=dark]/dashboard:text-slate-100 group-data-[dashboard-theme=dark]/dashboard:ring-white/15 group-data-[dashboard-theme=dark]/dashboard:placeholder:text-slate-500"
             />
           </label>
           <label className="block space-y-1">
-            <span className="text-gray-800">کاور دوره</span>
+            <span className="text-gray-800 group-data-[dashboard-theme=dark]/dashboard:text-slate-200">کاور دوره</span>
             <input
               type="file"
               accept="image/*"
@@ -370,18 +375,18 @@ function NewCourseForm({ onCreated, instructorId }: NewCourseFormProps) {
               onChange={(e) =>
                 setImageFile(e.target.files?.[0] ?? null)
               }
-              className="block w-full cursor-pointer rounded-xl border border-black/5 bg-white/80 px-3 py-2 text-sm file:mr-2 file:rounded-lg file:border-0 file:bg-pardis-primary file:px-3 file:py-1 file:text-white"
+              className="block w-full cursor-pointer rounded-xl border border-black/5 bg-white/80 px-3 py-2 text-sm file:mr-2 file:rounded-lg file:border-0 file:bg-pardis-primary file:px-3 file:py-1 file:text-white group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/70 group-data-[dashboard-theme=dark]/dashboard:text-slate-100 group-data-[dashboard-theme=dark]/dashboard:file:bg-pardis-primary-600"
             />
           </label>
         </div>
 
         <div className="flex items-center justify-between">
-          <label className="flex items-center gap-2 text-sm text-gray-800">
+          <label className="flex items-center gap-2 text-sm text-gray-800 group-data-[dashboard-theme=dark]/dashboard:text-slate-200">
             <input
               type="checkbox"
               checked={isPublished}
               onChange={(e) => setIsPublished(e.target.checked)}
-              className="size-4 rounded border border-black/10 text-pardis-primary focus:ring-pardis-primary"
+              className="size-4 rounded border border-black/10 text-pardis-primary focus:ring-pardis-primary group-data-[dashboard-theme=dark]/dashboard:border-white/20 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/70"
             />
             انتشار پس از ذخیره
           </label>
@@ -390,7 +395,9 @@ function NewCourseForm({ onCreated, instructorId }: NewCourseFormProps) {
           </Button>
         </div>
         {error && (
-          <div className="text-xs text-red-600">{error}</div>
+          <div className="text-xs text-red-600 group-data-[dashboard-theme=dark]/dashboard:text-red-300">
+            {error}
+          </div>
         )}
       </div>
     </form>
@@ -413,8 +420,8 @@ function ToggleButton({
       className={[
         "rounded-full px-3 py-1 text-xs font-semibold",
         active
-          ? "bg-pardis-primary text-white shadow-sm"
-          : "bg-white/80 text-pardis-gray ring-1 ring-black/5 hover:text-gray-900",
+          ? "bg-pardis-primary text-white shadow-sm group-data-[dashboard-theme=dark]/dashboard:bg-pardis-primary/90"
+          : "bg-white/80 text-pardis-gray ring-1 ring-black/5 hover:text-gray-900 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/70 group-data-[dashboard-theme=dark]/dashboard:text-slate-300 group-data-[dashboard-theme=dark]/dashboard:ring-white/10 group-data-[dashboard-theme=dark]/dashboard:hover:text-white",
       ].join(" ")}
     >
       {children}

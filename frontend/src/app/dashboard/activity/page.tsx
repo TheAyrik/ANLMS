@@ -68,13 +68,16 @@ export default function ActivityPage() {
     <div className="space-y-6 w-full">
       <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs font-medium text-pardis-secondary/80">
+          <p className="text-xs font-medium text-pardis-secondary/80 group-data-[dashboard-theme=dark]/dashboard:text-pardis-primary-100">
             پایش فعالیت‌ها و هشدارها
           </p>
-          <Heading as="h1" className="!text-3xl sm:!text-[2.6rem]">
+          <Heading
+            as="h1"
+            className="!text-3xl sm:!text-[2.6rem] group-data-[dashboard-theme=dark]/dashboard:!text-white"
+          >
             فعالیت‌ها و اولویت‌های امروز
           </Heading>
-          <p className="mt-2 text-sm text-pardis-gray">
+          <p className="mt-2 text-sm text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
             از آخرین بروزرسانی‌ها، تغییر وضعیت انتشار و اقدام‌های فوری مطلع شو.
           </p>
         </div>
@@ -84,17 +87,17 @@ export default function ActivityPage() {
       </header>
 
       <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-        <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-          <div className="flex items-center justify-between border-b border-black/5 pb-3">
-            <h2 className="text-base font-semibold text-gray-900">
+        <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+          <div className="flex items-center justify-between border-b border-black/5 pb-3 group-data-[dashboard-theme=dark]/dashboard:border-white/10">
+            <h2 className="text-base font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
               تایم‌لاین
             </h2>
-            <span className="text-xs text-pardis-gray">
+            <span className="text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
               {activities.length} رویداد
             </span>
           </div>
           {loading ? (
-            <p className="py-4 text-sm text-pardis-gray">
+            <p className="py-4 text-sm text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
               در حال دریافت فعالیت‌ها...
             </p>
           ) : activities.length === 0 ? (
@@ -107,10 +110,10 @@ export default function ActivityPage() {
               {activities.map((item) => (
                 <li
                   key={item.id}
-                  className="rounded-2xl border border-black/5 bg-white/90 px-4 py-3 shadow-xs"
+                  className="rounded-2xl border border-black/5 bg-white/90 px-4 py-3 shadow-xs group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/70"
                 >
                   <div className="flex items-center justify-between gap-2">
-                    <div className="text-sm font-semibold text-gray-900">
+                    <div className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
                       {item.title}
                     </div>
                     <Badge color={badgeColor(item.status)}>
@@ -121,23 +124,27 @@ export default function ActivityPage() {
                         : "فعالیت"}
                     </Badge>
                   </div>
-                  <p className="mt-1 text-xs text-pardis-gray">
+                  <p className="mt-1 text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
                     {item.description}
                   </p>
-                  <div className="mt-2 text-[11px] text-pardis-gray">
+                  <div className="mt-2 text-[11px] text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
                     {item.time}
                   </div>
                 </li>
               ))}
             </ul>
           )}
-          {error && <p className="text-xs text-red-600">{error}</p>}
+          {error && (
+            <p className="text-xs text-red-600 group-data-[dashboard-theme=dark]/dashboard:text-red-300">
+              {error}
+            </p>
+          )}
         </section>
 
         <aside className="space-y-4">
-          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
+          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
             <div className="flex items-center justify-between">
-              <div className="text-sm font-semibold text-gray-900">
+              <div className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
                 اولویت‌های فوری
               </div>
               <Badge color="amber">{focusItems.length}</Badge>
@@ -148,14 +155,14 @@ export default function ActivityPage() {
                 description="همه چیز به‌روز است."
               />
             ) : (
-              <ul className="mt-3 space-y-3 text-xs text-pardis-gray">
+              <ul className="mt-3 space-y-3 text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
                 {focusItems.map((course) => (
                   <li
                     key={course.id}
-                    className="rounded-2xl border border-black/5 bg-white/80 px-3 py-2"
+                    className="rounded-2xl border border-black/5 bg-white/80 px-3 py-2 group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/60"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-gray-900">
+                      <span className="font-medium text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
                         {course.title}
                       </span>
                       <Badge color="amber">پیش‌نویس</Badge>
@@ -169,11 +176,11 @@ export default function ActivityPage() {
             )}
           </section>
 
-          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur">
-            <div className="text-sm font-semibold text-gray-900">
+          <section className="rounded-3xl bg-white/90 p-4 shadow-xs ring-1 ring-pardis-primary/10 backdrop-blur group-data-[dashboard-theme=dark]/dashboard:border group-data-[dashboard-theme=dark]/dashboard:border-white/10 group-data-[dashboard-theme=dark]/dashboard:bg-slate-900/80 group-data-[dashboard-theme=dark]/dashboard:ring-white/10">
+            <div className="text-sm font-semibold text-gray-900 group-data-[dashboard-theme=dark]/dashboard:text-white">
               نکات امنیتی
             </div>
-            <ul className="mt-2 space-y-2 text-xs text-pardis-gray">
+            <ul className="mt-2 space-y-2 text-xs text-pardis-gray group-data-[dashboard-theme=dark]/dashboard:text-slate-400">
               <li>• از اشتراک‌گذاری لینک پنل ادمین خودداری کن.</li>
               <li>• در صورت تغییر نقش کاربران، مجوزها را بازبینی کن.</li>
               <li>• برای ورود، حتماً از مرورگر مطمئن استفاده کن.</li>
